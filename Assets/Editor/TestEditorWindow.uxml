@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="AudioFilePath" style="min-height: 10%; align-items: center; flex-direction: row; justify-content: center; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+        <ui:TextField picking-mode="Ignore" label="Audio file path" value="filler text" text="path" name="PathTextField" readonly="true" style="min-width: 70%; min-height: 20px;" />
+        <ui:Button text="Open explorer" display-tooltip-when-elided="true" name="OpenExplorerBtn" style="min-width: 150px; min-height: 20px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="AudioFileDisplay" style="min-height: 35%; min-width: auto; margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; align-items: center; justify-content: center;" />
+    <ui:VisualElement name="AudioFileControls" style="min-height: 10%; flex-direction: row; align-items: center; justify-content: center; min-width: auto; margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; flex-wrap: nowrap;">
+        <ui:Button text="Play" display-tooltip-when-elided="true" name="Play" style="min-width: 50px; min-height: 20px;" />
+        <ui:Button text="Pause" display-tooltip-when-elided="true" name="Pause" style="min-width: 50px; min-height: 20px;" />
+        <ui:Button text="Stop" display-tooltip-when-elided="true" name="Stop" style="min-width: 50px; min-height: 20px;" />
+    </ui:VisualElement>
+</ui:UXML>
