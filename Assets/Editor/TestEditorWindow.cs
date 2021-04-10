@@ -1,11 +1,12 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UIElements.Experimental;
 using UnityEngine.Windows;
 
 public class TestEditorWindow : EditorWindow
 {
-    Image img;
+    Image image;
     AudioClip audioClip;
     GameObject audioSourceObj;
     AudioSource audioSource;
@@ -63,6 +64,7 @@ public class TestEditorWindow : EditorWindow
                 audioSourceObj.hideFlags |= HideFlags.HideInHierarchy;
                 audioSource = audioSourceObj.AddComponent<AudioSource>();
                 audioSource.clip = audioClip;
+                PaintWave();
             }
         }
     }
@@ -86,12 +88,15 @@ public class TestEditorWindow : EditorWindow
         }
     }
 
-    void PainWave(){
+    void PaintWave(){
         if(audioClip != null){
             width = 500;
             height = 100;
             texture = PaintWaveformSpectrum(audioClip, sat, width, height, waveColor);
-            img.overrideSprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            //img.overrideSprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            ScrollView scrView = rootVisualElement.Query<ScrollView>("Waveform");
+            VisualElement wfimg = scrView.Query("WaveformImg");
+            wfimg.style.backgroundImage = texture;
         }
     }
      public Texture2D PaintWaveformSpectrum(AudioClip audio, float saturation, int width, int height, Color col) {
