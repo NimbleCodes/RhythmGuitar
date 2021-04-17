@@ -46,9 +46,6 @@ public class TestEditorWindow : EditorWindow
         playBtn.clickable.clicked += ()=>AudioControl(audioClipState.play);
         pauseBtn.clickable.clicked += ()=>AudioControl(audioClipState.pause);
         stopBtn.clickable.clicked += ()=>AudioControl(audioClipState.stop);
-
-        Slider slide = new Slider();
-        root.Add(slide);
     }
     private void OnDestroy() {
         audioSource.Stop();
@@ -101,13 +98,13 @@ public class TestEditorWindow : EditorWindow
 
     void PaintWave(){
         if(audioClip != null){
+            var root = this.rootVisualElement;
             width = 1000;
             height = 200;
             texture = PaintWaveformSpectrum(audioClip, sat, width, height, waveColor);
-            //img.overrideSprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-            ScrollView scrView = rootVisualElement.Query<ScrollView>("Waveform");
-            VisualElement wfimg = scrView.Query("WaveformImg");
-            wfimg.style.backgroundImage = texture;
+            Slider slider = new Slider();
+            root.Add(slider);
+            slider.style.backgroundImage = texture;
         }
     }
      public Texture2D PaintWaveformSpectrum(AudioClip audio, float saturation, int width, int height, Color col) {
