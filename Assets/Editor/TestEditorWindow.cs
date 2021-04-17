@@ -11,10 +11,13 @@ public class TestEditorWindow : EditorWindow
     GameObject audioSourceObj;
     AudioSource audioSource;
     Texture2D texture;
+    Slider progressBar;
+    public TextElement time;
     public int width,height;
     public Color waveColor = Color.yellow;
     public Color bgColor = Color.black;
     public float sat = .5f;
+    public int Min,Sec,Musicmin,Musicsec;
     enum audioClipState{
         play, pause, stop
     }
@@ -32,10 +35,7 @@ public class TestEditorWindow : EditorWindow
         // Import UXML
         var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/TestEditorWindow.uxml");
         VisualElement labelFromUXML = visualTree.Instantiate();
-        root.Add(labelFromUXML);
-        
-        // waveform
-        
+        root.Add(labelFromUXML); 
         //Buttons
         Button openExplorerBtn = rootVisualElement.Query<Button>("OpenExplorerBtn");
         openExplorerBtn.clickable.clicked += OpenExplorer;
@@ -46,6 +46,9 @@ public class TestEditorWindow : EditorWindow
         playBtn.clickable.clicked += ()=>AudioControl(audioClipState.play);
         pauseBtn.clickable.clicked += ()=>AudioControl(audioClipState.pause);
         stopBtn.clickable.clicked += ()=>AudioControl(audioClipState.stop);
+
+        Slider slide = new Slider();
+        root.Add(slide);
     }
     private void OnDestroy() {
         audioSource.Stop();
@@ -59,6 +62,14 @@ public class TestEditorWindow : EditorWindow
         if(path.Length != 0){
             audioClip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path));
             if(audioSourceObj == null)
+            {
+                audioSourceObj = new GameObject("EditorAudioSource");
+                audioSourceObj.hideFlags |= HideFlags.HideInHierarchy;
+                audioSource = audioSourceObj.AddComponent<AudioSource>();
+                audioSource.clip = audioClip;
+                PaintWave();
+            }
+            if(audioSourceObj != null)
             {
                 audioSourceObj = new GameObject("EditorAudioSource");
                 audioSourceObj.hideFlags |= HideFlags.HideInHierarchy;
@@ -90,8 +101,8 @@ public class TestEditorWindow : EditorWindow
 
     void PaintWave(){
         if(audioClip != null){
-            width = 500;
-            height = 100;
+            width = 1000;
+            height = 200;
             texture = PaintWaveformSpectrum(audioClip, sat, width, height, waveColor);
             //img.overrideSprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f));
             ScrollView scrView = rootVisualElement.Query<ScrollView>("Waveform");
@@ -127,5 +138,31 @@ public class TestEditorWindow : EditorWindow
  
          return tex;
  }
+
+public void MoveProgressBarPos() // 음악진행에 의한
+    {
+        if(audioSource.clip != null)
+            progressBar.value = audioSource.time / audioSource.clip.length;
+    }
+ void SetMusicLength()
+    {
+        int audioLength = (int)audioSource.clip.length;
+
+        Min = audioLength / 60;
+        Sec = audioLength - Min * 60;
+    }
+
+public void ChangeProgressTimeText()
+    {
+        int currentTime = (int)audioSource.time;
+
+        if (currentTime != 0)
+        {
+            Musicmin = currentTime / 60;
+            Musicsec = currentTime - Musicmin * 60;
+        }
+
+        time.text = string.Format("{0}:{1} / {2}:{3}", Musicmin, Musicsec, Min, Sec);
+    }
 
 }
