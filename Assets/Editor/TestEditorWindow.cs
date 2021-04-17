@@ -11,7 +11,7 @@ public class TestEditorWindow : EditorWindow
     GameObject audioSourceObj;
     AudioSource audioSource;
     Texture2D texture;
-    Slider progressBar;
+    Slider slider;
     public TextElement time;
     public int width,height;
     public Color waveColor = Color.yellow;
@@ -26,6 +26,10 @@ public class TestEditorWindow : EditorWindow
     {
         TestEditorWindow wnd = GetWindow<TestEditorWindow>();
         wnd.titleContent = new GUIContent("TestEditorWindow");
+    }
+
+    void Update(){
+        MoveProgressBarPos();
     }
     public void CreateGUI()
     {
@@ -66,7 +70,7 @@ public class TestEditorWindow : EditorWindow
                 audioSource.clip = audioClip;
                 PaintWave();
             }
-            if(audioSourceObj != null)
+            else if(audioSourceObj != null)
             {
                 audioSourceObj = new GameObject("EditorAudioSource");
                 audioSourceObj.hideFlags |= HideFlags.HideInHierarchy;
@@ -102,9 +106,11 @@ public class TestEditorWindow : EditorWindow
             width = 1000;
             height = 200;
             texture = PaintWaveformSpectrum(audioClip, sat, width, height, waveColor);
-            Slider slider = new Slider();
+            slider = new Slider();
             root.Add(slider);
             slider.style.backgroundImage = texture;
+            slider.style.height = 100;
+            
         }
     }
      public Texture2D PaintWaveformSpectrum(AudioClip audio, float saturation, int width, int height, Color col) {
@@ -139,7 +145,7 @@ public class TestEditorWindow : EditorWindow
 public void MoveProgressBarPos() // 음악진행에 의한
     {
         if(audioSource.clip != null)
-            progressBar.value = audioSource.time / audioSource.clip.length;
+            slider.value = audioSource.time / audioSource.clip.length;
     }
  void SetMusicLength()
     {
