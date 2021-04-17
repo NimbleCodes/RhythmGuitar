@@ -16,7 +16,9 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:ScrollView name="audio-display" style="min-height: 40%;">
-            <ui:VisualElement name="waveform-img" style="min-height: 150px;" />
+            <ui:VisualElement name="waveform-img" style="min-height: 150px;">
+                <ui:VisualElement name="cursor-position-indicator" style="min-width: 1px; max-width: 1px; min-height: 150px; position: absolute;" />
+            </ui:VisualElement>
         </ui:ScrollView>
     </ui:VisualElement>
 </ui:UXML>

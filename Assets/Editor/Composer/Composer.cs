@@ -11,6 +11,7 @@ public class Composer : EditorWindow
     AudioSource audioSource;
     Texture2D audioWaveform;
     Texture2D cursorPositionIndicator;
+    bool cPI_moveable = false;
 
     [MenuItem("Window/Custom/Composer")]
     public static void ShowExample()
@@ -40,21 +41,17 @@ public class Composer : EditorWindow
                 audioWaveform.SetPixel(i, j, Color.black);
             }
         }
-        cursorPositionIndicator = new Texture2D(1, 400);
-        for(int i = 0; i < cursorPositionIndicator.height; i++){
-            
-        }
         audioWaveform.Apply();
+        cursorPositionIndicator = new Texture2D(1, 1);
+        cursorPositionIndicator.SetPixel(0,0,Color.red);
+        cursorPositionIndicator.Apply();
         VisualElement waveformImg = visualTreeInst.Query<VisualElement>("waveform-img");
+        VisualElement cursorPositionIndicatorVE = visualTreeInst.Query<VisualElement>("cursor-position-indicator");
         waveformImg.style.backgroundImage = audioWaveform;
-        waveformImg.RegisterCallback<MouseOverEvent>((e)=>{
-            //do something
-
+        cursorPositionIndicatorVE.style.backgroundImage = cursorPositionIndicator;
+        waveformImg.RegisterCallback<MouseMoveEvent>((e)=>{
+            cursorPositionIndicatorVE.style.left = e.localMousePosition.x;
         });
-        waveformImg.RegisterCallback<MouseOutEvent>((e)=>{
-            //do something
-        });
-
         //Buttons
         Button playBtn = visualTreeInst.Query<Button>("play-btn");
         playBtn.clicked += ()=>{
