@@ -11,7 +11,7 @@ public class Composer : EditorWindow
     AudioSource audioSource;
     Texture2D audioWaveform;
     Texture2D cursorPositionIndicator;
-    bool cPI_moveable = false;
+    Texture2D playPositionIndicator;
 
     [MenuItem("Window/Custom/Composer")]
     public static void ShowExample()
@@ -43,15 +43,30 @@ public class Composer : EditorWindow
         }
         audioWaveform.Apply();
         cursorPositionIndicator = new Texture2D(1, 1);
-        cursorPositionIndicator.SetPixel(0,0,Color.red);
+        cursorPositionIndicator.SetPixel(0,0,new Color(.8f, .8f, .8f, .5f));
         cursorPositionIndicator.Apply();
         VisualElement waveformImg = visualTreeInst.Query<VisualElement>("waveform-img");
         VisualElement cursorPositionIndicatorVE = visualTreeInst.Query<VisualElement>("cursor-position-indicator");
+        Label cursorPositionTooltip = visualTreeInst.Query<Label>("tooltip");
         waveformImg.style.backgroundImage = audioWaveform;
         cursorPositionIndicatorVE.style.backgroundImage = cursorPositionIndicator;
         waveformImg.RegisterCallback<MouseMoveEvent>((e)=>{
             cursorPositionIndicatorVE.style.left = e.localMousePosition.x;
+            cursorPositionTooltip.text = "00:00:00";
+            if(e.localMousePosition.x > 350){
+                cursorPositionTooltip.style.left = -cursorPositionTooltip.worldBound.size.x;
+            }
+            else{
+                cursorPositionTooltip.style.left = 0;
+            }
         });
+        
+        playPositionIndicator = new Texture2D(1,1);
+        playPositionIndicator.SetPixel(0, 0, new Color(1, .55f, 0));
+        playPositionIndicator.Apply();
+        VisualElement playPositionIndicatorVE = visualTreeInst.Query<VisualElement>("play-position-indicator");
+        playPositionIndicatorVE.style.backgroundImage = playPositionIndicator;
+
         //Buttons
         Button playBtn = visualTreeInst.Query<Button>("play-btn");
         playBtn.clicked += ()=>{
@@ -74,12 +89,13 @@ public class Composer : EditorWindow
             audioClip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path));
             audioSource.clip = audioClip;
             //waveform
-            float[] samples = new float[audioClip.samples];
-            audioClip.GetData(samples, 0);
-            //float[] packets = new float[]
+            
         };
 
         root.Add(visualTreeInst);
+    }
+    private void Update() {
+        
     }
     private void OnDestroy() {
         if(audioSourceObj != null) DestroyImmediate(audioSourceObj);
