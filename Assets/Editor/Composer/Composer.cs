@@ -12,6 +12,8 @@ public class Composer : EditorWindow
     Texture2D audioWaveform;
     Texture2D cursorPositionIndicator;
     Texture2D playPositionIndicator;
+    VisualElement playPositionIndicatorVE;
+    VisualElement waveformImg;
 
     [MenuItem("Window/Custom/Composer")]
     public static void ShowExample()
@@ -35,7 +37,7 @@ public class Composer : EditorWindow
         VisualElement visualTreeInst = visualTree.Instantiate();
 
         //Add functionality here
-        audioWaveform = new Texture2D(1000, 400);
+        audioWaveform = new Texture2D(700, 400);
         for(int i = 0; i < audioWaveform.width; i++){
             for(int j = 0; j < audioWaveform.height; j++){
                 audioWaveform.SetPixel(i, j, Color.black);
@@ -45,7 +47,7 @@ public class Composer : EditorWindow
         cursorPositionIndicator = new Texture2D(1, 1);
         cursorPositionIndicator.SetPixel(0,0,new Color(.8f, .8f, .8f, .5f));
         cursorPositionIndicator.Apply();
-        VisualElement waveformImg = visualTreeInst.Query<VisualElement>("waveform-img");
+        waveformImg = visualTreeInst.Query<VisualElement>("waveform-img");
         VisualElement cursorPositionIndicatorVE = visualTreeInst.Query<VisualElement>("cursor-position-indicator");
         Label cursorPositionTooltip = visualTreeInst.Query<Label>("tooltip");
         waveformImg.style.backgroundImage = audioWaveform;
@@ -60,11 +62,16 @@ public class Composer : EditorWindow
                 cursorPositionTooltip.style.left = 0;
             }
         });
+        waveformImg.RegisterCallback<MouseDownEvent>((e)=>{
+            Debug.Log("hi");
+            float gotopos = e.localMousePosition.x / waveformImg.worldBound.size.x;
+            audioSource.time = audioClip.length * gotopos;
+        });
         
         playPositionIndicator = new Texture2D(1,1);
         playPositionIndicator.SetPixel(0, 0, new Color(1, .55f, 0));
         playPositionIndicator.Apply();
-        VisualElement playPositionIndicatorVE = visualTreeInst.Query<VisualElement>("play-position-indicator");
+        playPositionIndicatorVE = visualTreeInst.Query<VisualElement>("play-position-indicator");
         playPositionIndicatorVE.style.backgroundImage = playPositionIndicator;
 
         //Buttons
@@ -79,6 +86,7 @@ public class Composer : EditorWindow
         };
         Button stopBtn = visualTreeInst.Query<Button>("stop-btn");
         stopBtn.clicked += ()=>{
+            audioSource.time = 0;
             audioSource.Stop();
         };
         Button openExplorerBtn = visualTreeInst.Query<Button>("open-explorer-btn");
@@ -89,13 +97,36 @@ public class Composer : EditorWindow
             audioClip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path));
             audioSource.clip = audioClip;
             //waveform
-            
+            float[] samples = new float[audioClip.samples];
+            float[] waveform = new float[audioWaveform.width];
+            audioClip.GetData(samples, 0);
+            int packSize = (audioClip.samples / audioWaveform.width) + 1;
+            for(int i = 0, s = 0; i < audioClip.samples; i+=packSize, s++){
+                waveform[s] = Mathf.Abs(samples[i]);
+            }
+            for(int i = 0; i < audioWaveform.width; i++){
+                for(int j = 0; j < audioWaveform.height; j++){
+                    audioWaveform.SetPixel(i, j, Color.black);
+                }   
+            }
+            for(int x = 0; x < audioWaveform.width; x++){
+                for(int y = 0; y < waveform[x] * audioWaveform.height; y++){
+                    audioWaveform.SetPixel(x, (audioWaveform.height/2)+y, Color.yellow);
+                    audioWaveform.SetPixel(x, (audioWaveform.height/2)-y, Color.yellow);
+                }
+            }
+            audioWaveform.Apply();
         };
 
         root.Add(visualTreeInst);
     }
     private void Update() {
-        
+        if(audioSource.isPlaying){
+            //playPositionIndicator
+            float curPlayPos = audioSource.time / audioClip.length;
+            playPositionIndicatorVE.style.left = waveformImg.worldBound.size.x * curPlayPos;
+            //Debug.Log(playPositionIndicatorVE.style.left);
+        }
     }
     private void OnDestroy() {
         if(audioSourceObj != null) DestroyImmediate(audioSourceObj);
