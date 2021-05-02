@@ -12,6 +12,7 @@ public class TestEditorWindow : EditorWindow
     AudioSource audioSource;
     Texture2D texture;
     Slider slider;
+    public bool playing = false;
     public TextElement time;
     public int width,height;
     public Color waveColor = Color.yellow;
@@ -27,10 +28,11 @@ public class TestEditorWindow : EditorWindow
         TestEditorWindow wnd = GetWindow<TestEditorWindow>();
         wnd.titleContent = new GUIContent("TestEditorWindow");
     }
-
+    
     void Update(){
-        MoveProgressBarPos();
+            MoveProgressBarPos();
     }
+    
     public void CreateGUI()
     {
         // Each editor window contains a root VisualElement object
@@ -50,6 +52,16 @@ public class TestEditorWindow : EditorWindow
         playBtn.clickable.clicked += ()=>AudioControl(audioClipState.play);
         pauseBtn.clickable.clicked += ()=>AudioControl(audioClipState.pause);
         stopBtn.clickable.clicked += ()=>AudioControl(audioClipState.stop);
+
+        ///////////// test
+         string path = "Assets/Resources/Audio/Haru Modoki (Asterisk DnB Remix Cut).mp3";
+        audioClip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path));
+        audioSourceObj = new GameObject("EditorAudioSource");
+        audioSourceObj.hideFlags |= HideFlags.HideInHierarchy;
+        audioSource = audioSourceObj.AddComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        PaintWave();
+        /////////// test
     }
     private void OnDestroy() {
         audioSource.Stop();
@@ -62,23 +74,26 @@ public class TestEditorWindow : EditorWindow
         );
         if(path.Length != 0){
             audioClip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path));
-            if(audioSourceObj == null)
+            /*if(audioSourceObj == null)
             {
                 audioSourceObj = new GameObject("EditorAudioSource");
                 audioSourceObj.hideFlags |= HideFlags.HideInHierarchy;
                 audioSource = audioSourceObj.AddComponent<AudioSource>();
                 audioSource.clip = audioClip;
                 PaintWave();
-            }
-            else if(audioSourceObj != null)
+            }*/
+            if(audioSourceObj != null)
             {
-                audioSourceObj = new GameObject("EditorAudioSource");
+                /*audioSourceObj = new GameObject("EditorAudioSource");
                 audioSourceObj.hideFlags |= HideFlags.HideInHierarchy;
-                audioSource = audioSourceObj.AddComponent<AudioSource>();
+                audioSource = audioSourceObj.AddComponent<AudioSource>();*/
                 audioSource.clip = audioClip;
-                PaintWave();
+                ChangePath();
             }
         }
+    }
+    void DestroyOnPathChange(){
+    
     }
     void AudioControl(audioClipState state){
         switch((int)state){
@@ -88,14 +103,18 @@ public class TestEditorWindow : EditorWindow
                     audioSource.UnPause();
                 else
                     audioSource.Play();
+                    playing = true;
             break;
             case 1:
                 Debug.Log("Pause");
                 audioSource.Pause();
+                playing = false;
             break;
             case 2:
                 Debug.Log("Stop");
                 audioSource.Stop();
+                slider.value = 0;
+                playing = false;
             break;            
         }
     }
@@ -110,8 +129,16 @@ public class TestEditorWindow : EditorWindow
             root.Add(slider);
             slider.style.backgroundImage = texture;
             slider.style.height = 100;
+            SetProgressBarLength();
             
         }
+    }
+
+    void ChangePath(){
+        texture = PaintWaveformSpectrum(audioClip, sat, width, height, waveColor);
+        slider.style.backgroundImage = texture;
+        slider.value = 0;
+        SetProgressBarLength();
     }
      public Texture2D PaintWaveformSpectrum(AudioClip audio, float saturation, int width, int height, Color col) {
         Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
@@ -144,8 +171,14 @@ public class TestEditorWindow : EditorWindow
 
 public void MoveProgressBarPos() // 음악진행에 의한
     {
-        if(audioSource.clip != null)
-            slider.value = audioSource.time / audioSource.clip.length;
+        if(playing == true){
+            if(audioSource.clip != null){
+                slider.value = audioSource.time;
+                }
+        }else
+        {   if(audioSource.clip != null)
+                ControlProgressBarPos();
+        }
     }
  void SetMusicLength()
     {
@@ -154,6 +187,11 @@ public void MoveProgressBarPos() // 음악진행에 의한
         Min = audioLength / 60;
         Sec = audioLength - Min * 60;
     }
+void SetProgressBarLength(){
+    slider.lowValue = 0;
+    slider.highValue = (int)audioSource.clip.length;
+    Debug.Log(audioClip.length);
+}
 
 public void ChangeProgressTimeText()
     {
@@ -166,6 +204,35 @@ public void ChangeProgressTimeText()
         }
 
         time.text = string.Format("{0}:{1} / {2}:{3}", Musicmin, Musicsec, Min, Sec);
+    }
+
+    public void ChangePos(float time)
+    {
+        float currentTime = audioSource.time;
+
+        currentTime += time;
+        currentTime = Mathf.Clamp(currentTime, 0f, audioClip.length - 0.0001f); // 클립 길이에 딱 맞게 자르면 오류가 발생하여 끄트머리 조금 싹뚝
+       
+        audioSource.time = currentTime; 
+        //Debug.Log("현재 음악 위치 " + audioSource.time);
+    }
+
+    public void ChangePosByProgressBar(float pos)
+    {
+        float time =  pos;
+
+        audioSource.time = time;
+    }
+
+    public void ControlProgressBarPos() // 사용자 조작에 의한
+    {
+        float pos = slider.value;
+        ChangePosByProgressBar(pos);
+    }
+
+    void CalculatePos(float pos)
+    {
+        float value = audioSource.clip.length * pos;
     }
 
 }
