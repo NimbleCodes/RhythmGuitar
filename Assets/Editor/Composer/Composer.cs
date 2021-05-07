@@ -37,7 +37,7 @@ public class Composer : EditorWindow
         VisualElement visualTreeInst = visualTree.Instantiate();
 
         //Add functionality here
-        audioWaveform = new Texture2D(700, 400);
+        audioWaveform = new Texture2D(1000, 400);
         for(int i = 0; i < audioWaveform.width; i++){
             for(int j = 0; j < audioWaveform.height; j++){
                 audioWaveform.SetPixel(i, j, Color.black);
@@ -54,13 +54,6 @@ public class Composer : EditorWindow
         cursorPositionIndicatorVE.style.backgroundImage = cursorPositionIndicator;
         waveformImg.RegisterCallback<MouseMoveEvent>((e)=>{
             cursorPositionIndicatorVE.style.left = e.localMousePosition.x;
-            cursorPositionTooltip.text = "00:00:00";
-            if(e.localMousePosition.x > 350){
-                cursorPositionTooltip.style.left = -cursorPositionTooltip.worldBound.size.x;
-            }
-            else{
-                cursorPositionTooltip.style.left = 0;
-            }
         });
         waveformImg.RegisterCallback<MouseDownEvent>((e)=>{
             Debug.Log("hi");
@@ -101,7 +94,7 @@ public class Composer : EditorWindow
             float[] waveform = new float[audioWaveform.width];
             audioClip.GetData(samples, 0);
             int packSize = (audioClip.samples / audioWaveform.width) + 1;
-            for(int i = 0, s = 0; i < audioClip.samples; i+=packSize, s++){
+            for(int i = 0, s = 0; s < audioWaveform.width; i+=packSize, s++){
                 waveform[s] = Mathf.Abs(samples[i]);
             }
             for(int i = 0; i < audioWaveform.width; i++){
