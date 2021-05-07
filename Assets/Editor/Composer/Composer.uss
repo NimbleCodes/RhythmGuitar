@@ -1,0 +1,7 @@
+.header {
+    min-height: 15%;
+}
+
+.content {
+    min-height: 85%;
+}
