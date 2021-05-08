@@ -12,6 +12,7 @@ public class TestEditorWindow : EditorWindow
     AudioSource audioSource;
     Texture2D texture;
     Slider slider;
+    public NoteData N_data;
     public bool playing = false;
     public TextElement time;
     public int width,height;
@@ -233,6 +234,18 @@ public void ChangeProgressTimeText()
     void CalculatePos(float pos)
     {
         float value = audioSource.clip.length * pos;
+    }
+
+    void SaveObject(int line, float pos)
+    {
+        if (line == 1)
+            N_data.noteLine1.Add((int)audioSource.time);
+        else if (line == 2)
+            N_data.noteLine2.Add((int)audioSource.time);
+        else if (line == 3)
+            N_data.noteLine3.Add((int)audioSource.time);
+        else if (line == 4)
+            N_data.noteLine4.Add((int)audioSource.time);
     }
 
 }

@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DataWriter : MonoBehaviour
+{
+    public NoteData N_data;
+
+    public string WriteSheetInfo()
+    {
+        string data = "";
+
+        data += "[SheetInfo]" +
+            "\nAudioFileName=" + N_data.fileName +
+            "\nAudioViewTime=" + N_data.previewTime +
+            "\nImageFileName=" + N_data.imgFileName + "_Img" +
+            "\nBPM=" + N_data.bpm +
+            "\nOffset=" + N_data.offset +
+            "\nBeat=44\nBit=32\nBar=80\n\n";
+
+        return data;
+    }
+
+    public string WriteContentInfo()
+    {
+        string data = "";
+
+        data += "[ContentInfo]" +
+            "\nTitle=" + N_data.title +
+            "\nArtist=" + N_data.artist +
+            "\nSource=" + N_data.source +
+            "\nSheet=" + N_data.sheet +
+            "\nDifficult=" + N_data.diff +
+            "\n\n";
+
+        return data;
+    }
+
+    public string WriteNoteInfo()
+    {
+        string data = "";
+
+        data += "[NoteInfo]\n";
+
+        foreach (int note in N_data.noteLine1)
+        {
+            data += note.ToString() + ",1\n";
+        }
+        foreach (int note in N_data.noteLine2)
+        {
+            data += note.ToString() + ",2\n";
+        }
+        foreach (int note in N_data.noteLine3)
+        {
+            data += note.ToString() + ",3\n";
+        }
+        foreach (int note in N_data.noteLine4)
+        {
+            data += note.ToString() + ",4\n";
+        }
+
+        return data;
+    }
+}
