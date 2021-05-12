@@ -12,7 +12,7 @@ namespace EditorWndMods {
         VisualElement _rootVisualElement;
         VisualElement _audioDisplay;
         VisualElement _playPosIndicator;
-        Texture2D audioWaveformTex;
+        Texture2D noAudioWaveformTex;
         Texture2D cursorPosIndicatorTex;
         Texture2D playPosIndicatorTex;
         Color cursorPosIndicatorColor = new Color(1,0.65f,0,1);
@@ -28,9 +28,9 @@ namespace EditorWndMods {
             audioSource = audioSourceObj.AddComponent<AudioSource>();
             audioSourceObj.hideFlags = HideFlags.HideAndDontSave;
             //Initial waveform texture
-            audioWaveformTex = new Texture2D(1,1);
-            audioWaveformTex.SetPixel(0,0,Color.black);
-            audioWaveformTex.Apply();
+            noAudioWaveformTex = new Texture2D(1,1);
+            noAudioWaveformTex.SetPixel(0,0,Color.black);
+            noAudioWaveformTex.Apply();
             //Position indicators init
             cursorPosIndicatorTex = new Texture2D(1,1);
             playPosIndicatorTex = new Texture2D(1,1);
@@ -46,7 +46,7 @@ namespace EditorWndMods {
             //Audio waveform img
             VisualElement audioDisplay = _rootVisualElement.Query<VisualElement>("audio_display");
             _audioDisplay = audioDisplay;
-            audioDisplay.style.backgroundImage = audioWaveformTex;
+            audioDisplay.style.backgroundImage = noAudioWaveformTex;
             VisualElement cursorPosIndicator = _rootVisualElement.Query<VisualElement>("cursor_pos_indicator");
             cursorPosIndicator.style.backgroundImage = cursorPosIndicatorTex;
             VisualElement playPosIndicator = _rootVisualElement.Query<VisualElement>("play_pos_indicator");
@@ -101,6 +101,7 @@ namespace EditorWndMods {
             if(audioSource.clip != null){
                 if(Math.Abs(audioSource.time - audioSource.clip.length) < 0.005f){
                     audioSource.time = 0;
+                    audioSource.Stop();
                 }
             }
         }

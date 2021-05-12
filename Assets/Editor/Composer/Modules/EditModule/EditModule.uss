@@ -1,0 +1,28 @@
+.laneObj {
+    flex-direction: row;
+    max-width: 100%;
+    min-width: 100%;
+    max-height: 75px;
+    min-height: 75px;
+    background-color: rgba(64, 64, 64, 255);
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.laneObj_laneNumber {
+    max-width: 20%;
+    min-width: 20%;
+    max-height: 100%;
+    min-height: 100%;
+    font-size: 20px;
+    -unity-text-align: middle-center;
+}
+
+.laneObj_laneInfo {
+    max-width: 80%;
+    min-width: 80%;
+    max-height: 100%;
+    min-height: 100%;
+}

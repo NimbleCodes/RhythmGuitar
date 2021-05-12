@@ -10,10 +10,9 @@ using System;
 public class Composer : EditorWindow
 {
     List<Module> modules;
-
     [MenuItem("Window/Custom/Composer")]
     public static void CreateWnd(){
-        Composer wnd = GetWindowWithRect<Composer>(new Rect(0,0,800,400));
+        Composer wnd = GetWindowWithRect<Composer>(new Rect(0,0,1240,720));
     }
     public void CreateGUI(){
         modules = new List<Module>();
@@ -22,10 +21,16 @@ public class Composer : EditorWindow
         VisualElement visualTree = visualTreeAsset.Instantiate();
         visualTree.name = "composer";
         //Add functionality here
+        //Audio player module
         AudioPlayer audioPlayer = new AudioPlayer();
-        audioPlayer.rootVisualElement.style.height = position.height * 0.5f;
+        audioPlayer.rootVisualElement.style.height = position.height * 0.3f;
         visualTree.Add(audioPlayer.rootVisualElement);
         modules.Add(audioPlayer);
+        //Edit module
+        EditModule editModule = new EditModule();
+        editModule.rootVisualElement.style.height = position.height * 0.7f;
+        visualTree.Add(editModule.rootVisualElement);
+        modules.Add(editModule);
         //Add visualTree to rootVisualElement
         rootVisualElement.Add(visualTree);
     }
