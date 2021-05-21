@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NoteData : MonoBehaviour
+public class NoteData
 {
     [Header("Sheet Info")]
     public string fileName;
@@ -26,6 +26,11 @@ public class NoteData : MonoBehaviour
 
     public void Init()
     {
+        noteLine1 = new List<int>();
+        noteLine2 = new List<int>();
+        noteLine3 = new List<int>();
+        noteLine4 = new List<int>();
+        
         noteLine1.Clear();
         noteLine2.Clear();
         noteLine3.Clear();

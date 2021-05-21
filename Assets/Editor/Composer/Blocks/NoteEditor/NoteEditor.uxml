@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="NoteEditor.uss" />
+    <Style src="/Assets/Editor/Composer/Blocks/AudioPlayer/AudioPlayer.uss" />
+    <ui:VisualElement name="timeline" style="max-height: 15%; min-height: 15%;" />
+    <ui:VisualElement name="editor" style="max-height: 70%; min-height: 70%;">
+        <ui:VisualElement name="cursor_pos_indicator" class="indicator" style="background-color: rgba(191, 191, 255, 255);" />
+    </ui:VisualElement>
+    <ui:VisualElement name="note_editor_ctrls" style="max-height: 15%; min-height: 15%;" />
+</ui:UXML>
