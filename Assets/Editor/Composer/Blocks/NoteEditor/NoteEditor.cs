@@ -78,17 +78,41 @@ public class NoteEditor : Block
             VisualElement newNoteIndicator = noteIndicatorVTAsset.Instantiate();
             newNoteIndicator.style.minHeight = 5;
             newNoteIndicator.style.maxWidth = 5;
+            newNoteIndicator.style.minWidth = 5;
+            newNoteIndicator.style.position = Position.Absolute;
             noteIndicator.Enqueue(newNoteIndicator);
         }
-        VisualElement temp = noteIndicator.Dequeue();
+        /* VisualElement temp = noteIndicator.Dequeue();
         VisualElement temp2 = lanes[0].Query<VisualElement>("lane_notes");
         temp.BringToFront();
         temp.style.left = 50;
         temp2.Add(temp);
-        noteIndicator.Enqueue(temp);
+        noteIndicator.Enqueue(temp); */
     }
     private void UpdateDisplay(){
-        
+        VisualElement lane1Notes = lanes[0].Query<VisualElement>("lane_notes");
+        for(int i = 0; i < lane1Notes.childCount; i++) lane1Notes.RemoveAt(i);
+        if(noteData.noteLine1.Count > 0)
+        {
+            noteData.noteLine1.Sort();
+            //DEBUG
+            string tot = "";
+            noteData.noteLine1.ForEach((i)=>tot+=(i.ToString()+", "));
+            Debug.Log(tot);
+            int curNote = 0;
+            while(noteData.noteLine1[curNote] < curVisibleAreaStart) curNote++;
+            while(curNote < noteData.noteLine1.Count && noteData.noteLine1[curNote] < curVisibleAreaStart + curVisibleAreaSize)
+            {
+                VisualElement newNoteIndicator = noteIndicator.Dequeue();
+                lane1Notes.Add(newNoteIndicator);
+                noteIndicator.Enqueue(newNoteIndicator);
+                newNoteIndicator.style.top = lane1Notes.worldBound.height / 2;
+                newNoteIndicator.style.left = 
+                    lane1Notes.worldBound.width * (noteData.noteLine1[curNote] - curVisibleAreaStart) / (curVisibleAreaSize - curVisibleAreaStart);
+                newNoteIndicator.BringToFront();
+                curNote++;
+            }
+        }
     }
     public override void Update()
     {
