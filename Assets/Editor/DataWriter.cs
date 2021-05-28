@@ -39,22 +39,22 @@ public class DataWriter : MonoBehaviour
     public string WriteNoteInfo()
     {
         string data = "";
-
+        
         data += "[NoteInfo]\n";
 
-        foreach (int note in N_data.noteLine1)
+        foreach (int note in N_data.notes[0])
         {
             data += note.ToString() + ",1\n";
         }
-        foreach (int note in N_data.noteLine2)
+        foreach (int note in N_data.notes[1])
         {
             data += note.ToString() + ",2\n";
         }
-        foreach (int note in N_data.noteLine3)
+        foreach (int note in N_data.notes[2])
         {
             data += note.ToString() + ",3\n";
         }
-        foreach (int note in N_data.noteLine4)
+        foreach (int note in N_data.notes[3])
         {
             data += note.ToString() + ",4\n";
         }

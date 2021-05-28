@@ -238,6 +238,7 @@ public void ChangeProgressTimeText()
 
     void SaveObject(int line, float pos)
     {
+        /*
         if (line == 1)
             N_data.noteLine1.Add((int)audioSource.time);
         else if (line == 2)
@@ -246,6 +247,7 @@ public void ChangeProgressTimeText()
             N_data.noteLine3.Add((int)audioSource.time);
         else if (line == 4)
             N_data.noteLine4.Add((int)audioSource.time);
+            */
     }
 
 }
