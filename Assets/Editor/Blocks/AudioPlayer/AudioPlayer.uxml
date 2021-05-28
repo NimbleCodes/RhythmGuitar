@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="AudioPlayer.uss" />
+    <ui:VisualElement name="wrapper_0" style="flex-direction: row; height: 15%;">
+        <ui:VisualElement name="audio_controls" style="flex-direction: row; align-items: center; width: 50%; height: 100%;">
+            <ui:Button text="Play" display-tooltip-when-elided="true" name="play_btn" />
+            <ui:Button text="Pause" display-tooltip-when-elided="true" name="pause_btn" />
+            <ui:Button text="Stop" display-tooltip-when-elided="true" name="stop_btn" />
+        </ui:VisualElement>
+        <ui:VisualElement name="audio_importer" style="width: 50%; height: 100%; flex-direction: row-reverse; align-items: center;">
+            <ui:Button text="Open Explorer" display-tooltip-when-elided="true" name="openExplorer_btn" />
+            <ui:TextField picking-mode="Ignore" text="path" name="audioPath_display" readonly="true" style="width: 50%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="audio_waveform" style="height: 85%;">
+        <ui:VisualElement name="cursorPosition_indicator" class="indicators" />
+        <ui:VisualElement name="playPosition_indicator" class="indicators" />
+    </ui:VisualElement>
+</ui:UXML>

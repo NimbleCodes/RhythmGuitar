@@ -1,0 +1,5 @@
+.indicator {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+}
