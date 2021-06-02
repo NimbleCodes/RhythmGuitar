@@ -1,6 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="NoteEditor.uss" />
-    <ui:VisualElement name="time_display" style="height: 15%; border-left-width: 0; border-right-width: 0; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgba(128, 128, 128, 255); border-right-color: rgba(128, 128, 128, 255); border-top-color: rgba(128, 128, 128, 255); border-bottom-color: rgba(128, 128, 128, 255); justify-content: flex-end;" />
-    <ui:VisualElement name="lanes" style="height: 85%;" />
-    <ui:VisualElement name="playPosition_indicator" class="indicator" style="position: absolute;" />
+    <ui:VisualElement name="wrapper_0" style="height: 90%;">
+        <ui:VisualElement name="time_display" style="height: 15%; border-left-width: 0; border-right-width: 0; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128); justify-content: flex-end;" />
+        <ui:VisualElement name="lanes" style="height: 85%;">
+            <ui:VisualElement name="cursorPosition_indicator" class="indicator" />
+        </ui:VisualElement>
+        <ui:VisualElement name="playPosition_indicator" class="indicator" style="position: absolute;">
+            <ui:Label display-tooltip-when-elided="true" name="time_label" />
+        </ui:VisualElement>
+        <ui:VisualElement name="endPosition_indicator" class="indicator" style="position: absolute;">
+            <ui:Label display-tooltip-when-elided="true" name="time_label" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="lane_controls" style="height: 10%;" />
 </ui:UXML>

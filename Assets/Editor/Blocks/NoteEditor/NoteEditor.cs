@@ -10,6 +10,7 @@ public class NoteEditor : Block
     AudioSource audioSource;
     float visibleAreaStart = 0;
     float visibleAreaSize = 60;
+    const float minVisibleAreaSize = 10;
     NoteData noteData;
 
     const int poolSize = 50;
@@ -19,7 +20,7 @@ public class NoteEditor : Block
     Queue<VisualElement> noteIndicatorPool;
     Queue<VisualElement> usedNoteIndicators;
 
-    VisualElement timeDisplay, lanes, playPositionIndicator;
+    VisualElement timeDisplay, lanes, playPositionIndicator, cursorPositionIndicator, endPositionIndicator;
 
     const int defNumLanes = 4;
     List<VisualElement> laneList;
@@ -36,7 +37,8 @@ public class NoteEditor : Block
         laneList = new List<VisualElement>();
         var laneVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/Blocks/NoteEditor/Lane.uxml");
 
-        if((timeDisplay = rootVisualElement.Query<VisualElement>("time_display")) != null){
+        if((timeDisplay = rootVisualElement.Query<VisualElement>("time_display")) != null)
+        {
             timeDisplay.style.backgroundColor = new Color(0.15f, 0.15f, 0.15f, 1);
             for(int i = 0; i < poolSize; i++){
                 VisualElement newSectionIndicator = new VisualElement();
@@ -51,8 +53,10 @@ public class NoteEditor : Block
                 sectionIndicatorPool.Enqueue(newSectionIndicator);
             }
         }
-        if((lanes = rootVisualElement.Query<VisualElement>("lanes")) != null){
-            for(int i = 0; i < defNumLanes; i++){
+        if((lanes = rootVisualElement.Query<VisualElement>("lanes")) != null)
+        {
+            for(int i = 0; i < defNumLanes; i++)
+            {
                 VisualElement newLane = laneVisualTreeAsset.Instantiate();
                 newLane.style.height = Length.Percent(100f/defNumLanes);
                 newLane.style.borderTopWidth = 1;
@@ -70,7 +74,8 @@ public class NoteEditor : Block
                 laneList.Add(newLane);
                 noteData.notes.Add(new List<float>());
             }
-            for(int i = 0; i < poolSize; i++){
+            for(int i = 0; i < poolSize; i++)
+            {
                 VisualElement newNoteIndicator = new VisualElement();
                 newNoteIndicator.AddToClassList("indicator");
                 newNoteIndicator.style.backgroundColor = Color.magenta;
@@ -78,10 +83,32 @@ public class NoteEditor : Block
                 newNoteIndicator.style.height = Length.Percent(100);
                 noteIndicatorPool.Enqueue(newNoteIndicator);
             }
+            lanes.RegisterCallback<MouseMoveEvent>((e)=>{
+                cursorPositionIndicator.style.left = e.localMousePosition.x;
+            });
+            lanes.RegisterCallback<WheelEvent>((e)=>{
+                visibleAreaSize += (e.delta.y < 0 ? -1 : 1) * 10;
+                if(visibleAreaSize < minVisibleAreaSize)
+                {
+                    visibleAreaSize = minVisibleAreaSize;
+                    return;
+                }
+            });
         }
-        if((playPositionIndicator = rootVisualElement.Query<VisualElement>("playPosition_indicator")) != null){
+        if((playPositionIndicator = rootVisualElement.Query<VisualElement>("playPosition_indicator")) != null)
+        {
             playPositionIndicator.style.backgroundColor = Color.red;
             playPositionIndicator.style.left = -1;
+        }
+        if((cursorPositionIndicator = lanes.Query<VisualElement>("cursorPosition_indicator")) != null)
+        {
+            cursorPositionIndicator.style.backgroundColor = new Color(0.6f, 0.6f, 1);
+            cursorPositionIndicator.style.left = -1;
+        }
+        if((endPositionIndicator = rootVisualElement.Query<VisualElement>("endPosition_indicator")) != null){
+            endPositionIndicator.style.backgroundColor = Color.red;
+            endPositionIndicator.style.left = -1;
+            ((Label)endPositionIndicator.Query<Label>("time_label")).style.color = Color.red;
         }
     }
     void UpdateTimeDisplay()
@@ -89,31 +116,54 @@ public class NoteEditor : Block
         float sectionSpace = visibleAreaSize / 20;
         float i = 0, cnt = 0;
         while(i < visibleAreaStart) i+=sectionSpace;
-        while(i < visibleAreaStart + visibleAreaSize)
+        while(i < visibleAreaStart + visibleAreaSize && i < audioSource.clip.length)
         {
             if(cnt < usedSectionIndicators.Count)
             {
                 VisualElement temp = usedSectionIndicators.Dequeue();
                 temp.style.left = ((i - visibleAreaStart) / (visibleAreaSize)) * timeDisplay.worldBound.width;
                 Label temp2 = temp.Query<Label>("timeLabel");
-                temp2.text = ((int)(i / 60)).ToString() + ":" + (i % 60).ToString("00");
+                temp2.text = ((int)(Math.Floor(i / 60))).ToString() + ":" 
+                                + ((int)(i % 60)).ToString("00") + ":" 
+                                + ((int)((i - (int)i) * 100)).ToString("00");
                 usedSectionIndicators.Enqueue(temp);
             }
-            else    
+            else
             {
                 VisualElement temp = sectionIndicatorPool.Dequeue();
                 temp.style.left = ((i - visibleAreaStart) / (visibleAreaSize)) * timeDisplay.worldBound.width;
                 Label temp2 = temp.Query<Label>("timeLabel");
-                temp2.text = ((int)(i / 60)).ToString() + ":" + (i % 60).ToString();
+                temp2.text = ((int)(Math.Floor(i / 60))).ToString() + ":" 
+                                + ((int)(i % 60)).ToString("00") + ":" 
+                                + ((int)((i - (int)i) * 100)).ToString("00");
                 usedSectionIndicators.Enqueue(temp);
             }
             i += sectionSpace;
             cnt++;
         }
+        if(i >= audioSource.clip.length)
+        {
+            endPositionIndicator.style.left = ((audioSource.clip.length - visibleAreaStart) / (visibleAreaSize)) * timeDisplay.worldBound.width;
+            Label temp = endPositionIndicator.Query<Label>("time_label");
+            temp.text = ((int)(Math.Floor(audioSource.clip.length / 60))).ToString() + ":" 
+                                + ((int)(audioSource.clip.length % 60)).ToString("00") + ":" 
+                                + ((int)((audioSource.clip.length - (int)audioSource.clip.length) * 100)).ToString("00");
+            temp.style.left = -50;
+        }
+        else
+        {
+            endPositionIndicator.style.left = timeDisplay.worldBound.width;
+            Label temp = endPositionIndicator.Query<Label>("time_label");
+            temp.text = ((int)(Math.Floor((visibleAreaStart + visibleAreaSize) / 60))).ToString() + ":" 
+                                + ((int)((visibleAreaStart + visibleAreaSize) % 60)).ToString("00") + ":" 
+                                + ((int)(((visibleAreaStart + visibleAreaSize) - (int)(visibleAreaStart + visibleAreaSize)) * 100)).ToString("00");
+            temp.style.left = -50;
+        }
         while(cnt < usedSectionIndicators.Count)
         {
             VisualElement temp = usedSectionIndicators.Dequeue();
             temp.style.left =-1;
+            ((Label)temp.Query<Label>("timeLabel")).text = "";
             sectionIndicatorPool.Enqueue(temp);
         }
     }
@@ -161,6 +211,12 @@ public class NoteEditor : Block
             UpdateLaneDisplay();
             //BUG: 스킵 기능 실행시 위치가 올바르지 못한 버그
             playPositionIndicator.style.left = timeDisplay.worldBound.width * ((audioSource.time - visibleAreaStart) / visibleAreaSize);
+            Label temp = playPositionIndicator.Query<Label>("time_label");
+            float i = audioSource.time;
+            temp.text = ((int)(Math.Floor(i / 60))).ToString() + ":" 
+                                + ((int)(i % 60)).ToString("00") + ":" 
+                                + ((int)((i - (int)i) * 100)).ToString("00");
+            temp.style.color = Color.red;
         }
     }
     public override void Destroy()

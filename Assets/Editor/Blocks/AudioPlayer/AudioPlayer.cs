@@ -18,11 +18,13 @@ public class AudioPlayer : Block
         audioSourceObject = new GameObject("AudioPlayer:audioSourceObject");
         audioSource = audioSourceObject.AddComponent<AudioSource>();
 
-        if((cursorPositionIndicator = rootVisualElement.Query<VisualElement>("cursorPosition_indicator")) != null){
+        if((cursorPositionIndicator = rootVisualElement.Query<VisualElement>("cursorPosition_indicator")) != null)
+        {
             cursorPositionIndicator.style.backgroundColor = new Color(1,1,0,1);
             cursorPositionIndicator.style.left = -1;
         }
-        if((playPositionIndicator = rootVisualElement.Query<VisualElement>("playPosition_indicator")) != null){
+        if((playPositionIndicator = rootVisualElement.Query<VisualElement>("playPosition_indicator")) != null)
+        {
             playPositionIndicator.style.backgroundColor = Color.red;
             playPositionIndicator.style.left = -1;
         }
@@ -83,17 +85,22 @@ public class AudioPlayer : Block
         audio.GetData(samples, 0);
         int packSize = ( audio.samples / width ) + 1;
         int s = 0;
-        for (int i = 0; i < audio.samples; i += packSize) {
+        for (int i = 0; i < audio.samples; i += packSize) 
+        {
             waveform[s] = Mathf.Abs(samples[i]);
             s++;
         }
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) 
+        {
+            for (int y = 0; y < height; y++) 
+            {
                 tex.SetPixel(x, y, new Color(0.15f, 0.15f, 0.15f, 1));
             }
         }
-        for (int x = 0; x < waveform.Length; x++) {
-            for (int y = 0; y <= waveform[x] * ((float)height * .75f); y++) {
+        for (int x = 0; x < waveform.Length; x++) 
+        {
+            for (int y = 0; y <= waveform[x] * ((float)height * .75f); y++)
+            {
                 tex.SetPixel(x, ( height / 2 ) + y, col);
                 tex.SetPixel(x, ( height / 2 ) - y, col);
             }
