@@ -107,7 +107,7 @@ public class NoteEditor : Block
         }
         if((endPositionIndicator = rootVisualElement.Query<VisualElement>("endPosition_indicator")) != null){
             endPositionIndicator.style.backgroundColor = Color.red;
-            endPositionIndicator.style.left = -1;
+            endPositionIndicator.style.right = -1;
             ((Label)endPositionIndicator.Query<Label>("time_label")).style.color = Color.red;
         }
     }
@@ -148,16 +148,16 @@ public class NoteEditor : Block
             temp.text = ((int)(Math.Floor(audioSource.clip.length / 60))).ToString() + ":" 
                                 + ((int)(audioSource.clip.length % 60)).ToString("00") + ":" 
                                 + ((int)((audioSource.clip.length - (int)audioSource.clip.length) * 100)).ToString("00");
-            temp.style.left = -50;
+            temp.style.left = -45;
         }
         else
         {
-            endPositionIndicator.style.left = timeDisplay.worldBound.width;
+            endPositionIndicator.style.left = timeDisplay.worldBound.width - 1;
             Label temp = endPositionIndicator.Query<Label>("time_label");
             temp.text = ((int)(Math.Floor((visibleAreaStart + visibleAreaSize) / 60))).ToString() + ":" 
                                 + ((int)((visibleAreaStart + visibleAreaSize) % 60)).ToString("00") + ":" 
                                 + ((int)(((visibleAreaStart + visibleAreaSize) - (int)(visibleAreaStart + visibleAreaSize)) * 100)).ToString("00");
-            temp.style.left = -50;
+            temp.style.left = -45;
         }
         while(cnt < usedSectionIndicators.Count)
         {
@@ -205,11 +205,9 @@ public class NoteEditor : Block
         base.Update();
         if(audioSource.clip != null)
         {
-            if(audioSource.time + visibleAreaSize < audioSource.clip.length)
-                visibleAreaStart = audioSource.time;
+            visibleAreaStart = audioSource.time;
             UpdateTimeDisplay();
             UpdateLaneDisplay();
-            //BUG: 스킵 기능 실행시 위치가 올바르지 못한 버그
             playPositionIndicator.style.left = timeDisplay.worldBound.width * ((audioSource.time - visibleAreaStart) / visibleAreaSize);
             Label temp = playPositionIndicator.Query<Label>("time_label");
             float i = audioSource.time;
