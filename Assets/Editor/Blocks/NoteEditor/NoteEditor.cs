@@ -10,7 +10,7 @@ public class NoteEditor : Block
     AudioSource audioSource;
     float visibleAreaStart = 0;
     float visibleAreaSize = 60;
-    const float minVisibleAreaSize = 10;
+    const float minVisibleAreaSize = 3.75f;
     NoteData noteData;
 
     const int poolSize = 50;
@@ -45,7 +45,8 @@ public class NoteEditor : Block
                 newSectionIndicator.AddToClassList("indicator");
                 newSectionIndicator.style.backgroundColor = new Color(0.5f, 0.5f, 0.5f, 1);
                 newSectionIndicator.style.left = -1;
-                newSectionIndicator.style.height = Length.Percent(50);
+                newSectionIndicator.style.height = 300;
+                newSectionIndicator.style.top = 25;
                 Label newLabel = new Label("");
                 newLabel.name = "timeLabel";
                 newSectionIndicator.Add(newLabel);
@@ -87,7 +88,7 @@ public class NoteEditor : Block
                 cursorPositionIndicator.style.left = e.localMousePosition.x;
             });
             lanes.RegisterCallback<WheelEvent>((e)=>{
-                visibleAreaSize += (e.delta.y < 0 ? -1 : 1) * 10;
+                visibleAreaSize *= (e.delta.y < 0 ? .5f : 2);
                 if(visibleAreaSize < minVisibleAreaSize)
                 {
                     visibleAreaSize = minVisibleAreaSize;
@@ -200,6 +201,7 @@ public class NoteEditor : Block
             }
         }
     }
+    bool once = false;
     public override void Update()
     {
         base.Update();
@@ -214,6 +216,13 @@ public class NoteEditor : Block
             temp.text = ((int)(Math.Floor(i / 60))).ToString() + ":" 
                                 + ((int)(i % 60)).ToString("00") + ":" 
                                 + ((int)((i - (int)i) * 100)).ToString("00");
+
+            Label temp2 = cursorPositionIndicator.Query<Label>("time_label");
+            float j = visibleAreaStart + ((cursorPositionIndicator.style.left.value.value / lanes.worldBound.width) * visibleAreaSize);
+            temp2.text = ((int)(Math.Floor(j / 60))).ToString() + ":" 
+                                + ((int)(j % 60)).ToString("00") + ":" 
+                                + ((int)((j - (int)j) * 100)).ToString("00");
+
             temp.style.color = Color.red;
         }
     }

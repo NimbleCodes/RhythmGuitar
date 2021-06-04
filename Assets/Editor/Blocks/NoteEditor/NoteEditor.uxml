@@ -3,7 +3,9 @@
     <ui:VisualElement name="wrapper_0" style="height: 90%;">
         <ui:VisualElement name="time_display" style="height: 15%; border-left-width: 0; border-right-width: 0; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128); justify-content: flex-end;" />
         <ui:VisualElement name="lanes" style="height: 85%;">
-            <ui:VisualElement name="cursorPosition_indicator" class="indicator" />
+            <ui:VisualElement name="cursorPosition_indicator" class="indicator">
+                <ui:Label text="&#10;" display-tooltip-when-elided="true" name="time_label" />
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="playPosition_indicator" class="indicator" style="position: absolute;">
             <ui:Label display-tooltip-when-elided="true" name="time_label" />
