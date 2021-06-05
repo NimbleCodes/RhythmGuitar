@@ -15,7 +15,6 @@ public class NoteData
     public string title;
     public string artist;
     public string source;
-    public string sheet;
     public string diff;
 
     [Header("Note Info")]

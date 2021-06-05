@@ -29,7 +29,6 @@ public class DataWriter : MonoBehaviour
             "\nTitle=" + N_data.title +
             "\nArtist=" + N_data.artist +
             "\nSource=" + N_data.source +
-            "\nSheet=" + N_data.sheet +
             "\nDifficult=" + N_data.diff +
             "\n\n";
 

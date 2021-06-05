@@ -9,7 +9,9 @@ public class AudioPlayer : Block
     GameObject audioSourceObject;
     public AudioSource audioSource;
     string currentAudioPath;
+    string filename;
     VisualElement audioWaveform, playPositionIndicator;
+    NoteData noteData = new NoteData();
     public AudioPlayer() : base("Assets/Editor/Blocks/AudioPlayer/AudioPlayer.uxml")
     {
         rootVisualElement.name = "audio_player";
@@ -74,6 +76,9 @@ public class AudioPlayer : Block
                 audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path));
                 audioWaveform.style.backgroundImage = PaintWaveformSpectrum(audioSource.clip, 0.5f, (int)audioWaveform.worldBound.width, (int)audioWaveform.worldBound.height, new Color(0,1,1,1));
                 currentAudioPath = path;
+                filename = Path.GetFileName(path);
+                Debug.Log(filename);
+                noteData.fileName = filename;
             };
         }
     }
@@ -119,4 +124,5 @@ public class AudioPlayer : Block
         base.Destroy();
         GameObject.DestroyImmediate(audioSourceObject);
     }
+
 }
