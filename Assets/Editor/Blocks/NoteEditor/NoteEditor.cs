@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Text;
 
 public class NoteEditor : Block
 {
@@ -12,6 +14,7 @@ public class NoteEditor : Block
     float visibleAreaSize = 60;
     const float minVisibleAreaSize = 3.75f;
     NoteData noteData;
+    DataWriter dataWriter;
 
     const int poolSize = 50;
     Queue<VisualElement> sectionIndicatorPool;
@@ -35,6 +38,8 @@ public class NoteEditor : Block
         noteIndicatorPool = new Queue<VisualElement>();
         usedNoteIndicators = new Queue<VisualElement>();
         laneList = new List<VisualElement>();
+        VisualElement laneControls;
+        dataWriter = new DataWriter();
         var laneVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/Blocks/NoteEditor/Lane.uxml");
 
         if((timeDisplay = rootVisualElement.Query<VisualElement>("time_display")) != null)
@@ -110,6 +115,25 @@ public class NoteEditor : Block
             endPositionIndicator.style.backgroundColor = Color.red;
             endPositionIndicator.style.right = -1;
             ((Label)endPositionIndicator.Query<Label>("time_label")).style.color = Color.red;
+        }
+        if((laneControls = rootVisualElement.Query<VisualElement>("lane_controls")) != null){
+            ((Button)laneControls.Query<Button>("export")).clicked += ()=>{
+                string path = EditorUtility.OpenFolderPanel("NoteEditor", Application.dataPath, "");
+                path += "/TestFileName.txt";
+                try{
+                    if(File.Exists(path))
+                        File.Delete(path);
+                    using (FileStream fs = File.Create(path)) {
+                        dataWriter.N_data = noteData;
+                        string tot = dataWriter.WriteSheetInfo() + dataWriter.WriteContentInfo() + dataWriter.WriteNoteInfo();
+                        Byte[] totByte = new UTF8Encoding(true).GetBytes(tot);
+                        fs.Write(totByte, 0, totByte.Length);
+                    }
+                }
+                catch(Exception e){
+                    Debug.Log(e.ToString());
+                }
+            };
         }
     }
     void UpdateTimeDisplay()
