@@ -3,3 +3,10 @@
     height: 100%;
     position: absolute;
 }
+
+.unity-button {
+    width: 100px;
+    height: auto;
+    min-width: 50px;
+    min-height: 25px;
+}
