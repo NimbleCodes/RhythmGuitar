@@ -22,5 +22,9 @@ public class NoteData
     public NoteData()
     {
         notes = new List<List<float>>();
+        notes.Add(new List<float>());
+        notes.Add(new List<float>());
+        notes.Add(new List<float>());
+        notes.Add(new List<float>());
     }
 }

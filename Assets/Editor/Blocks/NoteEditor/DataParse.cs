@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataParse : MonoBehaviour
+public class DataParse
 {
-     public NoteData Data;
+    NoteData Data;
 
     enum State
     {
@@ -15,6 +15,10 @@ public class DataParse : MonoBehaviour
     State state;
     public bool isfirstRead;
 
+    public DataParse(NoteData _data)
+    {
+        Data = _data;
+    }
     public void Parse(string data)
     {
         CheckCurrentMetadata(data);
@@ -82,13 +86,14 @@ public class DataParse : MonoBehaviour
         int.TryParse(splitedData[0], out time);
         int.TryParse(splitedData[1], out lineNumber);
 
-        if (lineNumber == 1)
-            Data.notes[0].Add(time);
-        else if (lineNumber == 2)
-            Data.notes[1].Add(time);
-        else if (lineNumber == 3)
-            Data.notes[2].Add(time);
-        else if (lineNumber == 4)
-            Data.notes[3].Add(time);
+        Data.notes[lineNumber - 1].Add(time);
+        // if (lineNumber == 1)
+        //     Data.notes[0].Add(time);
+        // else if (lineNumber == 2)
+        //     Data.notes[1].Add(time);
+        // else if (lineNumber == 3)
+        //     Data.notes[2].Add(time);
+        // else if (lineNumber == 4)
+        //     Data.notes[3].Add(time);
     }
 }

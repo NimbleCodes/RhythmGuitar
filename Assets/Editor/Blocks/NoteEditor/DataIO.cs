@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 
-public class DataIO : MonoBehaviour
+public class DataIO
 {
     DataWriter dataWriter;
     NoteEditor NoteEditor;
@@ -13,10 +13,12 @@ public class DataIO : MonoBehaviour
     DataParse parse;
     string basePath;
 
-    private void Start()
+    public DataIO(NoteData _noteData)
     {
+        noteData = _noteData;
+        parse = new DataParse(noteData);
         basePath = Application.dataPath + "/Resources/Audio/" + noteData.fileName;
-        Debug.Log(basePath);
+        //Debug.Log(basePath);
     }
 
     public void SetBasePath()
@@ -44,7 +46,7 @@ public class DataIO : MonoBehaviour
     public void Load(string path)
     {
         string data = "";
-        noteData.notes = new List<List<float>>();
+        //noteData.notes = new List<List<float>>();
 
         using (StreamReader streamReader = new StreamReader(path))
         {
@@ -53,7 +55,7 @@ public class DataIO : MonoBehaviour
                 parse.Parse(data);
             }
 
-            audioPlayer.MusicInit();
+            //audioPlayer.MusicInit();
         }
         parse.isfirstRead = false;
     }

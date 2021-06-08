@@ -42,6 +42,7 @@ public class NoteEditor : Block
         laneList = new List<VisualElement>();
         VisualElement laneControls;
         dataWriter = new DataWriter();
+        portData = new DataIO(noteData);
         var laneVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/Blocks/NoteEditor/Lane.uxml");
 
         if((timeDisplay = rootVisualElement.Query<VisualElement>("time_display")) != null)
@@ -80,7 +81,6 @@ public class NoteEditor : Block
                 });
                 lanes.Add(newLane);
                 laneList.Add(newLane);
-                noteData.notes.Add(new List<float>());
             }
             for(int i = 0; i < poolSize; i++)
             {
@@ -127,16 +127,17 @@ public class NoteEditor : Block
                     Debug.Log(e.ToString());
                 }
             };
-        }
-        if((laneControls = rootVisualElement.Query<VisualElement>("lane_controls")) != null){
             ((Button)laneControls.Query<Button>("import")).clicked += ()=>{
-                string path = EditorUtility.OpenFolderPanel("NoteEditor", Application.dataPath + "/Resources/Audio/" , "");
-                try{
-                    portData.Load(path);
+                string path = EditorUtility.OpenFilePanel("NoteEditor", Application.dataPath + "/Resources/Audio/" , "txt");
+                portData.Load(path);
+
+                string tot = "";
+                for(int i = 0; i < noteData.notes.Count; i++){
+                    for(int j = 0; j < noteData.notes[i].Count; j++){
+                        tot += (i+1 + ": " + noteData.notes[i][j] + "\n");
+                    }
                 }
-                catch(Exception e){
-                    Debug.Log(e.ToString());
-                }
+                Debug.Log(tot);
             };
         }
     }
