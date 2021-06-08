@@ -14,7 +14,8 @@
             <ui:Label display-tooltip-when-elided="true" name="time_label" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="lane_controls" style="height: 10%; justify-content: center;">
-        <ui:Button text="Export" display-tooltip-when-elided="true" name="export" />
+    <ui:VisualElement name="lane_controls" style="height: 10%; justify-content: flex-start; flex-direction: row; align-items: stretch;">
+        <ui:Button text="Export" display-tooltip-when-elided="true" name="export" style="height: 30px; width: 90px; -unity-text-align: middle-center;" />
+        <ui:Button text="Import" display-tooltip-when-elided="true" name="import" style="height: 30px; width: 90px; -unity-text-align: middle-center;" />
     </ui:VisualElement>
 </ui:UXML>

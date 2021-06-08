@@ -125,4 +125,10 @@ public class AudioPlayer : Block
         GameObject.DestroyImmediate(audioSourceObject);
     }
 
+    public void MusicInit(){
+        currentAudioPath = Application.dataPath + "/Resources/Audio/" + noteData.fileName;
+        audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(currentAudioPath));
+        audioWaveform.style.backgroundImage = PaintWaveformSpectrum(audioSource.clip, 0.5f, (int)audioWaveform.worldBound.width, (int)audioWaveform.worldBound.height, new Color(0,1,1,1));
+    }
+
 }

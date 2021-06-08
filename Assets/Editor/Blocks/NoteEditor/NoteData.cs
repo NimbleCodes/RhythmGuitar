@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NoteData
 {
-    [Header("Sheet Info")]
+    [Header("Data Info")]
     public string fileName;
     public string imgFileName;
     public int previewTime;

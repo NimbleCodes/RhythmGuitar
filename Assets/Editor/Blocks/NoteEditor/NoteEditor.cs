@@ -15,6 +15,8 @@ public class NoteEditor : Block
     const float minVisibleAreaSize = 3.75f;
     NoteData noteData;
     DataWriter dataWriter;
+    DataIO portData;
+    AudioPlayer Audio;
 
     const int poolSize = 50;
     Queue<VisualElement> sectionIndicatorPool;
@@ -118,17 +120,19 @@ public class NoteEditor : Block
         }
         if((laneControls = rootVisualElement.Query<VisualElement>("lane_controls")) != null){
             ((Button)laneControls.Query<Button>("export")).clicked += ()=>{
-                string path = EditorUtility.OpenFolderPanel("NoteEditor", Application.dataPath, "");
-                path += "/TestFileName.txt";
                 try{
-                    if(File.Exists(path))
-                        File.Delete(path);
-                    using (FileStream fs = File.Create(path)) {
-                        dataWriter.N_data = noteData;
-                        string tot = dataWriter.WriteSheetInfo() + dataWriter.WriteContentInfo() + dataWriter.WriteNoteInfo();
-                        Byte[] totByte = new UTF8Encoding(true).GetBytes(tot);
-                        fs.Write(totByte, 0, totByte.Length);
-                    }
+                    portData.Save();
+                }
+                catch(Exception e){
+                    Debug.Log(e.ToString());
+                }
+            };
+        }
+        if((laneControls = rootVisualElement.Query<VisualElement>("lane_controls")) != null){
+            ((Button)laneControls.Query<Button>("import")).clicked += ()=>{
+                string path = EditorUtility.OpenFolderPanel("NoteEditor", Application.dataPath + "/Resources/Audio/" , "");
+                try{
+                    portData.Load(path);
                 }
                 catch(Exception e){
                     Debug.Log(e.ToString());

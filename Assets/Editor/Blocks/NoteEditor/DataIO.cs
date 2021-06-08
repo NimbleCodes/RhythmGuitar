@@ -10,6 +10,7 @@ public class DataIO : MonoBehaviour
     NoteEditor NoteEditor;
     AudioPlayer audioPlayer;
     NoteData noteData;
+    DataParse parse;
     string basePath;
 
     private void Start()
@@ -38,6 +39,23 @@ public class DataIO : MonoBehaviour
             streamWriter.Write(dataWriter.WriteContentInfo());
             streamWriter.Write(dataWriter.WriteNoteInfo());
         }
+    }
+
+    public void Load(string path)
+    {
+        string data = "";
+        noteData.notes = new List<List<float>>();
+
+        using (StreamReader streamReader = new StreamReader(path))
+        {
+            while ((data = streamReader.ReadLine()) != null)
+            {
+                parse.Parse(data);
+            }
+
+            audioPlayer.MusicInit();
+        }
+        parse.isfirstRead = false;
     }
 
 }
