@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System.IO;
+using TagLib;
 
 public class AudioPlayer : Block
 {
@@ -73,11 +74,15 @@ public class AudioPlayer : Block
                     audioWaveform.style.backgroundImage = null;
                     audioSource.time = 0;
                 }
-                audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path));
+
+                var tFile = TagLib.File.Create(path);
+                string title = tFile.Tag.Title;
+
+                audioSource.clip = NAudioPlayer.FromMp3Data(System.IO.File.ReadAllBytes(path));
                 audioWaveform.style.backgroundImage = PaintWaveformSpectrum(audioSource.clip, 0.5f, (int)audioWaveform.worldBound.width, (int)audioWaveform.worldBound.height, new Color(0,1,1,1));
                 currentAudioPath = path;
                 filename = Path.GetFileName(path);
-                Debug.Log(filename);
+                //Debug.Log(filename);
                 noteData.fileName = filename;
             };
         }
@@ -127,7 +132,7 @@ public class AudioPlayer : Block
 
     public void MusicInit(){
         currentAudioPath = Application.dataPath + "/Resources/Audio/" + noteData.fileName;
-        audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(currentAudioPath));
+        audioSource.clip = NAudioPlayer.FromMp3Data(System.IO.File.ReadAllBytes(currentAudioPath));
         audioWaveform.style.backgroundImage = PaintWaveformSpectrum(audioSource.clip, 0.5f, (int)audioWaveform.worldBound.width, (int)audioWaveform.worldBound.height, new Color(0,1,1,1));
     }
 

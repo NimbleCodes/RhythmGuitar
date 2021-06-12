@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Text;
+using TagLib;
+
 public class NoteEditor : Block
 {
     AudioSource audioSource;
@@ -29,7 +31,7 @@ public class NoteEditor : Block
     const int defNumLanes = 4;
     List<VisualElement> laneList;
     Vector2 dragBox_P1, dragBox_P2;
-    
+
     public NoteEditor(AudioSource _audioSource) : base("Assets/Editor/Blocks/NoteEditor/NoteEditor.uxml")
     {
         rootVisualElement.name = "note_editor";
