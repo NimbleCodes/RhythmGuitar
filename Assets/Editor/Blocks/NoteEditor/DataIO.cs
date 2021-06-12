@@ -18,6 +18,8 @@ public class DataIO
         noteData = _noteData;
         parse = new DataParse(noteData);
         basePath = Application.dataPath + "/Resources/Audio/" + noteData.fileName;
+        dataWriter = new DataWriter();
+        dataWriter.N_data = noteData;
         //Debug.Log(basePath);
     }
 
