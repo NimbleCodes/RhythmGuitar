@@ -6,6 +6,7 @@
             <ui:VisualElement name="cursorPosition_indicator" class="indicator">
                 <ui:Label text="&#10;" display-tooltip-when-elided="true" name="time_label" />
             </ui:VisualElement>
+            <ui:VisualElement name="dragBox" style="position: absolute; opacity: 0.25; background-color: rgba(255, 0, 0, 255); width: 0; height: 0;" />
         </ui:VisualElement>
         <ui:VisualElement name="playPosition_indicator" class="indicator" style="position: absolute;">
             <ui:Label display-tooltip-when-elided="true" name="time_label" />

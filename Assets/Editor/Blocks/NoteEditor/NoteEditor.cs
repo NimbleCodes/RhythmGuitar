@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Text;
-
 public class NoteEditor : Block
 {
     AudioSource audioSource;
@@ -17,7 +16,7 @@ public class NoteEditor : Block
     DataWriter dataWriter;
     DataIO portData;
     AudioPlayer Audio;
-
+    
     const int poolSize = 50;
     Queue<VisualElement> sectionIndicatorPool;
     Queue<VisualElement> usedSectionIndicators;
@@ -29,6 +28,7 @@ public class NoteEditor : Block
 
     const int defNumLanes = 4;
     List<VisualElement> laneList;
+    Vector2 dragBox_P1, dragBox_P2;
     
     public NoteEditor(AudioSource _audioSource) : base("Assets/Editor/Blocks/NoteEditor/NoteEditor.uxml")
     {
@@ -44,6 +44,11 @@ public class NoteEditor : Block
         dataWriter = new DataWriter();
         portData = new DataIO(noteData);
         var laneVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/Blocks/NoteEditor/Lane.uxml");
+        VisualElement dragBox = rootVisualElement.Query<VisualElement>("dragBox");
+        bool dragStart = false;
+        dragBox_P1 = new Vector2(-1, -1);
+        dragBox_P2 = new Vector2();
+        List<System.Object> notesInRange = new List<System.Object>();
 
         if((timeDisplay = rootVisualElement.Query<VisualElement>("time_display")) != null)
         {
@@ -75,6 +80,7 @@ public class NoteEditor : Block
                 newLane.name = i.ToString();
                 newLane.RegisterCallback<MouseDownEvent>((e)=>{
                     if(audioSource.clip == null) return;
+                    if(e.button != (int)MouseButton.LeftMouse) return;
                     int laneNum = int.Parse(newLane.name);
                     float time = ((e.localMousePosition.x / lanes.worldBound.width) * visibleAreaSize) + visibleAreaStart;
                     noteData.notes[laneNum].Add(time);
@@ -93,6 +99,30 @@ public class NoteEditor : Block
             }
             lanes.RegisterCallback<MouseMoveEvent>((e)=>{
                 cursorPositionIndicator.style.left = e.localMousePosition.x;
+                if(dragStart)
+                {
+                    dragBox_P2.x = e.localMousePosition.x;
+                    dragBox_P2.y = e.localMousePosition.y;
+
+                    if(dragBox_P1.x <= dragBox_P2.x)
+                    {
+                        dragBox.style.left = dragBox_P1.x;
+                    }
+                    else
+                    {
+                        dragBox.style.left = dragBox_P2.x;
+                    }
+                    if(dragBox_P1.y <= dragBox_P2.y)
+                    {
+                        dragBox.style.top = dragBox_P1.y;
+                    }
+                    else
+                    {
+                        dragBox.style.top = dragBox_P2.y;
+                    }
+                    dragBox.style.width = Math.Abs(dragBox_P1.x - dragBox_P2.x);
+                    dragBox.style.height = Math.Abs(dragBox_P1.y - dragBox_P2.y);
+                }
             });
             lanes.RegisterCallback<WheelEvent>((e)=>{
                 visibleAreaSize *= (e.delta.y < 0 ? .5f : 2);
@@ -101,6 +131,31 @@ public class NoteEditor : Block
                     visibleAreaSize = minVisibleAreaSize;
                     return;
                 }
+            });
+            lanes.RegisterCallback<MouseDownEvent>((e)=>{
+                if(e.button != (int)MouseButton.RightMouse) return;
+                dragBox_P1.x = e.localMousePosition.x;
+                dragBox_P1.y = e.localMousePosition.y;
+                dragStart = true;
+            });
+            lanes.RegisterCallback<MouseUpEvent>((e)=>{
+                if(e.button != (int)MouseButton.RightMouse) return;
+
+                if(audioSource.clip != null)
+                {
+                    float start, finish;
+                    start = visibleAreaStart + visibleAreaSize * (dragBox.worldBound.xMin / lanes.worldBound.width);
+                    finish = visibleAreaStart + visibleAreaSize * (dragBox.worldBound.xMax / lanes.worldBound.width);
+                    noteData.notes.ForEach((l)=>{
+                        l.Sort();
+                        int curInd = 0;
+                        while(curInd < l.Count && l[curInd] < start) curInd++;
+                        while(curInd < l.Count && l[curInd] < finish) l.RemoveAt(curInd);
+                    });
+                }
+                dragBox.style.width = 0;
+                dragBox.style.height = 0;
+                dragStart = false;
             });
         }
         if((playPositionIndicator = rootVisualElement.Query<VisualElement>("playPosition_indicator")) != null)
