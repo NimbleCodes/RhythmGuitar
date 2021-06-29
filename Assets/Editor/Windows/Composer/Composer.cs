@@ -44,11 +44,31 @@ public class Composer : EditorWindow
         if(update != null){
             update.Invoke();
         }
+        //hello world!
     }
     void OnDestroy(){
         if(destroy != null){
             destroy.Invoke();
             Object.DestroyImmediate(audioSourceObject);
         }
+    }
+    void OnEnable(){
+        AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+        AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
+    }
+    void OnDisable(){
+        AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
+        AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
+    }
+    void OnBeforeAssemblyReload(){
+        OnDestroy();
+        AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
+    }
+    void OnAfterAssemblyReload(){
+        observer          = new Observer();
+        audioSourceObject = new GameObject("Composer: audioSourceObject");
+        audioSource       = audioSourceObject.AddComponent<AudioSource>();
+        noteData          = new NoteData();
+        AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
     }
 }
