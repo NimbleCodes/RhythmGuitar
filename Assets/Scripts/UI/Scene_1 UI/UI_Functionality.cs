@@ -9,7 +9,8 @@ public class UI_Functionality : MonoBehaviour
     const int poolSize = 30;
     Queue<VisualElement> noteIndicatorPool;
     Queue<VisualElement> usedNoteIndicators;
-    float visibleAreaSize = 10;
+    float visibleAreaSize = 3;
+    float time = -3;
 
     void Start()
     {
@@ -19,8 +20,8 @@ public class UI_Functionality : MonoBehaviour
         for(int i = 0; i < poolSize; i++){
             VisualElement newNoteIndicator = new VisualElement();
             newNoteIndicator.style.position         = Position.Absolute;
-            newNoteIndicator.style.width            = 50;
-            newNoteIndicator.style.height           = 50;
+            newNoteIndicator.style.width            = 25;
+            newNoteIndicator.style.height           = 25;
             newNoteIndicator.style.backgroundColor  = Color.red;
             newNoteIndicator.style.left             = -100;
             noteIndicatorPool.Enqueue(newNoteIndicator);
@@ -34,17 +35,27 @@ public class UI_Functionality : MonoBehaviour
         int cnt = 0;
         for(int i = 0; i < noteData.notes.Count; i++){
             for(int j = 0; j < noteData.notes[i].Count; j++){
-                if(noteData.notes[i][j] < audioSource.time)
+                if(noteData.notes[i][j] < time)
                     continue;
-                if(noteData.notes[i][j] > audioSource.time + visibleAreaSize)
+                if(noteData.notes[i][j] > time + visibleAreaSize)
                     break;
+                VisualElement noteIndicator;
                 if(cnt < usedNoteIndicators.Count){
-
+                    noteIndicator = usedNoteIndicators.Dequeue();
                 }
                 else{
-                    
+                    noteIndicator = noteIndicatorPool.Dequeue();
                 }
+                noteIndicator.style.left = noteDisplay.worldBound.width * ((noteData.notes[i][j] - time) / visibleAreaSize);
+                usedNoteIndicators.Enqueue(noteIndicator);
+                cnt++;
             }
         }
+        while(cnt < usedNoteIndicators.Count){
+            VisualElement noteIndicator = usedNoteIndicators.Dequeue();
+            noteIndicator.style.left = -100;
+            noteIndicatorPool.Enqueue(noteIndicator);
+        }
+        time += Time.deltaTime;
     }
 }
