@@ -64,11 +64,11 @@ public class AudioDisplay : Component
         }
         observer.Subscribe("audio_imported", AudioImported);
         observer.Subscribe("audio_playing", AudioPlaying);
+        observer.Subscribe("visibleArea_changed", VisibleAreaChanged);
     }
     public void Update(dynamic[] _args){
         if(samples != null){
             UpdateTimeIndicators();
-            UpdateSampleIndicators();
         }
     }
     public void Destroy(dynamic[] _args){
@@ -91,7 +91,7 @@ public class AudioDisplay : Component
             cnt++;
         }
     }
-    void UpdateSampleIndicators(){
+    void VisibleAreaChanged(dynamic[] _args){
         float start = VisibleArea.start * frequency;
         float finish = (VisibleArea.start + VisibleArea.size) * frequency;
         float packetSize = (finish - start) / wrapper.worldBound.width;

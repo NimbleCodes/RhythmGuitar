@@ -39,7 +39,7 @@ public class AudioPlayer : Component
         observer.Subscribe("destroy", Destroy);
     }
     public void Start(dynamic[] _args){
-        
+        observer.Subscribe("audio_jump", AudioJump);
     }
     public void Update(dynamic[] _args){
         if(audioSource.isPlaying){
@@ -89,7 +89,10 @@ public class AudioPlayer : Component
     }
     #endregion
     #region External event callbacks
-
+    void AudioJump(dynamic[] _args){
+        AudioJumpEventArgs args = _args[0];
+        audioSource.time = args.jumpTo;
+    }
     #endregion
 }
 public class AudioImportedEventArgs{
