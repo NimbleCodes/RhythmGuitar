@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="NoteEditor.uss" />
+    <ui:VisualElement name="wrapper" style="width: 100%; height: 100%; border-left-color: rgba(191, 191, 191, 0.5); border-right-color: rgba(191, 191, 191, 0.5); border-top-color: rgba(191, 191, 191, 0.5); border-bottom-color: rgba(191, 191, 191, 0.5); border-top-width: 1px; border-bottom-width: 1px;">
+        <ui:VisualElement name="lanes" style="width: 100%; height: 80%; border-left-color: rgba(191, 191, 191, 0.5); border-right-color: rgba(191, 191, 191, 0.5); border-top-color: rgba(191, 191, 191, 0.5); border-bottom-color: rgba(191, 191, 191, 0.5); border-top-width: 1px; border-bottom-width: 1px;" />
+        <ui:VisualElement name="other_inputFields" style="width: 100%; height: 20%; border-left-color: rgba(191, 191, 191, 0.5); border-right-color: rgba(191, 191, 191, 0.5); border-top-color: rgba(191, 191, 191, 0.5); border-bottom-color: rgba(191, 191, 191, 0.5); border-top-width: 1px; border-bottom-width: 1px;">
+            <ui:VisualElement name="bpm" style="height: 100%; width: 10%; flex-direction: row; align-items: center; justify-content: center;">
+                <ui:Label text="BPM: " display-tooltip-when-elided="true" name="bpm_label" style="font-size: 12px;" />
+                <ui:TextField picking-mode="Ignore" value="120" text="120" name="bpm_inputField" style="font-size: 12px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
