@@ -28,7 +28,7 @@ public class line1 : MonoBehaviour
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 14f;
         Debug.Log("MinSwipeDist:" + MinMovement);
         
-        _switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
+        _switch = GameManager.instance.sigs.Register("OnMouseBehaviour" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
         
         instance = this;
     }
