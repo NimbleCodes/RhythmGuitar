@@ -154,7 +154,6 @@ public class line1 : MonoBehaviour
     private void OnMouseEnter(){
        // if(swipping == true){
            _switch.Invoke(1);
-            Debug.Log("line1");
             PlayAnimation.instance.Stroke1();
         //}
     }

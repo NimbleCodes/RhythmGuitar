@@ -8,7 +8,6 @@ public class line2 : MonoBehaviour
     private void OnMouseEnter()
     {
         //if(line1.instance.swipping == true){
-            Debug.Log("line2");
             PlayAnimation.instance.Stroke2();
         //}
     }

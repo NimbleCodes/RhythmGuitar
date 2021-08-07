@@ -18,7 +18,6 @@ public class UI_Functionality : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(GameManager.instance.sigs == null);
         GameManager.instance.sigs.Subscribe("OnMouseBehaviour", this, "UserInput");
 
         rootVisualElement   = GetComponent<UIDocument>().rootVisualElement;
