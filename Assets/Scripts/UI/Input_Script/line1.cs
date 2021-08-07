@@ -29,6 +29,9 @@ public class line1 : MonoBehaviour
         Debug.Log("MinSwipeDist:" + MinMovement);
         
         _switch = GameManager.instance.sigs.Register("OnMouseBehaviour" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
+        GameObject.Find("line2").GetComponent<line2>().inputSwitch = _switch;
+        GameObject.Find("line3").GetComponent<line3>().inputSwitch = _switch;
+        GameObject.Find("line4").GetComponent<line4>().inputSwitch = _switch;
         
         instance = this;
     }
