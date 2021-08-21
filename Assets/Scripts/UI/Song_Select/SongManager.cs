@@ -23,6 +23,7 @@ public class SongManager : MonoBehaviour
     void Start()
     {
         music = GetComponent<AudioSource>();
+        clip = GetComponent<AudioClip>();
 
         previewTime = 30;
     }
@@ -66,11 +67,11 @@ public class SongManager : MonoBehaviour
     {
         clip = Resources.Load(songName+"/"+songName) as AudioClip;
         music.clip = clip;
-
+        Debug.Log(songName + "check");
         //프리뷰 타임 원위치
         music.timeSamples = 0;
         //프리뷰 타임 조정
-        music.timeSamples += music.clip.frequency * previewTime;
+        //music.timeSamples += music.clip.frequency * previewTime;
 
         music.Play();
 

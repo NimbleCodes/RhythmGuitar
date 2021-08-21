@@ -34,13 +34,13 @@ public class SongList : MonoBehaviour
 
 
         SongDisplay song = (SongDisplay)Instantiate(songDisplayPrefab);
-        song.GetInfo(items);
+        song.Prime(items);
     }
 
     void AddItem()
     {
         string data = "";
-        string basePath = Application.dataPath + "/Resources/";
+        string basePath = Application.dataPath + "/Resources/Audio/";
         DirectoryInfo directoryInfo = new DirectoryInfo(basePath);
         foreach(DirectoryInfo di in directoryInfo.GetDirectories())
         {

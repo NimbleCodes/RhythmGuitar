@@ -53,36 +53,26 @@ public class Drag_Manager : MonoBehaviour
         else if (Deg > diagonals[0] - windowInDeg && Deg <= diagonals[0] + windowInDeg)
         {
             //Debug.Log("UP_RIGHT");
-            return 2;
-        }
-        else if (Deg > diagonals[0] + windowInDeg && Deg <= diagonals[1] - windowInDeg)
-        {
-            //Debug.Log("RIGHT");
-            return 3;
+            return 1;
         }
         else if (Deg > diagonals[1] - windowInDeg && Deg <= diagonals[1] + windowInDeg)
         {
             //Debug.Log("DOWN_RIGHT");
-            return 4;
+            return 2;
         }
         else if (Deg > diagonals[1] + windowInDeg && Deg <= diagonals[2] - windowInDeg)
         {
             //Debug.Log("DOWN");
-            return 5;
+            return 2;
         }
         else if (Deg > diagonals[2] - windowInDeg && Deg <= diagonals[2] + windowInDeg)
         {
             //Debug.Log("DOWN_LEFT");
-            return 6;
-        }
-        else if (Deg > diagonals[2] + windowInDeg && Deg <= diagonals[3] - windowInDeg)
-        {
-            //Debug.Log("LEFT");
-            return 7;
+            return 2;
         }
         else
         {
-            return 8;
+            return 1;
             //Debug.Log("UP_LEFT");
         }
     }
