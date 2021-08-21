@@ -28,10 +28,7 @@ public class line1 : MonoBehaviour
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 14f;
         Debug.Log("MinSwipeDist:" + MinMovement);
         
-        _switch = GameManager.instance.sigs.Register("OnMouseBehaviour" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
-        GameObject.Find("line2").GetComponent<line2>().inputSwitch = _switch;
-        GameObject.Find("line3").GetComponent<line3>().inputSwitch = _switch;
-        GameObject.Find("line4").GetComponent<line4>().inputSwitch = _switch;
+        _switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
         
         instance = this;
     }
@@ -157,6 +154,7 @@ public class line1 : MonoBehaviour
     private void OnMouseEnter(){
        // if(swipping == true){
            _switch.Invoke(1);
+            Debug.Log("line1");
             PlayAnimation.instance.Stroke1();
         //}
     }

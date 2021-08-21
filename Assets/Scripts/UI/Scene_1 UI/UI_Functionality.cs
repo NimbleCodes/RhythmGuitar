@@ -9,20 +9,21 @@ public class UI_Functionality : MonoBehaviour
 {
     VisualElement rootVisualElement;
     VisualElement noteDisplay;
-    VisualElement pauseBtn;
     const int poolSize = 30;
     Queue<VisualElement> noteIndicatorPool;
     Queue<VisualElement> usedNoteIndicators;
     float visibleAreaSize = 3;
     float time = -3;
 
+    Switch userInput;
+
     void Start()
     {
-        GameManager.instance.sigs.Subscribe("OnMouseBehaviour", this, "UserInput");
+        userInput = GameManager.instance.sigs.Register("user_input", typeof(Action<string>));
+        GameManager.instance.sigs.Subscribe("user_input", this, "UserInput");
 
         rootVisualElement   = GetComponent<UIDocument>().rootVisualElement;
         noteDisplay         = rootVisualElement.Query<VisualElement>("note_display");
-        pauseBtn            = rootVisualElement.Query<VisualElement>("pause_btn");
         noteIndicatorPool   = new Queue<VisualElement>();
         for(int i = 0; i < poolSize; i++){
             VisualElement newNoteIndicator = new VisualElement();
@@ -30,14 +31,11 @@ public class UI_Functionality : MonoBehaviour
             newNoteIndicator.style.width            = 25;
             newNoteIndicator.style.height           = 25;
             newNoteIndicator.style.backgroundColor  = Color.red;
-            newNoteIndicator.style.left             = -500;
+            newNoteIndicator.style.left             = -100;
             noteIndicatorPool.Enqueue(newNoteIndicator);
             noteDisplay.Add(newNoteIndicator);
         }
         usedNoteIndicators  = new Queue<VisualElement>();
-
-        pauseBtn.style.backgroundColor = new Color(1,0,0,0.25f);
-        noteDisplay.style.backgroundColor = new Color(1,1,1,0.25f);
     }
     void Update(){
         AudioSource audioSource = GameManager.instance.audioSource;
@@ -71,18 +69,40 @@ public class UI_Functionality : MonoBehaviour
                         noteIndicator.style.backgroundColor = Color.black;
                     break;
                 }
+                Debug.Log(i);
                 usedNoteIndicators.Enqueue(noteIndicator);
                 cnt++;
             }
         }
         while(cnt < usedNoteIndicators.Count){
             VisualElement noteIndicator = usedNoteIndicators.Dequeue();
-            noteIndicator.style.left = -500;
+            noteIndicator.style.left = -100;
             noteIndicatorPool.Enqueue(noteIndicator);
         }
         time += Time.deltaTime;
+
+        if(Input.GetKeyDown(KeyCode.Space)){
+            userInput.Invoke("0");
+        }
     }
-    void UserInput(int input){
-        Debug.Log(input);
+    void UserInput(string input){
+        int convInp = int.Parse(input);
+        NoteData noteData = GameManager.instance.noteData;
+        int curInd = 0;
+        Debug.Log(noteData.notes.Count);
+        while(noteData.notes[convInp][curInd] < time && curInd < noteData.notes.Count){
+            curInd++;
+        }
+        if(curInd >= noteData.notes.Count){
+            return;
+        }
+        float nextNoteTime = noteData.notes[convInp][curInd];
+        float diff = Mathf.Abs(nextNoteTime - time);
+        if(diff < 0.25){
+            Debug.Log("success");
+        }
+        else{
+            Debug.Log("fail");
+        }
     }
 }
