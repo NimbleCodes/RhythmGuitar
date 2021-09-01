@@ -1,0 +1,10 @@
+.unity-button {
+    min-width: 50px;
+    min-height: 30px;
+}
+
+.ver-indicator {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+}
