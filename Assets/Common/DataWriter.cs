@@ -41,21 +41,27 @@ public class DataWriter : MonoBehaviour
         
         data += "[NoteInfo]\n";
 
-        foreach (float note in N_data.notes[0])
-        {
-            data += note.ToString() + ",1\n";
-        }
-        foreach (float note in N_data.notes[1])
-        {
-            data += note.ToString() + ",2\n";
-        }
-        foreach (float note in N_data.notes[2])
-        {
-            data += note.ToString() + ",3\n";
-        }
-        foreach (float note in N_data.notes[3])
-        {
-            data += note.ToString() + ",4\n";
+        // foreach (float note in N_data.notes[0])
+        // {
+        //     data += note.ToString() + ",1\n";
+        // }
+        // foreach (float note in N_data.notes[1])
+        // {
+        //     data += note.ToString() + ",2\n";
+        // }
+        // foreach (float note in N_data.notes[2])
+        // {
+        //     data += note.ToString() + ",3\n";
+        // }
+        // foreach (float note in N_data.notes[3])
+        // {
+        //     data += note.ToString() + ",4\n";
+        // }
+
+        for(int i = 0; i < N_data.notes.Count; i++){
+            for(int j = 0; j < N_data.notes[i].Count; j++){
+                data += N_data.notes[i][j].ToString() + "," + i.ToString() + "\n";
+            }
         }
 
         return data;

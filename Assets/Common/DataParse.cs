@@ -87,15 +87,10 @@ public class DataParse
         float.TryParse(splitedData[0], out time);
         int.TryParse(splitedData[1], out lineNumber);
 
-        try{
-            Data.notes[lineNumber - 1].Add(time);
+        while(lineNumber > Data.notes.Count - 1){
+            Data.notes.Add(new List<float>());
         }
-        catch(ArgumentOutOfRangeException){
-            while(Data.notes.Count < lineNumber){
-                Data.notes.Add(new List<float>());
-            }
-            Data.notes[lineNumber - 1].Add(time);
-        }
+        Data.notes[lineNumber].Add(time);
 
         // if (lineNumber == 1)
         //     Data.notes[0].Add(time);

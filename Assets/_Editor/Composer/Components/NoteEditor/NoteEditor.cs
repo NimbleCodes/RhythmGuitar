@@ -143,7 +143,7 @@ public class NoteEditor : kgh.UI.Component
             cnt++;
         }
         //REDRAW LANES
-        scrollView.Clear();
+        // scrollView.Clear();
         scrollView.BringToFront();
         for(int i = 0; i < lanes.Count; i++){
             scrollView.Add(lanes[i].rootVisualElement);
@@ -164,7 +164,7 @@ public class NoteEditor : kgh.UI.Component
                     newNoteIndicator.AddToClassList("note-indicator");
                     newNoteIndicator.style.left = -5 + laneDisplay.worldBound.width * 0.125f + laneDisplay.worldBound.width * 0.875f * (noteData.notes[i][j] - VisibleArea.start) / VisibleArea.size;
                     newNoteIndicator.style.top = -7.5f + 37.5f + 75f * i;
-                    laneDisplay.Add(newNoteIndicator);
+                    scrollView.Add(newNoteIndicator);
                     noteIndicators.Add(newNoteIndicator);
                 }
                 else{
