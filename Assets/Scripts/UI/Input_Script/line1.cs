@@ -19,16 +19,18 @@ public class line1 : MonoBehaviour
     Action<Vector2> SwipeDetect;
     public float[] diagonals = { 45, 135, 225, 315 };
     public float windowInDeg = 20f;
+    public int lineCount = 0;
+    public int SwipeEndCount =0;
     Switch _switch;
     void Update(){
        ProcessInput();
     }
     void Awake(){
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-        MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 14f;
+        MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 17f;
         Debug.Log("MinSwipeDist:" + MinMovement);
         
-        _switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
+        //_switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
         
         instance = this;
     }
@@ -58,6 +60,9 @@ public class line1 : MonoBehaviour
             swiped = true;
             swipping = false;
             swipeDetected = false;
+            SwipeEndCount = lineCount;
+            lineCount = 0;
+            Debug.Log(SwipeEndCount);
         }
     }
     public int checkDirection_mouse(float Deg)
@@ -76,36 +81,26 @@ public class line1 : MonoBehaviour
         else if (Deg > diagonals[0] - windowInDeg && Deg <= diagonals[0] + windowInDeg)
         {
             //Debug.Log("UP_RIGHT");
-            return 2;
-        }
-        else if (Deg > diagonals[0] + windowInDeg && Deg <= diagonals[1] - windowInDeg)
-        {
-            //Debug.Log("RIGHT");
-            return 3;
+            return 1;
         }
         else if (Deg > diagonals[1] - windowInDeg && Deg <= diagonals[1] + windowInDeg)
         {
             //Debug.Log("DOWN_RIGHT");
-            return 4;
+            return 2;
         }
         else if (Deg > diagonals[1] + windowInDeg && Deg <= diagonals[2] - windowInDeg)
         {
             //Debug.Log("DOWN");
-            return 5;
+            return 2;
         }
         else if (Deg > diagonals[2] - windowInDeg && Deg <= diagonals[2] + windowInDeg)
         {
             //Debug.Log("DOWN_LEFT");
-            return 6;
-        }
-        else if (Deg > diagonals[2] + windowInDeg && Deg <= diagonals[3] - windowInDeg)
-        {
-            //Debug.Log("LEFT");
-            return 7;
+            return 2;
         }
         else
         {
-            return 8;
+            return 1;
             //Debug.Log("UP_LEFT");
         }
     }
@@ -152,10 +147,11 @@ public class line1 : MonoBehaviour
     }
 
     private void OnMouseEnter(){
-       // if(swipping == true){
-           _switch.Invoke(1);
+        if(swipping == true){
+           //_switch.Invoke(1);
             Debug.Log("line1");
             PlayAnimation.instance.Stroke1();
-        //}
+            lineCount ++;
+        }
     }
 }

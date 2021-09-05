@@ -9,6 +9,7 @@ public class line4 : MonoBehaviour
     {
         if(line1.instance.swipping == true){
             Debug.Log("line4");
+            line1.instance.lineCount ++;
         }
     }
 }

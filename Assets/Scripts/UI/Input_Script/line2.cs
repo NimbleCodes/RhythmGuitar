@@ -7,9 +7,10 @@ public class line2 : MonoBehaviour
     [SerializeField] GameObject Input_line2;
     private void OnMouseEnter()
     {
-        //if(line1.instance.swipping == true){
+        if(line1.instance.swipping == true){
             Debug.Log("line2");
             PlayAnimation.instance.Stroke2();
-        //}
+            line1.instance.lineCount ++;
+        }
     }
 }
