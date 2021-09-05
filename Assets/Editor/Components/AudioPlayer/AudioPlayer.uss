@@ -1,0 +1,11 @@
+.unity-button {
+    min-height: 30px;
+    min-width: 50px;
+}
+
+.indicator {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: -1px;
+}
