@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="NoteEditor.uss" />
+    <ui:VisualElement name="lane_display" style="height: 75%; border-left-color: rgba(191, 191, 191, 0.5); border-right-color: rgba(191, 191, 191, 0.5); border-top-color: rgba(191, 191, 191, 0.5); border-bottom-color: rgba(191, 191, 191, 0.5); border-top-width: 1px; border-bottom-width: 1px; cursor: initial;">
+        <ui:ScrollView name="scroll_view" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" style="cursor: initial;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="lane_controls" style="height: 12.5%; border-left-color: rgba(191, 191, 191, 0.5); border-right-color: rgba(191, 191, 191, 0.5); border-top-color: rgba(191, 191, 191, 0.5); border-bottom-color: rgba(191, 191, 191, 0.5); border-bottom-width: 1px; flex-direction: row; align-items: center; justify-content: space-around;">
+        <ui:Button text="Add Lane" display-tooltip-when-elided="true" name="add_lane_btn" />
+        <ui:VisualElement name="bpm_controls" style="height: 100%; flex-direction: row; align-items: center; justify-content: flex-start;">
+            <ui:Label text="BPM: " display-tooltip-when-elided="true" name="bpm_label" style="height: 100%; -unity-font-style: bold; -unity-text-align: middle-center; font-size: 14px;" />
+            <ui:TextField picking-mode="Ignore" name="bpm_input_field" style="min-width: 50px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="other_controls" style="height: 12.5%; flex-direction: row; border-bottom-width: 1px; border-left-color: rgba(191, 191, 191, 0.5); border-right-color: rgba(191, 191, 191, 0.5); border-top-color: rgba(191, 191, 191, 0.5); border-bottom-color: rgba(191, 191, 191, 0.5); align-items: center; justify-content: flex-end;">
+        <ui:Button text="Export" display-tooltip-when-elided="true" name="export_btn" />
+    </ui:VisualElement>
+</ui:UXML>
