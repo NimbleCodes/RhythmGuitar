@@ -87,13 +87,5 @@ public class DataParse
         int.TryParse(splitedData[1], out lineNumber);
 
         Data.notes[lineNumber - 1].Add(time);
-        // if (lineNumber == 1)
-        //     Data.notes[0].Add(time);
-        // else if (lineNumber == 2)
-        //     Data.notes[1].Add(time);
-        // else if (lineNumber == 3)
-        //     Data.notes[2].Add(time);
-        // else if (lineNumber == 4)
-        //     Data.notes[3].Add(time);
     }
 }
