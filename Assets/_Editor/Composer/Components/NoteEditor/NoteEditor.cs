@@ -86,6 +86,7 @@ public class NoteEditor : kgh.UI.Component
         switch(op){
             case 0:
                 //REMOVE
+                scrollView.Remove(lanes[ind].rootVisualElement);
                 lanes.RemoveAt(ind);
                 noteData.notes.RemoveAt(ind);
             break;

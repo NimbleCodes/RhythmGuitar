@@ -86,8 +86,6 @@ public class DataParse
 
         float.TryParse(splitedData[0], out time);
         int.TryParse(splitedData[1], out lineNumber);
-
-        Data.notes[lineNumber - 1].Add(time);
         
         while(lineNumber > Data.notes.Count - 1){
             Data.notes.Add(new List<float>());
