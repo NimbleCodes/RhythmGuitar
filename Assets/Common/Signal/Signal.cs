@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+using UnityEngine;
+
 namespace kgh.Signals
 {
     public class Exchange
@@ -47,7 +49,7 @@ namespace kgh.Signals
     }
     public class Switch
     {
-        ReadOnlyCollection<Delegate> callbacks;
+        public ReadOnlyCollection<Delegate> callbacks;
         public Switch(ReadOnlyCollection<Delegate> _callbacks){
             callbacks = _callbacks;
         }

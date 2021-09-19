@@ -1,0 +1,11 @@
+.horizontal-wrapper {
+    flex-direction: row;
+    align-items: center;
+}
+
+.note-indicator {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    left: -50px;
+}
