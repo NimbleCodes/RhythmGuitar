@@ -830,6 +830,8 @@ MonoBehaviour:
   - 225
   - 315
   windowInDeg: 20
+  lineCount: 0
+  SwipeEndCount: 0
 --- !u!61 &2097953560
 BoxCollider2D:
   m_ObjectHideFlags: 0
