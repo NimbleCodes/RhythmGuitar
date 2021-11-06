@@ -1,13 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="Scene_1.uss" />
     <ui:VisualElement name="wrapper_1" class="horizontal-wrapper" style="height: 20%;">
-        <ui:VisualElement name="note_display" style="height: 100%; width: 100%; background-color: rgba(255, 0, 0, 0.25); justify-content: center;" />
+        <ui:VisualElement name="wrapper_4" style="width: 20%; height: 100%; background-color: rgba(0, 255, 255, 0.25); flex-direction: row; align-items: center;">
+            <ui:VisualElement name="pause_btn" style="background-image: resource(&apos;UI Sprites/remove&apos;); width: 20%; height: 50%; left: 10%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="note_display" style="height: 100%; width: 80%; background-color: rgba(255, 0, 0, 0.25); justify-content: center; background-image: resource(&apos;ui_image/rail&apos;); -unity-background-scale-mode: stretch-to-fill;">
+            <ui:VisualElement name="point" style="background-image: resource(&apos;ui_image/point&apos;); width: 5%; height: 50%; left: -5%;" />
+        </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="wrapper_2" class="horizontal-wrapper" style="height: 80%; width: 100%;">
-        <ui:VisualElement name="strings" style="width: 20%; height: 100%; background-color: rgba(0, 255, 0, 0.25);" />
-        <ui:VisualElement name="wrapper_3" style="width: 80%; height: 100%;">
-            <ui:VisualElement name="main_display" style="width: 100%; height: 80%; background-color: rgba(0, 0, 255, 0.25);" />
-            <ui:VisualElement name="other" style="width: 100%; height: 20%; background-color: rgba(255, 255, 0, 0.25);" />
-        </ui:VisualElement>
+        <ui:VisualElement name="strings" style="width: 20%; height: 100%; background-color: rgba(0, 0, 0, 0);" />
     </ui:VisualElement>
 </ui:UXML>

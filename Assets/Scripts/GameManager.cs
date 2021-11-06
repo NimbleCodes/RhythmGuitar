@@ -17,4 +17,17 @@ public class GameManager : MonoBehaviour
         selectedSong = "Haru Modoki (Asterisk DnB Remix Cut)";
         // GameObject.DontDestroyOnLoad(gameObject);
     }
+    void Update(){
+        //TEST
+        if(Input.GetKeyDown(KeyCode.Space)){
+            Time.timeScale = 0;
+            //오디오 멈춤도 필요
+        }
+        if(Input.GetKeyDown(KeyCode.Escape)){
+            Time.timeScale = 1;
+        }
+    }
+    void OnDestroy(){
+        //Debug.Log(sigs.ToString());
+    }
 }

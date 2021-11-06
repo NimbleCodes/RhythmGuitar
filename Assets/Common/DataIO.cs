@@ -7,8 +7,12 @@ using UnityEngine.UI;
 public class DataIO
 {
     DataWriter dataWriter;
+    
+    #if UNITY_ENGINE
     NoteEditor NoteEditor;
     AudioPlayer audioPlayer;
+    #endif
+    
     NoteData noteData;
     DataParse parse;
     string basePath;

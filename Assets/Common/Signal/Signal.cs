@@ -37,6 +37,15 @@ namespace kgh.Signals
                 }
             }
         }
+        public override string ToString()
+        {
+            string tot = "";
+            foreach (var item in signals)
+            {
+                tot += item.Key + " : " + item.Value.callbacks.Count + "\n";
+            }
+            return tot;
+        }
     }
     public class Signal
     {

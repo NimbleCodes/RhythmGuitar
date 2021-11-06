@@ -10,13 +10,17 @@ public class Scene_1 : MonoBehaviour
     VisualElement rootVisualElement;
     VisualElement noteDisplay, strings, mainDisplay, other;
     bool geometryChanged = false;
-    NoteData noteData;
+    public NoteData noteData{
+        private set;
+        get;
+    }
     public AudioSource audioSource;
     bool start = false;
     List<VisualElement> noteIndicators;
     float visibleAreaSize = 3f;
     public List<Sprite> noteIndicatorSprites;
     float time;
+    public float noteDelay = 0f;
 
     void Awake(){
         uiDocument = GetComponent<UIDocument>();
@@ -26,6 +30,7 @@ public class Scene_1 : MonoBehaviour
     }
     void Start(){
         GameManager.instance.sigs.Subscribe("audio_loaded", this, "AudioLoaded");
+        GameManager.instance.sigs.Subscribe("OnMouseBehavior", this, "OnMouseBehavior");
         time = -visibleAreaSize;
     }
     void Update(){
@@ -33,7 +38,7 @@ public class Scene_1 : MonoBehaviour
             int cnt = 0;
             for(int i = 0; i < noteData.notes.Count; i++){
                 for(int j = 0; j < noteData.notes[i].Count; j++){
-                    if(noteData.notes[i][j] >= time && noteData.notes[i][j] < time + visibleAreaSize){
+                    if(noteData.notes[i][j] + noteDelay >= time && noteData.notes[i][j] + noteDelay < time + visibleAreaSize){
                         VisualElement noteIndicator;
                         if(cnt < noteIndicators.Count){
                             noteIndicator = noteIndicators[cnt];
@@ -45,23 +50,55 @@ public class Scene_1 : MonoBehaviour
                             noteIndicators.Add(noteIndicator);
                         }
                         noteIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[i]);
-                        noteIndicator.style.left = noteDisplay.worldBound.width * ((noteData.notes[i][j] - time) / visibleAreaSize);
+                        noteIndicator.style.left = noteDisplay.worldBound.width * ((noteData.notes[i][j] + noteDelay - time) / visibleAreaSize);
                         cnt++;
                     }
-                    if(noteData.notes[i][j] >= time + visibleAreaSize){
+                    if(noteData.notes[i][j] + noteDelay >= time + visibleAreaSize){
                         break;
                     }
                 }
                 while(cnt < noteIndicators.Count){
-                    noteIndicators[cnt].style.left = -50;
+                    noteIndicators[cnt].style.left = -500; 
                     cnt++;
                 }
             }
             time += Time.deltaTime;
         }
+        // int closestNote = -1;
+        // float closestNoteVal = float.MaxValue;
+        // for(int i = 0; i < noteData.notes.Count; i++){
+        //     for(int j = 0; j < noteData.notes[i].Count; j++){
+        //         if(noteData.notes[i][j] < audioSource.time)
+        //             continue;
+        //         if(noteData.notes[i][j] >= audioSource.time + visibleAreaSize)
+        //             break;
+        //         if(noteData.notes[i][j] < closestNoteVal){
+        //             closestNote = i;
+        //             closestNoteVal = noteData.notes[i][j];
+        //         }
+        //     }
+        // }
+        //Debug.Log(closestNote);
     }
     void AudioLoaded(NoteData _noteData){
         noteData = _noteData;
-        Debug.Log(noteData.notes.Count);
+        // Debug.Log(noteData.notes.Count);
+    }
+    void OnMouseBehavior(int val){
+        int closestNote = -1;
+        float closestNoteVal = float.MaxValue;
+        for(int i = 0; i < noteData.notes.Count; i++){
+            for(int j = 0; j < noteData.notes[i].Count; j++){
+                if(noteData.notes[i][j] < audioSource.time)
+                    continue;
+                if(noteData.notes[i][j] >= audioSource.time + visibleAreaSize)
+                    break;
+                if(noteData.notes[i][j] < closestNoteVal){
+                    closestNote = i;
+                    closestNoteVal = noteData.notes[i][j];
+                }
+            }
+        }
+        //Debug.Log(closestNote + " " + val);
     }
 }

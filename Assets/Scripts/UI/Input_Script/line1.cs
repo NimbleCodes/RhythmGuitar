@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using KusoGame.Signals;
+using kgh.Signals;
 public class line1 : MonoBehaviour
 {
     [SerializeField] GameObject Input_line1;
@@ -27,10 +27,10 @@ public class line1 : MonoBehaviour
     }
     void Awake(){
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-        MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 17f;
-        Debug.Log("MinSwipeDist:" + MinMovement);
+        MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 50f;
+        // Debug.Log("MinSwipeDist:" + MinMovement);
         
-        //_switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
+        _switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
         
         instance = this;
     }
@@ -62,7 +62,8 @@ public class line1 : MonoBehaviour
             swipeDetected = false;
             SwipeEndCount = lineCount;
             lineCount = 0;
-            Debug.Log(SwipeEndCount);
+            // Debug.Log(SwipeEndCount);
+            _switch.Invoke(SwipeEndCount);
         }
     }
     public int checkDirection_mouse(float Deg)
@@ -149,7 +150,7 @@ public class line1 : MonoBehaviour
     private void OnMouseEnter(){
         if(swipping == true){
            //_switch.Invoke(1);
-            Debug.Log("line1");
+            // Debug.Log("line1");
             PlayAnimation.instance.Stroke1();
             lineCount ++;
         }

@@ -7,5 +7,5 @@
     width: 25px;
     height: 25px;
     position: absolute;
-    left: -50px;
+    left: -500px;
 }

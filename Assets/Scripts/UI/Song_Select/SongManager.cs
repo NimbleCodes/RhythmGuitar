@@ -6,7 +6,14 @@ using UnityEngine.SceneManagement;
 public class SongManager : MonoBehaviour
 {
     public AudioSource music;
-    public AudioClip clip;
+    public AudioClip clip{
+        set{
+            //do nothing
+        }
+        get{
+            return music.clip;
+        }
+    }
 
     public string songName;
     public bool isGameFin;
@@ -23,7 +30,7 @@ public class SongManager : MonoBehaviour
     void Start()
     {
         music = GetComponent<AudioSource>();
-        clip = GetComponent<AudioClip>();
+        //clip = GetComponent<AudioClip>();
 
         previewTime = 30;
     }
