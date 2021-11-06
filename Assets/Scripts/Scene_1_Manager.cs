@@ -19,8 +19,9 @@ public class Scene_1_Manager : MonoBehaviour
         dataIO = new DataIO(noteData);
     }
     void Start(){
-        string path = Application.dataPath + "/Resources/Audio/" + GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
+        string path = Application.streamingAssetsPath + "/Resources/Audio/" + GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
         dataIO.Load(path + "_data.txt");
+        
         audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path + ".mp3"));
         audioLoaded = GameManager.instance.sigs.Register("audio_loaded", typeof(Action<NoteData>));
         playAudio = GameManager.instance.sigs.Register("play_audio", typeof(Action));
