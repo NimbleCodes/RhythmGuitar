@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using kgh.Signals;
+using UnityEngine.Networking;
 
 public class Scene_1_Manager : MonoBehaviour
 {
@@ -19,10 +20,13 @@ public class Scene_1_Manager : MonoBehaviour
         dataIO = new DataIO(noteData);
     }
     void Start(){
-        string path = Application.streamingAssetsPath + "/Resources/Audio/" + GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
-        dataIO.Load(path + "_data.txt");
-        
-        audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path + ".mp3"));
+        string path;
+        path = GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
+
+        dataIO.Load(path + "_data");
+
+        // audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path + ".mp3"));
+        audioSource.clip = Resources.Load<AudioClip>(path);
         audioLoaded = GameManager.instance.sigs.Register("audio_loaded", typeof(Action<NoteData>));
         playAudio = GameManager.instance.sigs.Register("play_audio", typeof(Action));
         StartCoroutine(StartDelay());
@@ -34,6 +38,7 @@ public class Scene_1_Manager : MonoBehaviour
         }
     }
     IEnumerator StartDelay(){
+        Debug.LogError("Delay!");
         yield return new WaitForSeconds(delay);
         audioSource.Play();
     }

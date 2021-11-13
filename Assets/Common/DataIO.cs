@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class DataIO
 {
@@ -51,18 +52,39 @@ public class DataIO
 
     public void Load(string path)
     {
-        string data = "";
-        //noteData.notes = new List<List<float>>();
+        TextAsset txtAsset = Resources.Load<TextAsset>(path);
+        // Debug.LogError(txtAsset == null);
+        // string data = "";
+        // using(StringReader strReader = new StringReader(txt.text)){
+        //     while((data = strReader.ReadLine()) != null){
+        //         parse.Parse(data);
+        //         Debug.Log(data + "\n");
+        //     }
+        // }
 
-        using (StreamReader streamReader = new StreamReader(path))
+        string data = "";
+        // // noteData.notes = new List<List<float>>();
+
+        using (StringReader strReader = new StringReader(txtAsset.text))
         {
-            while ((data = streamReader.ReadLine()) != null)
+            while ((data = strReader.ReadLine()) != null)
             {
                 parse.Parse(data);
             }
-
-            //audioPlayer.MusicInit();
+            // audioPlayer.MusicInit();
         }
+
+        // if(Application.platform == RuntimePlatform.Android){
+        
+        // }
+        // else{
+        //     string data = File.ReadAllText(path);
+        //     string[] tokens = data.Split('\n');
+        //     for(int i = 0; i < tokens.Length - 1; i++){
+        //         parse.Parse(tokens[i]);
+        //     }
+        // }
+
         parse.isfirstRead = false;
     }
 
