@@ -6,9 +6,11 @@ using kgh.Signals;
 public class line1 : MonoBehaviour
 {
     [SerializeField] GameObject Input_line1;
+    [SerializeField] private Camera mainCamera;
     public static line1 instance;
     public Vector3 mousePos;
     public float Distance;
+    public Vector2 TouchPos;Dictionary<int, Vector2> touchStartPos;
     public Vector2 Direction;
     public bool swiped = false;
     public bool swipping = false;
@@ -22,12 +24,15 @@ public class line1 : MonoBehaviour
     public int lineCount = 0;
     public int SwipeEndCount =0;
     Switch _switch;
+    Ray ray;
     void Update(){
-       ProcessInput();
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        processMobileInput();//유니티 모바일일때
+        ProcessInput();//PC
     }
     void Awake(){
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-        MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 50f;
+        MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
         // Debug.Log("MinSwipeDist:" + MinMovement);
         
         _switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
@@ -50,6 +55,9 @@ public class line1 : MonoBehaviour
             {
                 onSwipeDetected(Direction);
             }
+            if(Physics.Raycast(ray, out RaycastHit raycastHit)){
+                lineCount++;
+            }
         }
         else if (Input.GetMouseButtonUp(0) == true)
         {
@@ -57,6 +65,15 @@ public class line1 : MonoBehaviour
             int temp = checkDirection_mouse(clockwiseDeg);
             if(userInputEvent!=null) userInputEvent.Invoke(temp);
             //inputStream += temp.ToString() + ",";
+                if(lineCount == 1){
+                    PlayAnimation.instance.Stroke1();
+                }if(lineCount == 2){
+                    PlayAnimation.instance.Stroke2();
+                }if(lineCount == 3){
+                    PlayAnimation.instance.Stroke3();
+                }if(lineCount == 4){
+                    PlayAnimation.instance.Stroke1();
+            }
             swiped = true;
             swipping = false;
             swipeDetected = false;
@@ -64,6 +81,57 @@ public class line1 : MonoBehaviour
             lineCount = 0;
             // Debug.Log(SwipeEndCount);
             _switch.Invoke(SwipeEndCount);
+        }
+    }
+    void processMobileInput()
+    {
+        if (Input.touches.Length > 0)
+        {
+            Touch t = Input.GetTouch(0);
+            if (t.phase == TouchPhase.Began)
+            {//터치시작 좌표 저장
+                TouchPos = new Vector2(t.position.x, t.position.y);
+                swiped = false;
+            }
+            else if (t.phase == TouchPhase.Moved)
+            {
+                Vector2 currentTouchPos = new Vector2(t.position.x, t.position.y);
+                bool swipeDetected = checkSwipe(TouchPos, currentTouchPos);
+                Direction = (currentTouchPos - TouchPos).normalized;
+                Distance = Vector2.Distance(currentTouchPos, TouchPos);
+                if (swipeDetected)
+                {
+                    onSwipeDetected(Direction);
+                }
+            }
+            else if (t.phase == TouchPhase.Ended)
+            {
+                //Vector2 endPos = Camera.main.ScreenToWorldPoint(t.position);
+                //Vector2 dir = (endPos - touchStartPos[t.fingerId]).normalized;
+                float clockwiseDeg = 360f - Quaternion.FromToRotation(Vector2.up, Direction).eulerAngles.z;
+                int dirCode = checkDirection_mouse(clockwiseDeg);
+                touchStartPos.Remove(t.fingerId);
+                if (userInputEvent != null) userInputEvent.Invoke(dirCode);
+                //inputStream += dirCode.ToString() + ",";
+                
+                if(lineCount == 1){
+                    PlayAnimation.instance.Stroke1();
+                }if(lineCount == 2){
+                    PlayAnimation.instance.Stroke2();
+                }if(lineCount == 3){
+                    PlayAnimation.instance.Stroke3();
+                }if(lineCount == 4){
+                    PlayAnimation.instance.Stroke1();
+                
+                swiped = true;
+                swipping = false;
+                swipeDetected = false;
+                SwipeEndCount = lineCount;
+                lineCount = 0;
+                // Debug.Log(SwipeEndCount);
+                _switch.Invoke(SwipeEndCount);
+            }
+            }
         }
     }
     public int checkDirection_mouse(float Deg)
@@ -145,14 +213,5 @@ public class line1 : MonoBehaviour
     public void unBlockInput()
     {
         isInputBlocked = false;
-    }
-
-    private void OnMouseEnter(){
-        if(swipping == true){
-           //_switch.Invoke(1);
-            // Debug.Log("line1");
-            PlayAnimation.instance.Stroke1();
-            lineCount ++;
-        }
     }
 }

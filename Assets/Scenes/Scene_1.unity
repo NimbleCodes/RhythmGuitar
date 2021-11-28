@@ -673,8 +673,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Input_line1: {fileID: 994691410}
+  mainCamera: {fileID: 519420031}
   mousePos: {x: 0, y: 0, z: 0}
   Distance: 0
+  TouchPos: {x: 0, y: 0}
   Direction: {x: 0, y: 0}
   swiped: 0
   swipping: 0

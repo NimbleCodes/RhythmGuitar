@@ -13,9 +13,8 @@ public class PlayAnimation : MonoBehaviour
     public static PlayAnimation instance;
     public bool strokePlaying = false;
     
-
     public string[] stateArr = {"idle","stroke1","stroke2","stroke3"};
-    public string curState;//아직 사용안함.
+    public string curState;
 
     protected string[] curAnim = new string[3];
 
@@ -28,7 +27,7 @@ public class PlayAnimation : MonoBehaviour
     {
         skeletonAnimation = this.GetComponent<SkeletonAnimation>();
         animationState = skeletonAnimation.AnimationState;
-
+        TrackEntry trackEntry = animationState.SetAnimation(0,"idle", true);
         animationState.Start += OnSpineStart;
         animationState.Complete += OnSpineComplete;
         animationState.Interrupt += OnSpineInterrupt;
@@ -100,6 +99,11 @@ public class PlayAnimation : MonoBehaviour
             strokePlaying = false;
             Idle();
         }
+        if(curState == stateArr[2] && strokePlaying && GetCurAnimName(0) == "stroke3")
+        {
+            strokePlaying = false;
+            Idle();
+        }
 
     }
 
@@ -109,14 +113,24 @@ public class PlayAnimation : MonoBehaviour
         {
             skeletonAnimation.state.ClearTracks();
             skeletonAnimation.skeleton.SetToSetupPose();
-            Stroke2();
-
+        }
+        if(curState == stateArr[2] && strokePlaying && GetCurAnimName(0) == "stroke2")
+        {
+            skeletonAnimation.state.ClearTracks();
+            skeletonAnimation.skeleton.SetToSetupPose();
+            
+        }
+        if(curState == stateArr[3] && strokePlaying && GetCurAnimName(0) == "stroke3")
+        {
+            skeletonAnimation.state.ClearTracks();
+            skeletonAnimation.skeleton.SetToSetupPose();
+            
         }
        
 
     }
 
-    void OnSpineEnd(Spine.TrackEntry trackEntry) // recurrsion 조심 End 쓰지 맙시다 시발럼아
+    void OnSpineEnd(Spine.TrackEntry trackEntry) // recurrsion 조심 End 쓰지 맙시다/
     {
         
     }
