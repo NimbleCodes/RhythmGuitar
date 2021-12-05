@@ -6,10 +6,12 @@ using kgh.Signals;
 public class line1 : MonoBehaviour
 {
     [SerializeField] GameObject Input_line1;
-    [SerializeField] private Camera mainCamera;
+    Camera Camera;
+    public LayerMask LayerMask;
     public static line1 instance;
     public Vector3 mousePos;
-    public float Distance;
+    public float Distance;//mouse drag distance
+    float MaxDis = 999f;//raycast ray max distance
     public Vector2 TouchPos;Dictionary<int, Vector2> touchStartPos;
     public Vector2 Direction;
     public bool swiped = false;
@@ -24,9 +26,10 @@ public class line1 : MonoBehaviour
     public int lineCount = 0;
     public int SwipeEndCount =0;
     Switch _switch;
-    Ray ray;
+    void Start(){
+        Camera = GetComponent<Camera>();
+    }
     void Update(){
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         processMobileInput();//유니티 모바일일때
         ProcessInput();//PC
     }
@@ -35,7 +38,7 @@ public class line1 : MonoBehaviour
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
         // Debug.Log("MinSwipeDist:" + MinMovement);
         
-        _switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
+       //_switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
         
         instance = this;
     }
@@ -55,9 +58,7 @@ public class line1 : MonoBehaviour
             {
                 onSwipeDetected(Direction);
             }
-            if(Physics.Raycast(ray, out RaycastHit raycastHit)){
-                lineCount++;
-            }
+            RayAll();
         }
         else if (Input.GetMouseButtonUp(0) == true)
         {
@@ -74,13 +75,14 @@ public class line1 : MonoBehaviour
                 }if(lineCount == 4){
                     PlayAnimation.instance.Stroke1();
             }
+            enalbeCollider();
             swiped = true;
             swipping = false;
             swipeDetected = false;
             SwipeEndCount = lineCount;
             lineCount = 0;
             // Debug.Log(SwipeEndCount);
-            _switch.Invoke(SwipeEndCount);
+            //_switch.Invoke(SwipeEndCount);
         }
     }
     void processMobileInput()
@@ -103,6 +105,7 @@ public class line1 : MonoBehaviour
                 {
                     onSwipeDetected(Direction);
                 }
+                RayAllMobile();
             }
             else if (t.phase == TouchPhase.Ended)
             {
@@ -128,7 +131,6 @@ public class line1 : MonoBehaviour
                 swipeDetected = false;
                 SwipeEndCount = lineCount;
                 lineCount = 0;
-                // Debug.Log(SwipeEndCount);
                 _switch.Invoke(SwipeEndCount);
             }
             }
@@ -213,5 +215,45 @@ public class line1 : MonoBehaviour
     public void unBlockInput()
     {
         isInputBlocked = false;
+    }
+    void RayAll(){
+        mousePos = Input.mousePosition;
+        mousePos = Camera.ScreenToWorldPoint(mousePos);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos, transform.right, MaxDis,LayerMask);
+
+        for(int i=0; i < hits.Length; i++)
+            {
+                RaycastHit2D hit = hits[i];
+                BoxCollider2D Linehit = hit.transform.GetComponent<BoxCollider2D>();
+
+                if(Linehit){
+                    Linehit.enabled =false;
+                    lineCount++;
+                }
+            }
+    }
+
+    void RayAllMobile(){
+        TouchPos = Camera.ScreenToWorldPoint(TouchPos);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(TouchPos,transform.right,MaxDis);
+
+        for(int i=0; i < hits.Length; i++){
+            RaycastHit2D hit = hits[i];
+            SpriteRenderer Linehit = hit.transform.GetComponent<SpriteRenderer>();
+
+            if(Linehit){
+                lineCount++;
+            }
+        }
+        
+    }
+
+    void enalbeCollider(){
+        GameObject[] lines;
+        lines = GameObject.FindGameObjectsWithTag("Line");
+        foreach(GameObject Line in lines){
+            BoxCollider2D collider = Line.transform.GetComponent<BoxCollider2D>();
+            collider.enabled = true;
+        }
     }
 }

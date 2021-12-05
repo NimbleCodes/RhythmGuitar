@@ -4,26 +4,40 @@ using UnityEngine;
 
 public class RayCast : MonoBehaviour
 {
-    [SerializeField] private Camera mainCamera;
+    float MaxDis = 999f;
+    Vector3 MousePos;
+    Camera Camera;
 
-    void Update()
-    {
-        Debug.Log(GetClicke2Dobject() == null);
+    void Start(){
+        Camera = GetComponent<Camera>();
     }
 
-    public GameObject GetClicke2Dobject(int layer = -1){
-        GameObject target = null;
+    void Update(){
+        if(Input.GetMouseButton(0)){
+        RayAll();
+    }
+        
+    }
 
-        int mask = 1 << layer;
+    void Ray(){
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, MaxDis);
+        hit.transform.GetComponent<SpriteRenderer>().color = Color.blue;
+    }
 
-        Vector2 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        Ray2D ray = new Ray2D(pos, Vector2.zero);
-        RaycastHit2D hit;
-        hit = layer == -1 ? Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity) : Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, mask);
+    void RayAll(){
+        MousePos = Input.mousePosition;
+        MousePos = Camera.ScreenToWorldPoint(MousePos);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(MousePos, transform.right, MaxDis);
 
-        if(hit){
-            target = hit.collider.gameObject;
-        }
-        return target;
+        for(int i=0; i < hits.Length; i++)
+            {
+                
+                RaycastHit2D hit = hits[i];
+                SpriteRenderer ChangeColor = hit.transform.GetComponent<SpriteRenderer>();
+
+                if(ChangeColor){
+                    hit.transform.GetComponent<SpriteRenderer>().color = Color.blue;
+                }
+            }
     }
 }
