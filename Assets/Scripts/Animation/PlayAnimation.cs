@@ -37,25 +37,6 @@ public class PlayAnimation : MonoBehaviour
         curState = stateArr[0];
     }
 
-    void Update()//Play animation by the state number
-    {
-        if (curState == stateArr[0])
-        {
-            Idle();
-        }
-        else if (curState == stateArr[1])
-        {
-            Stroke1();
-        }
-        else if (curState == stateArr[2])
-        {
-            Stroke2();
-        }
-        else if (curState == stateArr[3])
-        {
-            Stroke3();
-        }
-    }
 
     #region func for states
     void Idle()
@@ -92,16 +73,19 @@ public class PlayAnimation : MonoBehaviour
         if(curState == stateArr[1] && strokePlaying && GetCurAnimName(0) == "stroke1")
         {
             strokePlaying = false;
+            Debug.Log("idle1");
             Idle();
         }
         if(curState == stateArr[2] && strokePlaying && GetCurAnimName(0) == "stroke2")
         {
             strokePlaying = false;
+            Debug.Log("idle2");
             Idle();
         }
-        if(curState == stateArr[2] && strokePlaying && GetCurAnimName(0) == "stroke3")
+        if(curState == stateArr[3] && strokePlaying && GetCurAnimName(0) == "stroke3")
         {
             strokePlaying = false;
+            Debug.Log("idle3");
             Idle();
         }
 
@@ -109,24 +93,6 @@ public class PlayAnimation : MonoBehaviour
 
     void OnSpineInterrupt(Spine.TrackEntry trackEntry)
     {
-        if(curState == stateArr[1] && strokePlaying && GetCurAnimName(0) == "stroke1")
-        {
-            skeletonAnimation.state.ClearTracks();
-            skeletonAnimation.skeleton.SetToSetupPose();
-        }
-        if(curState == stateArr[2] && strokePlaying && GetCurAnimName(0) == "stroke2")
-        {
-            skeletonAnimation.state.ClearTracks();
-            skeletonAnimation.skeleton.SetToSetupPose();
-            
-        }
-        if(curState == stateArr[3] && strokePlaying && GetCurAnimName(0) == "stroke3")
-        {
-            skeletonAnimation.state.ClearTracks();
-            skeletonAnimation.skeleton.SetToSetupPose();
-            
-        }
-       
 
     }
 
@@ -155,8 +121,6 @@ public class PlayAnimation : MonoBehaviour
 
     public void PlayOneAnimation(int index, string name, float speed)
     {
-        if(curAnim[index] == name)
-            return;
 
         skeletonAnimation.state.SetAnimation(index,name,false).TimeScale = speed;
         curAnim[index] = name;
