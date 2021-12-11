@@ -13,14 +13,11 @@ public class line1 : MonoBehaviour
     public float Distance;//mouse drag distance
     float MaxDis = 999f;//raycast ray max distance
     public Vector2 TouchPos;Dictionary<int, Vector2> touchStartPos;
-    public Vector2 Direction;
+    private Vector2 Direction;
     public bool swiped = false;
-    public bool swipping = false;
-    public bool swipeDetected = false;
+    private int dragDirection;
     public event Action<int> userInputEvent;
-    public bool isInputBlocked = false;
     public float MinMovement;
-    Action<Vector2> SwipeDetect;
     public float[] diagonals = { 45, 135, 225, 315 };
     public float windowInDeg = 20f;
     public int lineCount = 0;
@@ -36,13 +33,10 @@ public class line1 : MonoBehaviour
     void Awake(){
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
-        // Debug.Log("MinSwipeDist:" + MinMovement);
-        
-       //_switch = GameManager.instance.sigs.Register("OnMouseBehavior" , typeof(Action<int>));//이벤트 발생시, 몇라인인지 int 값 반환
         
         instance = this;
     }
-    public void ProcessInput()
+    public void ProcessInput()// 유저의 드래그 방향을 알기 위함.
     {
         if (Input.GetMouseButtonDown(0) == true)
         {
@@ -51,21 +45,15 @@ public class line1 : MonoBehaviour
         }
         else if (Input.GetMouseButton(0) == true)
         {
-            swipeDetected = checkSwipe(mousePos, Input.mousePosition);
             Direction = (Input.mousePosition - mousePos).normalized;
             Distance = Vector2.Distance(Input.mousePosition, mousePos);
-            if (swipeDetected)
-            {
-                onSwipeDetected(Direction);
-            }
             RayAll();
         }
         else if (Input.GetMouseButtonUp(0) == true)
         {
             float clockwiseDeg = 360f - Quaternion.FromToRotation(Vector2.up, Direction).eulerAngles.z;
-            int temp = checkDirection_mouse(clockwiseDeg);
-            if(userInputEvent!=null) userInputEvent.Invoke(temp);
-            //inputStream += temp.ToString() + ",";
+            dragDirection = checkDirection_mouse(clockwiseDeg);
+            if(userInputEvent!=null) userInputEvent.Invoke(lineCount);
                 if(lineCount == 1){
                     PlayAnimation.instance.Stroke1();
                 }if(lineCount == 2){
@@ -77,12 +65,8 @@ public class line1 : MonoBehaviour
             }
             enalbeCollider();
             swiped = true;
-            swipping = false;
-            swipeDetected = false;
             SwipeEndCount = lineCount;
             lineCount = 0;
-            // Debug.Log(SwipeEndCount);
-            //_switch.Invoke(SwipeEndCount);
         }
     }
     void processMobileInput()
@@ -98,14 +82,10 @@ public class line1 : MonoBehaviour
             else if (t.phase == TouchPhase.Moved)
             {
                 Vector2 currentTouchPos = new Vector2(t.position.x, t.position.y);
-                bool swipeDetected = checkSwipe(TouchPos, currentTouchPos);
                 Direction = (currentTouchPos - TouchPos).normalized;
                 Distance = Vector2.Distance(currentTouchPos, TouchPos);
-                if (swipeDetected)
-                {
-                    onSwipeDetected(Direction);
-                }
-                RayAllMobile();
+                
+                RayAll();
             }
             else if (t.phase == TouchPhase.Ended)
             {
@@ -115,7 +95,6 @@ public class line1 : MonoBehaviour
                 int dirCode = checkDirection_mouse(clockwiseDeg);
                 touchStartPos.Remove(t.fingerId);
                 if (userInputEvent != null) userInputEvent.Invoke(dirCode);
-                //inputStream += dirCode.ToString() + ",";
                 
                 if(lineCount == 1){
                     PlayAnimation.instance.Stroke1();
@@ -127,8 +106,6 @@ public class line1 : MonoBehaviour
                     PlayAnimation.instance.Stroke1();
                 
                 swiped = true;
-                swipping = false;
-                swipeDetected = false;
                 SwipeEndCount = lineCount;
                 lineCount = 0;
                 _switch.Invoke(SwipeEndCount);
@@ -140,18 +117,15 @@ public class line1 : MonoBehaviour
     {
         if (Distance < MinMovement)
         {
-            //Debug.Log("Touch");
             return 0;
         }
         else if ((Deg > diagonals[3] + windowInDeg && Deg <= 360) ||
                    (Deg <= diagonals[0] - windowInDeg && Deg >= 0))
         {
-            //Debug.Log("UP");
             return 1;
         }
         else if (Deg > diagonals[0] - windowInDeg && Deg <= diagonals[0] + windowInDeg)
         {
-            //Debug.Log("UP_RIGHT");
             return 1;
         }
         else if (Deg > diagonals[1] - windowInDeg && Deg <= diagonals[1] + windowInDeg)
@@ -175,51 +149,18 @@ public class line1 : MonoBehaviour
             //Debug.Log("UP_LEFT");
         }
     }
-    public bool checkSwipe(Vector3 downPos, Vector3 currentPos)
-    {
-        Vector2 currentSwipe = currentPos - downPos;
 
-        if (swiped == true)
-        {//터치됨, 스와프는 완료된 상태
-            //Debug.Log("false");
-            swipping = false;
-            return false;
-        }
-        if (isInputBlocked == true)
-        {//무언가가 인풋을 막고있을때
-            return false;
-        }
-        if (currentSwipe.magnitude >= MinMovement)
-        {
-            //Debug.Log("true");
-            swipping = true;
-            return true;
-        }
-        return false;
-    }
-
-    public void setOnSwipeDetected(Action<Vector2> onSwipeDetected)
-    {
-        SwipeDetect = onSwipeDetected;
-    }
-    public void onSwipeDetected(Vector2 swipeDirection)
-    {
-        //swiped = true;
-        swipping = true;
-        //SwipeDetect(swipeDirection);
-    }
-    public void blockInput()
-    {
-        isInputBlocked = true;
-    }
-    public void unBlockInput()
-    {
-        isInputBlocked = false;
-    }
     void RayAll(){
-        mousePos = Input.mousePosition;
-        mousePos = Camera.ScreenToWorldPoint(mousePos);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos, transform.right, MaxDis,LayerMask);
+        #if UNITY_EDITOR_WIN
+            mousePos = Input.mousePosition;
+            mousePos = Camera.ScreenToWorldPoint(mousePos);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos, transform.right, MaxDis,LayerMask);
+        #endif
+
+        #if UNITY_ANDROID
+            TouchPos = Camera.ScreenToWorldPoint(TouchPos);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(TouchPos,transform.right,MaxDis);
+        #endif
 
         for(int i=0; i < hits.Length; i++)
             {
@@ -231,21 +172,6 @@ public class line1 : MonoBehaviour
                     lineCount++;
                 }
             }
-    }
-
-    void RayAllMobile(){
-        TouchPos = Camera.ScreenToWorldPoint(TouchPos);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(TouchPos,transform.right,MaxDis);
-
-        for(int i=0; i < hits.Length; i++){
-            RaycastHit2D hit = hits[i];
-            SpriteRenderer Linehit = hit.transform.GetComponent<SpriteRenderer>();
-
-            if(Linehit){
-                lineCount++;
-            }
-        }
-        
     }
 
     void enalbeCollider(){
