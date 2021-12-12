@@ -274,11 +274,11 @@ namespace Spine {
 		///  Some information is ambiguous in the world transform, such as -1,-1 scale versus 180 rotation. The applied transform after
 		/// calling this method is equivalent to the local transform used to compute the world transform, but may not be identical.
 		/// </para></summary>
-		internal void UpdateAppliedTransform () {
+		public void UpdateAppliedTransform () {
 			Bone parent = this.parent;
 			if (parent == null) {
-				ax = worldX;
-				ay = worldY;
+				ax = worldX - skeleton.x;
+				ay = worldY - skeleton.y;
 				arotation = MathUtils.Atan2(c, a) * MathUtils.RadDeg;
 				ascaleX = (float)Math.Sqrt(a * a + c * c);
 				ascaleY = (float)Math.Sqrt(b * b + d * d);

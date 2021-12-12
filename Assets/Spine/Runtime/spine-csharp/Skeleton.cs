@@ -117,7 +117,7 @@ namespace Spine {
 			foreach (TransformConstraintData transformConstraintData in data.transformConstraints)
 				transformConstraints.Add(new TransformConstraint(transformConstraintData, this));
 
-			pathConstraints = new ExposedList<PathConstraint> (data.pathConstraints.Count);
+			pathConstraints = new ExposedList<PathConstraint>(data.pathConstraints.Count);
 			foreach (PathConstraintData pathConstraintData in data.pathConstraints)
 				pathConstraints.Add(new PathConstraint(pathConstraintData, this));
 
@@ -177,7 +177,7 @@ namespace Spine {
 						goto continue_outer;
 					}
 				}
-				continue_outer: {}
+				continue_outer: { }
 			}
 
 			for (int i = 0; i < boneCount; i++)
@@ -332,7 +332,7 @@ namespace Spine {
 		/// <summary>
 		/// Temporarily sets the root bone as a child of the specified bone, then updates the world transform for each bone and applies
 		/// all constraints.
-	 	/// </summary>
+		/// </summary>
 		public void UpdateWorldTransform (Bone parent) {
 			if (parent == null) throw new ArgumentNullException("parent", "parent cannot be null.");
 
@@ -428,16 +428,6 @@ namespace Spine {
 			return null;
 		}
 
-		/// <returns>-1 if the bone was not found.</returns>
-		public int FindBoneIndex (string boneName) {
-			if (boneName == null) throw new ArgumentNullException("boneName", "boneName cannot be null.");
-			var bones = this.bones;
-			var bonesItems = bones.Items;
-			for (int i = 0, n = bones.Count; i < n; i++)
-				if (bonesItems[i].data.name == boneName) return i;
-			return -1;
-		}
-
 		/// <summary>Finds a slot by comparing each slot's name. It is more efficient to cache the results of this method than to call it
 		/// repeatedly.</summary>
 		/// <returns>May be null.</returns>
@@ -451,16 +441,6 @@ namespace Spine {
 			return null;
 		}
 
-		/// <returns>-1 if the bone was not found.</returns>
-		public int FindSlotIndex (string slotName) {
-			if (slotName == null) throw new ArgumentNullException("slotName", "slotName cannot be null.");
-			var slots = this.slots;
-			var slotsItems = slots.Items;
-			for (int i = 0, n = slots.Count; i < n; i++)
-				if (slotsItems[i].data.name == slotName) return i;
-			return -1;
-		}
-
 		/// <summary>Sets a skin by name (<see cref="SetSkin(Skin)"/>).</summary>
 		public void SetSkin (string skinName) {
 			Skin foundSkin = data.FindSkin(skinName);
@@ -472,7 +452,7 @@ namespace Spine {
 		/// <para>Sets the skin used to look up attachments before looking in the <see cref="SkeletonData.DefaultSkin"/>. If the
 		/// skin is changed, <see cref="UpdateCache()"/> is called.
 		/// </para>
-	 	/// <para>Attachments from the new skin are attached if the corresponding attachment from the old skin was attached.
+		/// <para>Attachments from the new skin are attached if the corresponding attachment from the old skin was attached.
 		/// If there was no old skin, each slot's setup mode attachment is attached from the new skin.
 		/// </para>
 		/// <para>After changing the skin, the visible attachments can be reset to those attached in the setup pose by calling
@@ -505,7 +485,7 @@ namespace Spine {
 		/// <summary>Finds an attachment by looking in the <see cref="Skeleton.Skin"/> and <see cref="SkeletonData.DefaultSkin"/> using the slot name and attachment name.</summary>
 		/// <returns>May be null.</returns>
 		public Attachment GetAttachment (string slotName, string attachmentName) {
-			return GetAttachment(data.FindSlotIndex(slotName), attachmentName);
+			return GetAttachment(data.FindSlot(slotName).index, attachmentName);
 		}
 
 		/// <summary>Finds an attachment by looking in the skin and skeletonData.defaultSkin using the slot index and attachment name.First the skin is checked and if the attachment was not found, the default skin is checked.</summary>

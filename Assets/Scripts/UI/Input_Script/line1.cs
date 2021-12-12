@@ -15,7 +15,7 @@ public class line1 : MonoBehaviour
     public Vector2 TouchPos;Dictionary<int, Vector2> touchStartPos;
     private Vector2 Direction;
     public bool swiped = false;
-    private int dragDirection;
+    public int dragDirection;
     public event Action<int> userInputEvent;
     public float MinMovement;
     public float[] diagonals = { 45, 135, 225, 315 };

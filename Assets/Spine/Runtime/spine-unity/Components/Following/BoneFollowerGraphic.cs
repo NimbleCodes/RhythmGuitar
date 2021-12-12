@@ -37,11 +37,11 @@ using UnityEngine;
 namespace Spine.Unity {
 	using AxisOrientation = BoneFollower.AxisOrientation;
 
-	#if NEW_PREFAB_SYSTEM
+#if NEW_PREFAB_SYSTEM
 	[ExecuteAlways]
-	#else
+#else
 	[ExecuteInEditMode]
-	#endif
+#endif
 	[RequireComponent(typeof(RectTransform)), DisallowMultipleComponent]
 	[AddComponentMenu("Spine/UI/BoneFollowerGraphic")]
 	[HelpURL("http://esotericsoftware.com/spine-unity#BoneFollowerGraphic")]
@@ -103,18 +103,18 @@ namespace Spine.Unity {
 			if (!valid) return;
 
 			skeletonTransform = skeletonGraphic.transform;
-//			skeletonGraphic.OnRebuild -= HandleRebuildRenderer;
-//			skeletonGraphic.OnRebuild += HandleRebuildRenderer;
+			//			skeletonGraphic.OnRebuild -= HandleRebuildRenderer;
+			//			skeletonGraphic.OnRebuild += HandleRebuildRenderer;
 			skeletonTransformIsParent = Transform.ReferenceEquals(skeletonTransform, transform.parent);
 
 			if (!string.IsNullOrEmpty(boneName))
 				bone = skeletonGraphic.Skeleton.FindBone(boneName);
 
-			#if UNITY_EDITOR
+#if UNITY_EDITOR
 			if (Application.isEditor) {
 				LateUpdate();
 			}
-			#endif
+#endif
 		}
 
 		public void LateUpdate () {
@@ -123,10 +123,10 @@ namespace Spine.Unity {
 				return;
 			}
 
-			#if UNITY_EDITOR
+#if UNITY_EDITOR
 			if (!Application.isPlaying)
 				skeletonTransformIsParent = Transform.ReferenceEquals(skeletonTransform, transform.parent);
-			#endif
+#endif
 
 			if (bone == null) {
 				if (string.IsNullOrEmpty(boneName)) return;
@@ -144,13 +144,13 @@ namespace Spine.Unity {
 			float additionalFlipScale = 1;
 			if (skeletonTransformIsParent) {
 				// Recommended setup: Use local transform properties if Spine GameObject is the immediate parent
-				thisTransform.localPosition = new Vector3(followXYPosition ? bone.worldX * scale : thisTransform.localPosition.x,
-														followXYPosition ? bone.worldY * scale : thisTransform.localPosition.y,
+				thisTransform.localPosition = new Vector3(followXYPosition ? bone.WorldX * scale : thisTransform.localPosition.x,
+														followXYPosition ? bone.WorldY * scale : thisTransform.localPosition.y,
 														followZPosition ? 0f : thisTransform.localPosition.z);
 				if (followBoneRotation) thisTransform.localRotation = bone.GetQuaternion();
 			} else {
 				// For special cases: Use transform world properties if transform relationship is complicated
-				Vector3 targetWorldPosition = skeletonTransform.TransformPoint(new Vector3(bone.worldX * scale, bone.worldY * scale, 0f));
+				Vector3 targetWorldPosition = skeletonTransform.TransformPoint(new Vector3(bone.WorldX * scale, bone.WorldY * scale, 0f));
 				if (!followZPosition) targetWorldPosition.z = thisTransform.position.z;
 				if (!followXYPosition) {
 					targetWorldPosition.x = thisTransform.position.x;
@@ -169,14 +169,13 @@ namespace Spine.Unity {
 					if (followSkeletonFlip || maintainedAxisOrientation == AxisOrientation.XAxis) {
 						if ((skeletonLossyScale.x * parentLossyScale.x < 0))
 							boneWorldRotation += 180f;
-					}
-					else {
+					} else {
 						if ((skeletonLossyScale.y * parentLossyScale.y < 0))
 							boneWorldRotation += 180f;
 					}
 
 					Vector3 worldRotation = skeletonTransform.rotation.eulerAngles;
-					if (followLocalScale && bone.scaleX < 0) boneWorldRotation += 180f;
+					if (followLocalScale && bone.ScaleX < 0) boneWorldRotation += 180f;
 					thisTransform.SetPositionAndRotation(targetWorldPosition, Quaternion.Euler(worldRotation.x, worldRotation.y, worldRotation.z + boneWorldRotation));
 				} else {
 					thisTransform.position = targetWorldPosition;
@@ -186,9 +185,9 @@ namespace Spine.Unity {
 												* skeletonLossyScale.y * parentLossyScale.y);
 			}
 
-			Vector3 localScale = followLocalScale ? new Vector3(bone.scaleX, bone.scaleY, 1f) : new Vector3(1f, 1f, 1f);
+			Vector3 localScale = followLocalScale ? new Vector3(bone.ScaleX, bone.ScaleY, 1f) : new Vector3(1f, 1f, 1f);
 			if (followSkeletonFlip)
-				localScale.y *= Mathf.Sign(bone.skeleton.ScaleX * bone.skeleton.ScaleY) * additionalFlipScale;
+				localScale.y *= Mathf.Sign(bone.Skeleton.ScaleX * bone.Skeleton.ScaleY) * additionalFlipScale;
 			thisTransform.localScale = localScale;
 		}
 

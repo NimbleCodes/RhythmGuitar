@@ -442,7 +442,7 @@ namespace Spine {
 		/// <param name="bezierCount">The maximum number of Bezier curves. See <see cref="Shrink(int)"/>.</param>
 		/// <param name="propertyIds">Unique identifiers for the properties the timeline modifies.</param>
 		public CurveTimeline2 (int frameCount, int bezierCount, string propertyId1, string propertyId2)
-			:base (frameCount, bezierCount, propertyId1, propertyId2) {
+			: base(frameCount, bezierCount, propertyId1, propertyId2) {
 		}
 
 		public override int FrameEntries {
@@ -515,7 +515,7 @@ namespace Spine {
 		public TranslateTimeline (int frameCount, int bezierCount, int boneIndex)
 			: base(frameCount, bezierCount, //
 				(int)Property.X + "|" + boneIndex, //
-				(int) Property.Y + "|" + boneIndex) {
+				(int)Property.Y + "|" + boneIndex) {
 			this.boneIndex = boneIndex;
 		}
 
@@ -546,6 +546,26 @@ namespace Spine {
 			}
 
 			float x, y;
+			GetCurveValue(out x, out y, time); // note: reference implementation has code inlined
+
+			switch (blend) {
+			case MixBlend.Setup:
+				bone.x = bone.data.x + x * alpha;
+				bone.y = bone.data.y + y * alpha;
+				break;
+			case MixBlend.First:
+			case MixBlend.Replace:
+				bone.x += (bone.data.x + x - bone.x) * alpha;
+				bone.y += (bone.data.y + y - bone.y) * alpha;
+				break;
+			case MixBlend.Add:
+				bone.x += x * alpha;
+				bone.y += y * alpha;
+				break;
+			}
+		}
+
+		public void GetCurveValue (out float x, out float y, float time) {
 			int i = Search(frames, time, ENTRIES), curveType = (int)curves[i / ENTRIES];
 			switch (curveType) {
 			case LINEAR:
@@ -563,22 +583,6 @@ namespace Spine {
 			default:
 				x = GetBezierValue(time, i, VALUE1, curveType - BEZIER);
 				y = GetBezierValue(time, i, VALUE2, curveType + BEZIER_SIZE - BEZIER);
-				break;
-			}
-
-			switch (blend) {
-			case MixBlend.Setup:
-				bone.x = bone.data.x + x * alpha;
-				bone.y = bone.data.y + y * alpha;
-				break;
-			case MixBlend.First:
-			case MixBlend.Replace:
-				bone.x += (bone.data.x + x - bone.x) * alpha;
-				bone.y += (bone.data.y + y - bone.y) * alpha;
-				break;
-			case MixBlend.Add:
-				bone.x += x * alpha;
-				bone.y += y * alpha;
 				break;
 			}
 		}
@@ -769,10 +773,8 @@ namespace Spine {
 						bone.scaleY = by + (Math.Abs(y) * Math.Sign(by) - by) * alpha;
 						break;
 					case MixBlend.Add:
-						bx = bone.scaleX;
-						by = bone.scaleY;
-						bone.scaleX = bx + (Math.Abs(x) * Math.Sign(bx) - bone.data.scaleX) * alpha;
-						bone.scaleY = by + (Math.Abs(y) * Math.Sign(by) - bone.data.scaleY) * alpha;
+						bone.scaleX = (x - bone.data.scaleX) * alpha;
+						bone.scaleY = (y - bone.data.scaleY) * alpha;
 						break;
 					}
 				} else {
@@ -791,10 +793,8 @@ namespace Spine {
 						bone.scaleY = by + (y - by) * alpha;
 						break;
 					case MixBlend.Add:
-						bx = Math.Sign(x);
-						by = Math.Sign(y);
-						bone.scaleX = Math.Abs(bone.scaleX) * bx + (x - Math.Abs(bone.data.scaleX) * bx) * alpha;
-						bone.scaleY = Math.Abs(bone.scaleY) * by + (y - Math.Abs(bone.data.scaleY) * by) * alpha;
+						bone.scaleX += (x - bone.data.scaleX) * alpha;
+						bone.scaleY += (y - bone.data.scaleY) * alpha;
 						break;
 					}
 				}
@@ -856,8 +856,7 @@ namespace Spine {
 						bone.scaleX = bx + (Math.Abs(x) * Math.Sign(bx) - bx) * alpha;
 						break;
 					case MixBlend.Add:
-						bx = bone.scaleX;
-						bone.scaleX = bx + (Math.Abs(x) * Math.Sign(bx) - bone.data.scaleX) * alpha;
+						bone.scaleX = (x - bone.data.scaleX) * alpha;
 						break;
 					}
 				} else {
@@ -872,8 +871,7 @@ namespace Spine {
 						bone.scaleX = bx + (x - bx) * alpha;
 						break;
 					case MixBlend.Add:
-						bx = Math.Sign(x);
-						bone.scaleX = Math.Abs(bone.scaleX) * bx + (x - Math.Abs(bone.data.scaleX) * bx) * alpha;
+						bone.scaleX += (x - bone.data.scaleX) * alpha;
 						break;
 					}
 				}
@@ -935,8 +933,7 @@ namespace Spine {
 						bone.scaleY = by + (Math.Abs(y) * Math.Sign(by) - by) * alpha;
 						break;
 					case MixBlend.Add:
-						by = bone.scaleY;
-						bone.scaleY = by + (Math.Abs(y) * Math.Sign(by) - bone.data.scaleY) * alpha;
+						bone.scaleY = (y - bone.data.scaleY) * alpha;
 						break;
 					}
 				} else {
@@ -951,8 +948,7 @@ namespace Spine {
 						bone.scaleY = by + (y - by) * alpha;
 						break;
 					case MixBlend.Add:
-						by = Math.Sign(y);
-						bone.scaleY = Math.Abs(bone.scaleY) * by + (y - Math.Abs(bone.data.scaleY) * by) * alpha;
+						bone.scaleY += (y - bone.data.scaleY) * alpha;
 						break;
 					}
 				}
@@ -2077,7 +2073,7 @@ namespace Spine {
 		/// <param name="frame">Between 0 and <code>frameCount</code>, inclusive.</param>
 		public void SetFrame (int frame, Event e) {
 			frames[frame] = e.time;
-			events [frame] = e;
+			events[frame] = e;
 		}
 
 		/// <summary>Fires events for frames &gt; <code>lastTime</code> and &lt;= <code>time</code>.</summary>
@@ -2411,7 +2407,7 @@ namespace Spine {
 		readonly int pathConstraintIndex;
 
 		public PathConstraintPositionTimeline (int frameCount, int bezierCount, int pathConstraintIndex)
-			:base(frameCount, bezierCount, (int)Property.PathConstraintPosition + "|" + pathConstraintIndex) {
+			: base(frameCount, bezierCount, (int)Property.PathConstraintPosition + "|" + pathConstraintIndex) {
 			this.pathConstraintIndex = pathConstraintIndex;
 		}
 

@@ -27,9 +27,9 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Spine.Unity.AttachmentTools {
 
@@ -59,7 +59,7 @@ namespace Spine.Unity.AttachmentTools {
 		public static Attachment GetRemappedClone (this Attachment o, Sprite sprite, Material sourceMaterial,
 			bool premultiplyAlpha = true, bool cloneMeshAsLinked = true, bool useOriginalRegionSize = false,
 			bool pivotShiftsMeshUVCoords = true, bool useOriginalRegionScale = false) {
-			var atlasRegion = premultiplyAlpha ? sprite.ToAtlasRegionPMAClone(sourceMaterial) : sprite.ToAtlasRegion(new Material(sourceMaterial) { mainTexture = sprite.texture } );
+			var atlasRegion = premultiplyAlpha ? sprite.ToAtlasRegionPMAClone(sourceMaterial) : sprite.ToAtlasRegion(new Material(sourceMaterial) { mainTexture = sprite.texture });
 			if (!pivotShiftsMeshUVCoords && o is MeshAttachment) {
 				// prevent non-central sprite pivot setting offsetX/Y and shifting uv coords out of mesh bounds
 				atlasRegion.offsetX = 0;
@@ -69,7 +69,7 @@ namespace Spine.Unity.AttachmentTools {
 			if (useOriginalRegionScale) {
 				var regionAttachment = o as RegionAttachment;
 				if (regionAttachment != null)
-					scale = regionAttachment.width / regionAttachment.regionOriginalWidth;
+					scale = regionAttachment.Width / regionAttachment.RegionOriginalWidth;
 			}
 			return o.GetRemappedClone(atlasRegion, cloneMeshAsLinked, useOriginalRegionSize, scale);
 		}
@@ -88,8 +88,8 @@ namespace Spine.Unity.AttachmentTools {
 				RegionAttachment newAttachment = (RegionAttachment)regionAttachment.Copy();
 				newAttachment.SetRegion(atlasRegion, false);
 				if (!useOriginalRegionSize) {
-					newAttachment.width = atlasRegion.width * scale;
-					newAttachment.height = atlasRegion.height * scale;
+					newAttachment.Width = atlasRegion.width * scale;
+					newAttachment.Height = atlasRegion.height * scale;
 				}
 				newAttachment.UpdateOffset();
 				return newAttachment;

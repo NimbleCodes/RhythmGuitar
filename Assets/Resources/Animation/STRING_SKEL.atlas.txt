@@ -1,0 +1,6 @@
+STRING_SKEL.png
+size:128,16
+filter:Linear,Linear
+pma:true
+string
+bounds:2,2,75,4
