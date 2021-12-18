@@ -22,6 +22,7 @@ public class line1 : MonoBehaviour
     public float windowInDeg = 20f;
     public int lineCount = 0;
     public int SwipeEndCount =0;
+    public GameObject String_skel,String_skel1,String_skel2,String_skel3;
     Switch _switch;
     void Start(){
         Camera = GetComponent<Camera>();
@@ -169,6 +170,18 @@ public class line1 : MonoBehaviour
 
                 if(Linehit){
                     Linehit.enabled =false;
+                    if(Linehit.name == "String_skel"){
+                        StringAnimation.instance.Shake();
+                    }
+                    if(Linehit.name == "String_skel1"){
+                        StringAnimation1.instance.Shake();
+                    }
+                    if(Linehit.name == "String_skel2"){
+                        StringAnimation2.instance.Shake();
+                    }
+                    if(Linehit.name == "String_skel3"){
+                        StringAnimation3.instance.Shake();
+                    }
                     lineCount++;
                 }
             }
