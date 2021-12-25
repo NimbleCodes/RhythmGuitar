@@ -22,10 +22,8 @@ public class HealthManager : MonoBehaviour
     //현재 흘러가는 시간 
     float activeTime = 0;
     //True 이면 HP가 감소하기 시작한다.
-    float correctBurger = 100;
-    float lostIngre = 1;
-    bool decrStart = false;
-    bool areusure = true;
+    float noteCorrect = 100;
+    float lostNote = 1;
     public Action N_Action;
     public static HealthManager Instance;
     [SerializeField]
@@ -43,55 +41,30 @@ public class HealthManager : MonoBehaviour
     void Start()
     {
         healthBar = GetComponent<Slider>();
-        //EventManager.eventManager.BurgerCompleteEvent += OnBurgerComplete;
-        //EventManager.eventManager.GameOverEvent += PopLeaderboard;
-        //EventManager.eventManager.IngrDestroyedEvent += minusHealth;
-        //EventManager.eventManager.IngrReturnedEvent += OnIngrReturned;
-        //EventManager.eventManager.GamePausedEvent += OnGamePaused;
-        //EventManager.eventManager.GameResumeEvent += OnGameResume;
-        startDecr();
     }
     void Update()
     {
         //test
         //hp 증감의 쉬운 계산을 위해 이용된다.
         hpToTime = decrTime/maxHealth;
-        decrHealth();
         isGameOver();
     }
 
-    void OnGamePaused()
-    {
-        decrStart = false;
-    }
-    void OnGameResume()
-    {
-        decrStart = true;
-    }
-
-    #region 
+    #region
     void OnIngrReturned(int trignum)//IngreReturn시에 체력추가
     {
         addHealth(ingrReturned);
     }
 
-    //감소를 시작한다. decrStart를 true로 설정한다.
-    public void startDecr(){
-        decrStart = true;
-    }
-    //감소를 멈춘다. decrStart를 false로 설정한다.
-    public void stopDecr(){
-        decrStart = false;
-    }
     //hp만큼 체력을 회복한다. 
-    public void addHealth(float correctBurger){
-            curHealth += correctBurger;
-            activeTime -= correctBurger*hpToTime;
+    public void addHealth(float noteCorrect){
+            curHealth += noteCorrect;
+            activeTime -= noteCorrect*hpToTime;
     }
     //hp만큼 체력을 감소한다.
     public void minusHealth(){
-            curHealth -= lostIngre;
-            activeTime += lostIngre*hpToTime;
+            curHealth -= lostNote;
+            activeTime += lostNote*hpToTime;
     }
     //decrTime을 감소시킨다.(hp가 다는 속도가 빨라지며, decrTime 은 decrLimit 이하로 내려가지 않는다.)
     public void minusTime(float time){
@@ -106,7 +79,7 @@ public class HealthManager : MonoBehaviour
         activeTime = 0;
     }
     //HP가 시간에 따라 감소하는 것을 실행한다.
-    public void decrHealth(){
+    /*public void decrHealth(){
         //실제로 HP를 감소시키는 기능을 하는 코드
         if(decrStart){
             activeTime += Time.deltaTime;
@@ -131,22 +104,13 @@ public class HealthManager : MonoBehaviour
         if(curHealth >= maxHealth){
             curHealth = maxHealth;
         }
-    }
+    }*/
     //체력이 모두 고갈되었는가를 bool로 return하는 함수.
     public void isGameOver(){
         if(curHealth <= 0){
             //EventManager.eventManager.Invoke_GameOverEvent();
             slidercontroll.SetActive(false);
         }
-    }
-    public void OnBurgerComplete(bool correct)
-    {
-        if(correct)
-            addHealth(correctBurger);
-        else{
-            //Do Nothing
-        }
-
     }
 
     //게임오버시 레더보드, 닉네임입력창 팝업.

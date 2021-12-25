@@ -79,6 +79,7 @@ public class SongManager : MonoBehaviour
         music.timeSamples = 0;
         //프리뷰 타임 조정
         //music.timeSamples += music.clip.frequency * previewTime;
+        GameManager.instance.selectedSong = songName;
 
         music.Play();
 
