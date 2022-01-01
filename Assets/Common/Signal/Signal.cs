@@ -21,6 +21,7 @@ namespace kgh.Signals
         }
         public void Subscribe(string sigId, object implInst, string methodId){
             if(!signals.ContainsKey(sigId)){
+                Debug.LogError(sigId);
                 throw new KeyNotFoundException();
             }
             Delegate temp = Delegate.CreateDelegate(signals[sigId].callbackFormat,implInst, methodId);

@@ -1,0 +1,22 @@
+{
+    "idle" : {
+        "spine-complete" : "idle",
+        "mouse-0" : "stroke1",
+        "mouse-1" : "stroke3"
+    },
+    "stroke1" : {
+        "spine-complete" : "idle",
+        "mouse-0" : "stroke2",
+        "mouse-1" : "stroke3"
+    },
+    "stroke2" : {
+        "spine-complete" : "idle",
+        "mouse-0" : "stroke1",
+        "mouse-1" : "stroke3"
+    },
+    "stroke3" : {
+        "spine-complete" : "idle",
+        "mouse-0" : "stroke1",
+        "mouse-1" : "stroke3"
+    }
+}

@@ -9,11 +9,12 @@ using UnityEngine.Networking;
 public class Scene_1_Manager : MonoBehaviour
 {
     DataIO dataIO;
-    NoteData noteData;
+    public NoteData noteData;
     public AudioSource audioSource;
-    Switch audioLoaded, playAudio;
+    Switch audioLoaded, playAudio, gameOver;
     float delay = 3.0f;
     bool once = true;
+    bool played = false;
 
     void Awake(){
         noteData = new NoteData();
@@ -27,19 +28,34 @@ public class Scene_1_Manager : MonoBehaviour
 
         // audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path + ".mp3"));
         audioSource.clip = Resources.Load<AudioClip>(path);
-        audioLoaded = GameManager.instance.sigs.Register("audio_loaded", typeof(Action<NoteData>));
+        
+        try{
+            audioLoaded = GameManager.instance.sigs.Register("audio_loaded", typeof(Action<NoteData>));
+        }
+        catch(Exception e){
+            Debug.Log(e.Message);
+        }
+        
         playAudio = GameManager.instance.sigs.Register("play_audio", typeof(Action));
-        StartCoroutine(StartDelay());
+        gameOver = GameManager.instance.sigs.Register("game_over", typeof(Action));
+        audioSource.PlayDelayed(delay);
     }
     void Update(){
         if(once){
             audioLoaded.Invoke(noteData);
             once = false;
         }
+        if(audioSource.isPlaying){
+            played = true;
+        }
+        if(played && !audioSource.isPlaying){
+            //game over
+            gameOver.Invoke();
+        }
     }
-    IEnumerator StartDelay(){
-        Debug.LogError("Delay!");
-        yield return new WaitForSeconds(delay);
-        audioSource.Play();
-    }
+    // IEnumerator StartDelay(){
+    //     Debug.LogError("Delay!");
+    //     yield return new WaitForSeconds(delay);
+    //     audioSource.Play();
+    // }
 }

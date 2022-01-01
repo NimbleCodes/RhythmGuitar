@@ -34,6 +34,7 @@ public class line1 : MonoBehaviour
     void Awake(){
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
+        _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int>));
         
         instance = this;
     }
@@ -54,15 +55,17 @@ public class line1 : MonoBehaviour
         {
             float clockwiseDeg = 360f - Quaternion.FromToRotation(Vector2.up, Direction).eulerAngles.z;
             dragDirection = checkDirection_mouse(clockwiseDeg);
-            if(userInputEvent!=null) userInputEvent.Invoke(lineCount);
-                if(lineCount == 1){
-                    PlayAnimation.instance.Stroke1();
-                }if(lineCount == 2){
-                    PlayAnimation.instance.Stroke2();
-                }if(lineCount == 3){
-                    PlayAnimation.instance.Stroke3();
-                }if(lineCount == 4){
-                    PlayAnimation.instance.Stroke1();
+            // if(userInputEvent!=null) 
+            //     userInputEvent.Invoke(lineCount);
+            _switch.Invoke(lineCount);
+            if(lineCount == 1){
+                PlayAnimation.instance.Stroke1();
+            }if(lineCount == 2){
+                PlayAnimation.instance.Stroke2();
+            }if(lineCount == 3){
+                PlayAnimation.instance.Stroke3();
+            }if(lineCount == 4){
+                PlayAnimation.instance.Stroke1();
             }
             enalbeCollider();
             swiped = true;
@@ -95,8 +98,9 @@ public class line1 : MonoBehaviour
                 float clockwiseDeg = 360f - Quaternion.FromToRotation(Vector2.up, Direction).eulerAngles.z;
                 int dirCode = checkDirection_mouse(clockwiseDeg);
                 touchStartPos.Remove(t.fingerId);
-                if (userInputEvent != null) userInputEvent.Invoke(dirCode);
-                
+                // if (userInputEvent != null) userInputEvent.Invoke(dirCode);
+                _switch.Invoke(dirCode);
+
                 if(lineCount == 1){
                     PlayAnimation.instance.Stroke1();
                 }if(lineCount == 2){
