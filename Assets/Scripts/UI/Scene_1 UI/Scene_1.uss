@@ -9,3 +9,6 @@
     position: absolute;
     left: -500px;
 }
+
+.note-display {
+}
