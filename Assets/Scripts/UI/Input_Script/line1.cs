@@ -10,6 +10,7 @@ public class line1 : MonoBehaviour
     public LayerMask LayerMask;
     public static line1 instance;
     public Vector3 mousePos;
+    public Vector3 RaymousePos;
     public float Distance;//mouse drag distance
     float MaxDis = 999f;//raycast ray max distance
     public Vector2 TouchPos;Dictionary<int, Vector2> touchStartPos;
@@ -57,7 +58,7 @@ public class line1 : MonoBehaviour
             dragDirection = checkDirection_mouse(clockwiseDeg);
             // if(userInputEvent!=null) 
             //     userInputEvent.Invoke(lineCount);
-            Debug.Log(dragDirection);
+            Debug.Log(clockwiseDeg);
             _switch.Invoke(dragDirection);
             // if(lineCount == 1){
             //     PlayAnimation.instance.Stroke1();
@@ -123,15 +124,18 @@ public class line1 : MonoBehaviour
     {
         if (Distance < MinMovement)
         {
+            //Debug.Log("Touch");
             return 0;
         }
         else if ((Deg > diagonals[3] + windowInDeg && Deg <= 360) ||
                    (Deg <= diagonals[0] - windowInDeg && Deg >= 0))
         {
+            //Debug.Log("UP");
             return 1;
         }
         else if (Deg > diagonals[0] - windowInDeg && Deg <= diagonals[0] + windowInDeg)
         {
+            //Debug.Log("UP_RIGHT");
             return 1;
         }
         else if (Deg > diagonals[1] - windowInDeg && Deg <= diagonals[1] + windowInDeg)
@@ -158,14 +162,14 @@ public class line1 : MonoBehaviour
     void RayAll(){
         RaycastHit2D[] hits;
         #if UNITY_EDITOR_WIN
-            mousePos = Input.mousePosition;
-            mousePos = Camera.ScreenToWorldPoint(mousePos);
-            hits = Physics2D.RaycastAll(mousePos, transform.right, MaxDis,LayerMask);
+            RaymousePos = Input.mousePosition;
+            RaymousePos = Camera.ScreenToWorldPoint(RaymousePos);
+            hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis,LayerMask);
         #endif
 
         #if UNITY_ANDROID
             TouchPos = Camera.ScreenToWorldPoint(TouchPos);
-            hits = Physics2D.RaycastAll(TouchPos,transform.right,MaxDis);
+            hits = Physics2D.RaycastAll(TouchPos,transform.position,MaxDis);
         #endif
 
         for(int i=0; i < hits.Length; i++)
