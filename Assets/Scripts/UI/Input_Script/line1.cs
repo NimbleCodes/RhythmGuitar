@@ -57,16 +57,17 @@ public class line1 : MonoBehaviour
             dragDirection = checkDirection_mouse(clockwiseDeg);
             // if(userInputEvent!=null) 
             //     userInputEvent.Invoke(lineCount);
-            _switch.Invoke(lineCount);
-            if(lineCount == 1){
-                PlayAnimation.instance.Stroke1();
-            }if(lineCount == 2){
-                PlayAnimation.instance.Stroke2();
-            }if(lineCount == 3){
-                PlayAnimation.instance.Stroke3();
-            }if(lineCount == 4){
-                PlayAnimation.instance.Stroke1();
-            }
+            Debug.Log(dragDirection);
+            _switch.Invoke(dragDirection);
+            // if(lineCount == 1){
+            //     PlayAnimation.instance.Stroke1();
+            // }if(lineCount == 2){
+            //     PlayAnimation.instance.Stroke2();
+            // }if(lineCount == 3){
+            //     PlayAnimation.instance.Stroke3();
+            // }if(lineCount == 4){
+            //     PlayAnimation.instance.Stroke1();
+            // }
             enalbeCollider();
             swiped = true;
             SwipeEndCount = lineCount;
@@ -110,11 +111,11 @@ public class line1 : MonoBehaviour
                 }if(lineCount == 4){
                     PlayAnimation.instance.Stroke1();
                 
-                swiped = true;
-                SwipeEndCount = lineCount;
-                lineCount = 0;
-                _switch.Invoke(SwipeEndCount);
-            }
+                    swiped = true;
+                    SwipeEndCount = lineCount;
+                    lineCount = 0;
+                    _switch.Invoke(SwipeEndCount);
+                }
             }
         }
     }
@@ -154,7 +155,6 @@ public class line1 : MonoBehaviour
             //Debug.Log("UP_LEFT");
         }
     }
-
     void RayAll(){
         RaycastHit2D[] hits;
         #if UNITY_EDITOR_WIN
@@ -191,7 +191,6 @@ public class line1 : MonoBehaviour
                 }
             }
     }
-
     void enalbeCollider(){
         GameObject[] lines;
         lines = GameObject.FindGameObjectsWithTag("Line");

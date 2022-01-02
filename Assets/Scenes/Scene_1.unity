@@ -1459,6 +1459,7 @@ GameObject:
   - component: {fileID: 2077831255}
   - component: {fileID: 2077831254}
   - component: {fileID: 2077831253}
+  - component: {fileID: 2077831257}
   - component: {fileID: 2077831252}
   m_Layer: 0
   m_Name: Spine GameObject (rhythm)
@@ -1476,17 +1477,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2077831251}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c601f078e9ac484d8254890da32582a, type: 3}
+  m_Script: {fileID: 11500000, guid: b356697a7718beb4c914e503a0b42ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonAnimation: {fileID: 2077831253}
-  strokePlaying: 0
-  stateArr:
-  - idle
-  - stroke1
-  - stroke2
-  - stroke3
-  curState: 
 --- !u!114 &2077831253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1588,3 +1581,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2077831257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077831251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c2f52ef2403174cbca5df97e4dda57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

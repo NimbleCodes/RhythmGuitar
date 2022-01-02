@@ -22,9 +22,13 @@ public class Character_0 : MonoBehaviour
     }
     void Start(){
         animCtrl.animationState.Complete += (Spine.TrackEntry trackEntry)=>{ signal.Invoke("spine-complete"); };
+        GameManager.instance.sigs.Subscribe("OnMouseBehavior", this, "OnMouseBehavior");
 
         curState = "idle";
         animCtrl.PlayAnim("idle", false, 1.0f);
+    }
+    void OnMouseBehavior(int key){
+        signal.Invoke("mouse-" + key % 2);
     }
 }
 public class Transition
