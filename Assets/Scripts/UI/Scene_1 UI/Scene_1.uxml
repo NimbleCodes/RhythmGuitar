@@ -5,7 +5,7 @@
             <ui:VisualElement name="pause_btn" style="background-image: resource(&apos;UI Sprites/remove&apos;); width: 20%; height: 50%; left: 10%;" />
         </ui:VisualElement>
         <ui:VisualElement name="note_display" style="height: 100%; width: 80%; background-color: rgba(255, 0, 0, 0.25); justify-content: center; background-image: resource(&apos;ui_image/rail&apos;); -unity-background-scale-mode: stretch-to-fill;">
-            <ui:VisualElement name="point" style="background-image: resource(&apos;ui_image/point&apos;); width: 5%; height: 50%; left: -5%;" />
+            <ui:VisualElement name="point" style="background-image: resource(&apos;ui_image/point&apos;); width: 5%; height: 50%; left: 0;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="wrapper_2" class="horizontal-wrapper" style="height: 80%; width: 100%;">

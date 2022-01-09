@@ -35,7 +35,7 @@ public class line1 : MonoBehaviour
     void Awake(){
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
-        _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int>));
+        _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int, int>));
         
         instance = this;
     }
@@ -58,8 +58,8 @@ public class line1 : MonoBehaviour
             dragDirection = checkDirection_mouse(clockwiseDeg);
             // if(userInputEvent!=null) 
             //     userInputEvent.Invoke(lineCount);
-            Debug.Log(clockwiseDeg);
-            _switch.Invoke(dragDirection);
+            // Debug.Log(clockwiseDeg);
+            _switch.Invoke(dragDirection, lineCount);
             // if(lineCount == 1){
             //     PlayAnimation.instance.Stroke1();
             // }if(lineCount == 2){
@@ -101,7 +101,7 @@ public class line1 : MonoBehaviour
                 int dirCode = checkDirection_mouse(clockwiseDeg);
                 touchStartPos.Remove(t.fingerId);
                 // if (userInputEvent != null) userInputEvent.Invoke(dirCode);
-                _switch.Invoke(dirCode);
+                _switch.Invoke(dirCode, lineCount);
 
                 if(lineCount == 1){
                     PlayAnimation.instance.Stroke1();
