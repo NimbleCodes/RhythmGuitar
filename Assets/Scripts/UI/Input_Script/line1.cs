@@ -61,7 +61,7 @@ public class line1 : MonoBehaviour
             float clockwiseDeg = 360f - Quaternion.FromToRotation(Vector2.up, Direction).eulerAngles.z;
             dragDirection = checkDirection_mouse(clockwiseDeg);
             Debug.Log(clockwiseDeg);
-            _switch.Invoke(dragDirection);
+            _switch.Invoke(dragDirection, lineCount);
 
             enalbeCollider();
             swiped = true;
