@@ -26,16 +26,19 @@ public class line1 : MonoBehaviour
     public GameObject String_skel,String_skel1,String_skel2,String_skel3;
     Switch _switch;
     void Start(){
-        Camera = GetComponent<Camera>();
+        //Camera = GetComponent<Camera>();
     }
     void Update(){
         processMobileInput();//유니티 모바일일때
         ProcessInput();//PC
     }
     void Awake(){
+        Camera = GetComponent<Camera>();
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
         _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int>));
+        RayAll();
+        enalbeCollider();
         
         instance = this;
     }
@@ -56,19 +59,8 @@ public class line1 : MonoBehaviour
         {
             float clockwiseDeg = 360f - Quaternion.FromToRotation(Vector2.up, Direction).eulerAngles.z;
             dragDirection = checkDirection_mouse(clockwiseDeg);
-            // if(userInputEvent!=null) 
-            //     userInputEvent.Invoke(lineCount);
             Debug.Log(clockwiseDeg);
             _switch.Invoke(dragDirection);
-            // if(lineCount == 1){
-            //     PlayAnimation.instance.Stroke1();
-            // }if(lineCount == 2){
-            //     PlayAnimation.instance.Stroke2();
-            // }if(lineCount == 3){
-            //     PlayAnimation.instance.Stroke3();
-            // }if(lineCount == 4){
-            //     PlayAnimation.instance.Stroke1();
-            // }
             enalbeCollider();
             swiped = true;
             SwipeEndCount = lineCount;
