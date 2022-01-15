@@ -36,9 +36,10 @@ public class line1 : MonoBehaviour
         Camera = GetComponent<Camera>();
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
-        _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int>));
+        _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int,int>));
         RayAll();
         enalbeCollider();
+
         
         instance = this;
     }
@@ -61,6 +62,7 @@ public class line1 : MonoBehaviour
             dragDirection = checkDirection_mouse(clockwiseDeg);
             Debug.Log(clockwiseDeg);
             _switch.Invoke(dragDirection);
+
             enalbeCollider();
             swiped = true;
             SwipeEndCount = lineCount;
@@ -93,7 +95,7 @@ public class line1 : MonoBehaviour
                 int dirCode = checkDirection_mouse(clockwiseDeg);
                 touchStartPos.Remove(t.fingerId);
                 // if (userInputEvent != null) userInputEvent.Invoke(dirCode);
-                _switch.Invoke(dirCode);
+                _switch.Invoke(dirCode, lineCount);
 
                 if(lineCount == 1){
                     PlayAnimation.instance.Stroke1();
