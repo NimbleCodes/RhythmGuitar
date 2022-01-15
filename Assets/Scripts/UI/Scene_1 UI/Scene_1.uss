@@ -4,8 +4,8 @@
 }
 
 .note-indicator {
-    width: 50px;
-    height: 50px;
+    width: 32px;
+    height: 40px;
     position: absolute;
     left: -500px;
 }
@@ -14,10 +14,10 @@
 }
 
 .note-num-indicator {
-    width: 25px;
-    height: 25px;
+    width: 14px;
+    height: 18px;
     position: relative;
-    left: 25px;
+    left: 16px;
     right: 0;
-    top: 25px;
+    top: 20px;
 }
