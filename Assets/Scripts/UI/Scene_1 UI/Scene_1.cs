@@ -39,17 +39,33 @@ public class Scene_1 : MonoBehaviour
             for(int i = 0; i < noteData.notes.Count; i++){
                 for(int j = 0; j < noteData.notes[i].Count; j++){
                     if(noteData.notes[i][j] + noteDelay >= time && noteData.notes[i][j] + noteDelay < time + visibleAreaSize){
-                        VisualElement noteIndicator;
+                        VisualElement noteIndicator, noteNumIndicator;
+                        noteNumIndicator = new VisualElement();
                         if(cnt < noteIndicators.Count){
                             noteIndicator = noteIndicators[cnt];
+                            foreach(var item in noteIndicator.Children()){
+                                if(item.ClassListContains("note-num-indicator")){
+                                    noteNumIndicator = (VisualElement)item;
+                                }
+                            }
                         }
                         else{
                             noteIndicator = new VisualElement();
                             noteIndicator.AddToClassList("note-indicator");
+                            noteNumIndicator = new VisualElement();
+                            noteNumIndicator.AddToClassList("note-num-indicator");
+                            noteIndicator.Add(noteNumIndicator);
                             noteDisplay.Add(noteIndicator);
                             noteIndicators.Add(noteIndicator);
                         }
-                        noteIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[i]);
+                        if(i > 5){
+                            noteIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[13]);
+                            noteNumIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[i + 6]);
+                        }
+                        else{
+                            noteIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[12]);
+                            noteNumIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[i]);
+                        }
                         noteIndicator.style.left = noteDisplay.worldBound.width * ((noteData.notes[i][j] + noteDelay - time) / visibleAreaSize);
                         cnt++;
                     }
@@ -84,21 +100,7 @@ public class Scene_1 : MonoBehaviour
         noteData = _noteData;
         // Debug.Log(noteData.notes.Count);
     }
-    void OnMouseBehavior(int val){
-        int closestNote = -1;
-        float closestNoteVal = float.MaxValue;
-        for(int i = 0; i < noteData.notes.Count; i++){
-            for(int j = 0; j < noteData.notes[i].Count; j++){
-                if(noteData.notes[i][j] < audioSource.time)
-                    continue;
-                if(noteData.notes[i][j] >= audioSource.time + visibleAreaSize)
-                    break;
-                if(noteData.notes[i][j] < closestNoteVal){
-                    closestNote = i;
-                    closestNoteVal = noteData.notes[i][j];
-                }
-            }
-        }
-        //Debug.Log(closestNote + " " + val);
+    void OnMouseBehavior(int val, int lineCount){
+        Debug.Log(val + ", " + lineCount);
     }
 }
