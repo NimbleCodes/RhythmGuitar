@@ -101,6 +101,6 @@ public class Scene_1 : MonoBehaviour
         // Debug.Log(noteData.notes.Count);
     }
     void OnMouseBehavior(int val, int lineCount){
-        
+        Debug.Log(val + ", " + lineCount);
     }
 }

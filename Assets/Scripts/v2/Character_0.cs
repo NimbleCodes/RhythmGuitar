@@ -16,10 +16,8 @@ public class Character_0 : MonoBehaviour
         animCtrl = GetComponent<AnimCtrl>();
         transitions = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(Resources.Load<TextAsset>("v2/Character_0").text);
         signal += (string msg)=>{
-            if(transitions[curState].ContainsKey(msg)){
-                curState = transitions[curState][msg];
-                animCtrl.PlayAnim(curState, false, 1.0f);
-            }
+            curState = transitions[curState][msg];
+            animCtrl.PlayAnim(curState, false, 1.0f);
         };
     }
     void Start(){

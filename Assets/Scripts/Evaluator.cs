@@ -22,8 +22,19 @@ public class Evaluator : MonoBehaviour
             indexVals.Add(0);
         }
     }
-    private void OnMouseBehavior(int direction, int lineCount){
-        //Debug.Log(direction + ", " + lineCount);
+    private void OnMouseBehavior(int val){
+        Debug.Log("Hello World!" + val);
+        float curTime = scene_1.audioSource.time;
+        for(int i = 0; i < indexVals.Count; i++){
+            while(scene_1.noteData.notes[i][indexVals[i]] < scene_1.audioSource.time - window){
+                indexVals[i]++;
+            }
+            if(scene_1.noteData.notes[i][indexVals[i]] < scene_1.audioSource.time + window){
+                //evaluation here
+                evalVals.Add(100);
+                indexVals[i]++;
+            }
+        }
     }
     void GameOver(){
         Debug.Log("Game Over");
