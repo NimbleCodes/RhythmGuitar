@@ -27,8 +27,8 @@ public class Character_0 : MonoBehaviour
         curState = "idle";
         animCtrl.PlayAnim("idle", false, 1.0f);
     }
-    void OnMouseBehavior(int key, int lineCount){
-        signal.Invoke("mouse-" + (key-1));
+    void OnMouseBehavior(int key){
+        signal.Invoke("mouse-" + key % 2);
     }
 }
 public class Transition

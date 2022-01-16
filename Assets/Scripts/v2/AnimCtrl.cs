@@ -27,6 +27,5 @@ public class AnimCtrl : MonoBehaviour
             return;
         }
         animationState.SetAnimation(0, stateName, loop).TimeScale = timeScale;
-        
     }
 }
