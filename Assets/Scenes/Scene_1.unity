@@ -616,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7edfa242275348448ed63725d19c6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Input_line1: {fileID: 0}
+  Input_line1: {fileID: 173744196}
   LayerMask:
     serializedVersion: 2
     m_Bits: 8
@@ -705,7 +705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 568062088}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: strings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
