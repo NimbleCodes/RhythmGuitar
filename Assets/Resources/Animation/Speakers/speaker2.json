@@ -1,0 +1,102 @@
+{
+"skeleton": { "hash": "33SUnrreqnY", "spine": "4.0.45", "x": -42.92, "y": -33.06, "width": 79, "height": 95 },
+"bones": [
+	{ "name": "root" },
+	{ "name": "TORSO", "parent": "root" },
+	{ "name": "DRUM1", "parent": "TORSO", "x": 5.96, "y": 13.91 },
+	{ "name": "DRUM2", "parent": "TORSO", "x": -11.17, "y": -16.3 },
+	{ "name": "DRUM3", "parent": "TORSO", "x": 9.64, "y": -16.3 },
+	{ "name": "bone4", "parent": "root", "x": 95.15, "y": 49.21 },
+	{ "name": "bone5", "parent": "root", "x": 95.15, "y": 10.65 },
+	{ "name": "DRUM1_2", "parent": "DRUM1", "transform": "noScale" },
+	{ "name": "DRUM2_2", "parent": "DRUM2", "transform": "noScale" },
+	{ "name": "DRUM3_2", "parent": "DRUM3", "transform": "noScale" }
+],
+"slots": [
+	{ "name": "speaker1_body", "bone": "TORSO", "attachment": "speaker1_body" },
+	{ "name": "speaker1_3_2", "bone": "DRUM3", "attachment": "speaker1_3_2" },
+	{ "name": "speaker1_3_1", "bone": "DRUM3_2", "attachment": "speaker1_3_1" },
+	{ "name": "speaker1_2_2", "bone": "DRUM2", "attachment": "speaker1_2_2" },
+	{ "name": "speaker1_2_1", "bone": "DRUM2_2", "attachment": "speaker1_2_1" },
+	{ "name": "speaker1_1_2", "bone": "DRUM1", "attachment": "speaker1_1_2" },
+	{ "name": "speaker1_1_1", "bone": "DRUM1_2", "attachment": "speaker1_1_1" }
+],
+"transform": [
+	{
+		"name": "DRUM1_TRANS",
+		"order": 1,
+		"bones": [ "DRUM1", "DRUM2", "DRUM3" ],
+		"target": "bone4",
+		"mixRotate": 0,
+		"mixX": 0,
+		"mixShearY": 0
+	},
+	{
+		"name": "DRUM2_TRANS",
+		"bones": [ "DRUM1_2", "DRUM2_2", "DRUM3_2" ],
+		"target": "bone5",
+		"mixRotate": 0,
+		"mixX": 0,
+		"mixShearY": 0
+	}
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"speaker1_1_1": {
+				"speaker1_1_1": { "x": 0.12, "y": -0.01, "width": 22, "height": 20 }
+			},
+			"speaker1_1_2": {
+				"speaker1_1_2": { "x": 0.62, "y": -2.01, "width": 41, "height": 36 }
+			},
+			"speaker1_2_1": {
+				"speaker1_2_1": { "x": 0.25, "y": 0.21, "width": 12, "height": 10 }
+			},
+			"speaker1_2_2": {
+				"speaker1_2_2": { "x": 0.25, "y": -0.29, "width": 22, "height": 19 }
+			},
+			"speaker1_3_1": {
+				"speaker1_3_1": { "x": 0.43, "y": 0.21, "width": 12, "height": 10 }
+			},
+			"speaker1_3_2": {
+				"speaker1_3_2": { "x": 0.43, "y": -0.29, "width": 22, "height": 19 }
+			},
+			"speaker1_body": {
+				"speaker1_body": { "x": -3.42, "y": 14.44, "width": 79, "height": 95 }
+			}
+		}
+	}
+],
+"animations": {
+	"VIBE": {
+		"bones": {
+			"bone5": {
+				"scale": [
+					{
+						"curve": [ 0.026, 1.065, 0.067, 1.244, 0.026, 1.042, 0.04, 1.173 ]
+					},
+					{ "time": 0.1, "x": 1.244, "y": 1.244 },
+					{ "time": 0.3333 }
+				]
+			},
+			"bone4": {
+				"scale": [
+					{
+						"curve": [ 0.034, 1.048, 0.067, 1.057, 0.043, 1.053, 0.067, 1.057 ]
+					},
+					{ "time": 0.1, "x": 1.057, "y": 1.057 },
+					{ "time": 0.3333 }
+				]
+			},
+			"TORSO": {
+				"scale": [
+					{},
+					{ "time": 0.1, "x": 1.019, "y": 1.019 },
+					{ "time": 0.3333 }
+				]
+			}
+		}
+	}
+}
+}

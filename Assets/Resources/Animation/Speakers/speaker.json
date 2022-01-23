@@ -1,0 +1,102 @@
+{
+"skeleton": { "hash": "W0qnCt1wtW0", "spine": "4.0.45", "x": -43.83, "y": -54.14, "width": 80.26, "height": 96.51 },
+"bones": [
+	{ "name": "root" },
+	{ "name": "TORSO", "parent": "root" },
+	{ "name": "DRUM1", "parent": "TORSO", "x": 0.13, "y": 16.16 },
+	{ "name": "DRUM2", "parent": "TORSO", "x": -2.32, "y": -10.17 },
+	{ "name": "DRUM3", "parent": "TORSO", "x": 18.49, "y": -10.17 },
+	{ "name": "bone4", "parent": "root", "x": 95.15, "y": 49.21 },
+	{ "name": "bone5", "parent": "root", "x": 95.15, "y": 10.65 },
+	{ "name": "DRUM1_2", "parent": "DRUM1", "transform": "noScale" },
+	{ "name": "DRUM2_2", "parent": "DRUM2", "transform": "noScale" },
+	{ "name": "DRUM3_2", "parent": "DRUM3", "transform": "noScale" }
+],
+"slots": [
+	{ "name": "speaker2_body", "bone": "TORSO", "attachment": "speaker2_body" },
+	{ "name": "speaker2_3_2", "bone": "DRUM3", "attachment": "speaker2_3_2" },
+	{ "name": "speaker2_3_1", "bone": "DRUM3_2", "attachment": "speaker2_3_1" },
+	{ "name": "speaker2_2_2", "bone": "DRUM2", "attachment": "speaker2_2_2" },
+	{ "name": "speaker2_2_1", "bone": "DRUM2_2", "attachment": "speaker2_2_1" },
+	{ "name": "speaker2_1_2", "bone": "DRUM1", "attachment": "speaker2_1_2" },
+	{ "name": "speaker2_1_1", "bone": "DRUM1_2", "attachment": "speaker2_1_1" }
+],
+"transform": [
+	{
+		"name": "DRUM1_TRANS",
+		"order": 1,
+		"bones": [ "DRUM1", "DRUM2", "DRUM3" ],
+		"target": "bone4",
+		"mixRotate": 0,
+		"mixX": 0,
+		"mixShearY": 0
+	},
+	{
+		"name": "DRUM2_TRANS",
+		"bones": [ "DRUM1_2", "DRUM2_2", "DRUM3_2" ],
+		"target": "bone5",
+		"mixRotate": 0,
+		"mixX": 0,
+		"mixShearY": 0
+	}
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"speaker2_1_1": {
+				"speaker2_1_1": { "x": -0.27, "y": 0.55, "width": 22, "height": 20 }
+			},
+			"speaker2_1_2": {
+				"speaker2_1_2": { "x": 0.23, "y": 2.55, "width": 41, "height": 36 }
+			},
+			"speaker2_2_1": {
+				"speaker2_2_1": { "x": 0.17, "y": -0.12, "width": 12, "height": 10 }
+			},
+			"speaker2_2_2": {
+				"speaker2_2_2": { "x": 0.17, "y": 0.38, "width": 22, "height": 19 }
+			},
+			"speaker2_3_1": {
+				"speaker2_3_1": { "x": 0.36, "y": -0.12, "width": 12, "height": 10 }
+			},
+			"speaker2_3_2": {
+				"speaker2_3_2": { "x": 0.36, "y": 0.38, "width": 22, "height": 19 }
+			},
+			"speaker2_body": {
+				"speaker2_body": { "x": -3.65, "y": -5.79, "width": 79, "height": 95 }
+			}
+		}
+	}
+],
+"animations": {
+	"VIBE": {
+		"bones": {
+			"bone5": {
+				"scale": [
+					{
+						"curve": [ 0.026, 1.065, 0.067, 1.244, 0.026, 1.042, 0.04, 1.173 ]
+					},
+					{ "time": 0.1, "x": 1.244, "y": 1.244 },
+					{ "time": 0.3333 }
+				]
+			},
+			"bone4": {
+				"scale": [
+					{
+						"curve": [ 0.034, 1.048, 0.067, 1.057, 0.043, 1.053, 0.067, 1.057 ]
+					},
+					{ "time": 0.1, "x": 1.057, "y": 1.057 },
+					{ "time": 0.3333 }
+				]
+			},
+			"TORSO": {
+				"scale": [
+					{},
+					{ "time": 0.1, "x": 1.019, "y": 1.019 },
+					{ "time": 0.3333 }
+				]
+			}
+		}
+	}
+}
+}
