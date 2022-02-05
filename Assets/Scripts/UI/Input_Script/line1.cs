@@ -39,7 +39,6 @@ public class line1 : MonoBehaviour
         _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int,int>));
         RayAll();
         enalbeCollider();
-
         
         instance = this;
     }
@@ -60,13 +59,13 @@ public class line1 : MonoBehaviour
         {
             float clockwiseDeg = 360f - Quaternion.FromToRotation(Vector2.up, Direction).eulerAngles.z;
             dragDirection = checkDirection_mouse(clockwiseDeg);
-            Debug.Log(clockwiseDeg);
-            _switch.Invoke(dragDirection, SwipeEndCount);
 
             enalbeCollider();
             swiped = true;
             SwipeEndCount = lineCount;
             lineCount = 0;
+
+            _switch.Invoke(dragDirection, SwipeEndCount);
         }
     }
     void processMobileInput()

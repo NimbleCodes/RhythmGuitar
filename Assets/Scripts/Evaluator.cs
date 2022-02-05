@@ -7,8 +7,6 @@ public class Evaluator : MonoBehaviour
 {
     Scene_1_Manager scene_1;
     const float visibleAreaSize = 3.0f;
-    List<int> indexVals;
-    List<float> evalVals;
     const float lastChance = 0.1f;
     const float window = 0.25f;
 
@@ -18,12 +16,10 @@ public class Evaluator : MonoBehaviour
     private void Start(){
         GameManager.instance.sigs.Subscribe("OnMouseBehavior", this, "OnMouseBehavior");
         GameManager.instance.sigs.Subscribe("game_over", this, "GameOver");
-        for(int i = 0; i < scene_1.noteData.notes.Count; i++){
-            indexVals.Add(0);
-        }
     }
     private void OnMouseBehavior(int direction, int lineCount){
-        //Debug.Log(direction + ", " + lineCount);
+        //1->up stroke 2->down stroke
+        Debug.Log(direction + ", " + lineCount);
     }
     void GameOver(){
         Debug.Log("Game Over");

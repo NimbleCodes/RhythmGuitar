@@ -37,7 +37,7 @@ public class NoteSync : MonoBehaviour
 
         playSync = GetComponent<AudioSource>();
         music = FindObjectOfType<SongManager>().GetComponent<AudioSource>();
-        data = dataObj.GetComponent<Scene_1>().noteData;
+        data = dataObj.GetComponent<Scene_1>()._noteData;
         //generator = GameObject.Find("GeneratorNote").GetComponent<GeneratorNote>();  //노트 생성자에 적용.
 
         scrollSpeed = 10.0f;
