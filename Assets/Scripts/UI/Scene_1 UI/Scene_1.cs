@@ -6,6 +6,7 @@ using kgh.Signals;
 
 public class Scene_1 : MonoBehaviour
 {
+    public ParticleSystem noteParticles;
     UIDocument uiDocument;
     VisualElement rootVisualElement;
     VisualElement noteDisplay, strings, mainDisplay, other;
@@ -24,11 +25,21 @@ public class Scene_1 : MonoBehaviour
 
     List<(int, float)> notes;
 
+    void OnGeometryChanged(GeometryChangedEvent e){
+        noteParticles.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(
+            e.newRect.xMin,
+            Screen.height - e.newRect.center.y,     //Screen pixel & VisualElement y=0 position is inverted
+            0
+        ));
+    }
     void Awake(){
         uiDocument = GetComponent<UIDocument>();
         rootVisualElement = uiDocument.rootVisualElement;
         noteDisplay = rootVisualElement.Query<VisualElement>("note_display");
         noteIndicators = new List<VisualElement>();
+
+        noteDisplay.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+        noteDisplay.style.opacity = 0.75f;
 
         notes = new List<(int, float)>();
     }
@@ -40,14 +51,27 @@ public class Scene_1 : MonoBehaviour
     void Update(){
         int visibleIndStart = -1;
         int visibleIndFin = -1;
+        bool playParticle = false;
         for(int i = 0; i < notes.Count; i++){
             if(notes[i].Item2 + noteDelay >= time && visibleIndStart == -1){
                 visibleIndStart = i;
+                if(Mathf.Abs(notes[i].Item2 + noteDelay - time) < 0.01f){
+                    playParticle = true;
+                }
             }
             if(notes[i].Item2 + noteDelay > time + visibleAreaSize){
                 visibleIndFin = i - 1;
                 break;
             }
+        }
+        if(visibleIndStart == -1){
+            Debug.Log("NoMoreNotes!");
+            
+            if(time >= audioSource.clip.length){
+                Debug.Log("GameOver!");
+            }
+            time += Time.deltaTime;
+            return;
         }
         int cnt = 0;
         for(int i = visibleIndStart ; i < visibleIndFin + 1; i++){
@@ -63,9 +87,17 @@ public class Scene_1 : MonoBehaviour
             }
             else{
                 noteIndicator = new VisualElement();
+                noteIndicator.style.height = Screen.currentResolution.height * 0.2f * 0.5f;
+                noteIndicator.style.width = Screen.currentResolution.height * 0.2f * 0.5f * 0.66f;
                 noteIndicator.AddToClassList("note-indicator");
                 noteNumIndicator = new VisualElement();
                 noteNumIndicator.AddToClassList("note-num-indicator");
+                noteNumIndicator.style.height = noteIndicator.style.height.value.value * 0.3f;
+                noteNumIndicator.style.width = noteNumIndicator.style.height;
+                
+                noteNumIndicator.style.left = noteIndicator.style.width.value.value - noteNumIndicator.style.height.value.value;
+                noteNumIndicator.style.top = 0;
+                
                 noteIndicator.Add(noteNumIndicator);
                 noteDisplay.Add(noteIndicator);
                 noteIndicators.Add(noteIndicator);
@@ -82,8 +114,13 @@ public class Scene_1 : MonoBehaviour
             cnt++;
         }
         while(cnt < noteIndicators.Count){
-            noteIndicators[cnt].style.left = -500; 
+            noteIndicators[cnt].style.left = -500;
             cnt++;
+        }
+        if(playParticle){
+            noteParticles.Clear();
+            noteParticles.Play();
+            playParticle = false;
         }
         time += Time.deltaTime;
     }
