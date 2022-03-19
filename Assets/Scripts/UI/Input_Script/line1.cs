@@ -39,6 +39,7 @@ public class line1 : MonoBehaviour
         _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int,int>));
         RayAll();
         enalbeCollider();
+        LayerMask = LayerMask.GetMask("Lines");
         
         instance = this;
     }
@@ -94,7 +95,7 @@ public class line1 : MonoBehaviour
                 int dirCode = checkDirection_mouse(clockwiseDeg);
                 touchStartPos.Remove(t.fingerId);
                 // if (userInputEvent != null) userInputEvent.Invoke(dirCode);
-                _switch.Invoke(dirCode, lineCount);
+                // _switch.Invoke(dirCode, lineCount);
 
                 if(lineCount == 1){
                     PlayAnimation.instance.Stroke1();
@@ -104,12 +105,12 @@ public class line1 : MonoBehaviour
                     PlayAnimation.instance.Stroke3();
                 }if(lineCount == 4){
                     PlayAnimation.instance.Stroke1();
-                
-                    swiped = true;
-                    SwipeEndCount = lineCount;
-                    lineCount = 0;
-                    _switch.Invoke(SwipeEndCount);
                 }
+                
+                swiped = true;
+                SwipeEndCount = lineCount;
+                lineCount = 0;
+                _switch.Invoke(dirCode, SwipeEndCount);
             }
         }
     }
@@ -157,13 +158,15 @@ public class line1 : MonoBehaviour
         #if UNITY_EDITOR_WIN
             RaymousePos = Input.mousePosition;
             RaymousePos = Camera.ScreenToWorldPoint(RaymousePos);
-            hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis,LayerMask);
+            hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis);
         #endif
 
-        #if UNITY_ANDROID
-            TouchPos = Camera.ScreenToWorldPoint(TouchPos);
-            hits = Physics2D.RaycastAll(TouchPos,transform.position,MaxDis);
-        #endif
+        // #if UNITY_ANDROID
+        //     TouchPos = Camera.ScreenToWorldPoint(TouchPos);
+        //     hits = Physics2D.RaycastAll(TouchPos, transform.position, MaxDis);
+        // #endif
+
+        Debug.Log(hits.Length);
 
         for(int i=0; i < hits.Length; i++)
             {
