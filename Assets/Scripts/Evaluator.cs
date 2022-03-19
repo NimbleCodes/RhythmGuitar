@@ -19,7 +19,7 @@ public class Evaluator : MonoBehaviour
     }
     private void OnMouseBehavior(int direction, int lineCount){
         //1->up stroke 2->down stroke
-        // Debug.Log(direction + ", " + lineCount);
+        Debug.Log(direction + ", " + lineCount);
     }
     void GameOver(){
         Debug.Log("Game Over");
