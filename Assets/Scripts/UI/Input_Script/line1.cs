@@ -160,10 +160,10 @@ public class line1 : MonoBehaviour
             hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis,LayerMask);
         #endif
 
-        #if UNITY_ANDROID
-            TouchPos = Camera.ScreenToWorldPoint(TouchPos);
-            hits = Physics2D.RaycastAll(TouchPos,transform.position,MaxDis);
-        #endif
+        // #if UNITY_ANDROID
+        //     TouchPos = Camera.ScreenToWorldPoint(TouchPos);
+        //     hits = Physics2D.RaycastAll(TouchPos,transform.position,MaxDis);
+        // #endif
 
         for(int i=0; i < hits.Length; i++)
             {
