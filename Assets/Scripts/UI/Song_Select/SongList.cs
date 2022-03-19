@@ -17,11 +17,6 @@ public class SongList : MonoBehaviour
     void Start()
     {
         AddItem();
-<<<<<<< Updated upstream
-        //template.AddComponent<SongItem>();
-        template = Resources.LoadAll<GameObject>("Prefabs/SongSelect/SongListPrefabs/");
-        for(int i=0; i < template.Length; i++)
-=======
 
         // foreach(var item in newItems){
         //     Debug.Log(item.songName);
@@ -29,9 +24,8 @@ public class SongList : MonoBehaviour
         //     Debug.Log(item.songLevel);
         // }
 
-        template.AddComponent<SongItem>();
+        // template.AddComponent<SongItem>();
         for(int i=0; i < dirCnt; i++)
->>>>>>> Stashed changes
         {
             GameObject obj = Instantiate(template[i]);
             SongItem sItem = obj.GetComponent<SongItem>();
