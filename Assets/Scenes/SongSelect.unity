@@ -335,8 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee2cfa761ec500429e55237589c7524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 1419235130451208914, guid: c9383336b435aea4f9cca7055620c40d, type: 3}
+  items: []
   songDisplayPrefab: {fileID: 1316510581469079553, guid: 182969f0e55d127458bd5645f646c004,
     type: 3}
   songItem: {fileID: 1953434147}
