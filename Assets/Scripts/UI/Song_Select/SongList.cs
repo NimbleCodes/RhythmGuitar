@@ -10,18 +10,18 @@ public class SongList : MonoBehaviour
 
     public SongItem songItem;
     public List<NewSongItem> newItems = new List<NewSongItem>();
-    public GameObject[] template;
+    public GameObject template;
 
     int dirCnt;
 
     void Start()
     {
         AddItem();
-        //template.AddComponent<SongItem>();
-        template = Resources.LoadAll<GameObject>("Prefabs/SongSelect/SongListPrefabs/");
-        for(int i=0; i < template.Length; i++)
+        template.AddComponent<SongItem>();
+
+        for(int i=0; i < dirCnt; i++)
         {
-            GameObject obj = Instantiate(template[i]);
+            GameObject obj = Instantiate(template);
             SongItem sItem = obj.GetComponent<SongItem>();
 
             sItem.songName = newItems[i].songName;
