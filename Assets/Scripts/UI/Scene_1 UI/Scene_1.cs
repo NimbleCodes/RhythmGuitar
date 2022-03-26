@@ -48,22 +48,25 @@ public class Scene_1 : MonoBehaviour
         GameManager.instance.sigs.Subscribe("OnMouseBehavior", this, "OnMouseBehavior");
         time = -visibleAreaSize;
     }
-    void Update(){
+    async void Update(){
         int visibleIndStart = -1;
-        int visibleIndFin = -1;
+        int visibleIndFin = notes.Count - 1;
         bool playParticle = false;
         for(int i = 0; i < notes.Count; i++){
-            if(notes[i].Item2 + noteDelay >= time && visibleIndStart == -1){
+            if(notes[i].Item2 >= time && visibleIndStart == -1){
                 visibleIndStart = i;
-                if(Mathf.Abs(notes[i].Item2 + noteDelay - time) < 0.01f){
+                if(Mathf.Abs(notes[i].Item2 - time) < 0.01f){
                     playParticle = true;
                 }
             }
-            if(notes[i].Item2 + noteDelay > time + visibleAreaSize){
+            if(notes[i].Item2 > time + visibleAreaSize){
                 visibleIndFin = i - 1;
                 break;
             }
         }
+
+
+        int cnt = 0;
         if(visibleIndStart == -1){
             Debug.Log("NoMoreNotes!");
             
@@ -71,9 +74,15 @@ public class Scene_1 : MonoBehaviour
                 Debug.Log("GameOver!");
             }
             time += Time.deltaTime;
+
+            while(cnt < noteIndicators.Count){
+                noteIndicators[cnt].style.left = -500;
+                cnt++;
+            }
             return;
         }
-        int cnt = 0;
+
+        cnt = 0;
         for(int i = visibleIndStart ; i < visibleIndFin + 1; i++){
             VisualElement noteIndicator, noteNumIndicator;
             noteNumIndicator = new VisualElement();
