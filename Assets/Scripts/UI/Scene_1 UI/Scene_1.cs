@@ -6,6 +6,8 @@ using kgh.Signals;
 
 public class Scene_1 : MonoBehaviour
 {
+    public static Scene_1 instance;
+
     public ParticleSystem noteParticles;
     UIDocument uiDocument;
     VisualElement rootVisualElement;
@@ -33,6 +35,8 @@ public class Scene_1 : MonoBehaviour
         ));
     }
     void Awake(){
+        instance = this;
+
         uiDocument = GetComponent<UIDocument>();
         rootVisualElement = uiDocument.rootVisualElement;
         noteDisplay = rootVisualElement.Query<VisualElement>("note_display");
@@ -149,7 +153,8 @@ public class Scene_1 : MonoBehaviour
             _noteData.notes[minInd].RemoveAt(0);
         }
     }
-    void OnMouseBehavior(int val, int lineCount){
-        
+    public void Print(string message){
+        Label db = rootVisualElement.Query<Label>("Debug");
+        db.text = message;
     }
 }

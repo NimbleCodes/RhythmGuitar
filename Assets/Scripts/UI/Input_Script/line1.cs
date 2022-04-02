@@ -30,14 +30,14 @@ public class line1 : MonoBehaviour
     }
     void Update(){
         processMobileInput();//유니티 모바일일때
-        ProcessInput();//PC
+        //ProcessInput();//PC
     }
     void Awake(){
         Camera = GetComponent<Camera>();
         Vector2 screenSize = new Vector2(Screen.width, Screen.height);
         MinMovement = Mathf.Max(screenSize.x, screenSize.y) / 70f;
         _switch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int,int>));
-        RayAll();
+        // RayAll();
         enalbeCollider();
         
         instance = this;
@@ -154,12 +154,13 @@ public class line1 : MonoBehaviour
     }
     void RayAll(){
         RaycastHit2D[] hits;
-        RaymousePos = Input.mousePosition;
-        RaymousePos = Camera.ScreenToWorldPoint(RaymousePos);
-        hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis, LayerMask);
+        // RaymousePos = Input.mousePosition;
+        // RaymousePos = Camera.ScreenToWorldPoint(RaymousePos);
+        // hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis, LayerMask);
 
-        // TouchPos = Camera.ScreenToWorldPoint(TouchPos);
-        // hits = Physics2D.RaycastAll(TouchPos,transform.position,MaxDis);
+        TouchPos = Camera.ScreenToWorldPoint(TouchPos);
+        Scene_1.instance.Print(TouchPos.x.ToString() + ", " + TouchPos.y.ToString());
+        hits = Physics2D.RaycastAll(TouchPos, transform.position, MaxDis);
 
         for(int i=0; i < hits.Length; i++)
             {
