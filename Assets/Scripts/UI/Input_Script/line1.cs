@@ -154,16 +154,12 @@ public class line1 : MonoBehaviour
     }
     void RayAll(){
         RaycastHit2D[] hits;
-        #if UNITY_EDITOR_WIN
-            RaymousePos = Input.mousePosition;
-            RaymousePos = Camera.ScreenToWorldPoint(RaymousePos);
-            hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis,LayerMask);
-        #endif
+        RaymousePos = Input.mousePosition;
+        RaymousePos = Camera.ScreenToWorldPoint(RaymousePos);
+        hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis, LayerMask);
 
-        // #if UNITY_ANDROID
-        //     TouchPos = Camera.ScreenToWorldPoint(TouchPos);
-        //     hits = Physics2D.RaycastAll(TouchPos,transform.position,MaxDis);
-        // #endif
+        // TouchPos = Camera.ScreenToWorldPoint(TouchPos);
+        // hits = Physics2D.RaycastAll(TouchPos,transform.position,MaxDis);
 
         for(int i=0; i < hits.Length; i++)
             {

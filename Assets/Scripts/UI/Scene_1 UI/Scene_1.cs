@@ -9,7 +9,7 @@ public class Scene_1 : MonoBehaviour
     public ParticleSystem noteParticles;
     UIDocument uiDocument;
     VisualElement rootVisualElement;
-    VisualElement noteDisplay, strings, mainDisplay, other;
+    VisualElement noteDisplay, strings, mainDisplay, other, noteRoute;
     // bool geometryChanged = false;
     public NoteData _noteData{
         private set;
@@ -36,6 +36,7 @@ public class Scene_1 : MonoBehaviour
         uiDocument = GetComponent<UIDocument>();
         rootVisualElement = uiDocument.rootVisualElement;
         noteDisplay = rootVisualElement.Query<VisualElement>("note_display");
+        noteRoute = noteDisplay.Query<VisualElement>("notes");
         noteIndicators = new List<VisualElement>();
 
         noteDisplay.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
@@ -96,19 +97,12 @@ public class Scene_1 : MonoBehaviour
             }
             else{
                 noteIndicator = new VisualElement();
-                noteIndicator.style.height = Screen.currentResolution.height * 0.2f * 0.5f;
-                noteIndicator.style.width = Screen.currentResolution.height * 0.2f * 0.5f * 0.66f;
                 noteIndicator.AddToClassList("note-indicator");
                 noteNumIndicator = new VisualElement();
                 noteNumIndicator.AddToClassList("note-num-indicator");
-                noteNumIndicator.style.height = noteIndicator.style.height.value.value * 0.3f;
-                noteNumIndicator.style.width = noteNumIndicator.style.height;
-                
-                noteNumIndicator.style.left = noteIndicator.style.width.value.value - noteNumIndicator.style.height.value.value;
-                noteNumIndicator.style.top = 0;
                 
                 noteIndicator.Add(noteNumIndicator);
-                noteDisplay.Add(noteIndicator);
+                noteRoute.Add(noteIndicator);
                 noteIndicators.Add(noteIndicator);
             }
             if(notes[i].Item1 > 5){
