@@ -30,7 +30,7 @@ public class Character_0 : MonoBehaviour
         animCtrl.PlayAnim("idle", false, 1.0f);
     }
     void OnMouseBehavior(int key, int lineCount){
-        signal.Invoke("mouse-" + (key-1));
+        signal.Invoke("mouse-" + key);
     }
 }
 public class Transition

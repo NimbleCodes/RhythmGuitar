@@ -50,7 +50,6 @@ public class Scene_1 : MonoBehaviour
     }
     void Start(){
         GameManager.instance.sigs.Subscribe("audio_loaded", this, "AudioLoaded");
-        GameManager.instance.sigs.Subscribe("OnMouseBehavior", this, "OnMouseBehavior");
         time = -visibleAreaSize;
     }
     async void Update(){
@@ -153,6 +152,7 @@ public class Scene_1 : MonoBehaviour
             _noteData.notes[minInd].RemoveAt(0);
         }
     }
+
     public void Print(string message){
         Label db = rootVisualElement.Query<Label>("Debug");
         db.text = message;
