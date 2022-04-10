@@ -43,7 +43,7 @@ public class SongList : MonoBehaviour
         // string basePath = Application.dataPath + "/Resources/Audio/";
         // DirectoryInfo directoryInfo = new DirectoryInfo(basePath);
 
-        TextAsset DirList = Resources.Load<TextAsset>("TestFiles/DirList");
+        TextAsset DirList = Resources.Load<TextAsset>("TestFiles/DirList"); //디렉토리 리스트파일 작성, 리스트 파일을 읽어 디렉토리내 리소스를 정상로딩
         using(StringReader strReader = new StringReader(DirList.text)){
             while((fileName = strReader.ReadLine()) != null){
                 dirCnt++;

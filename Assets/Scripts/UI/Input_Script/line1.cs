@@ -11,6 +11,7 @@ public class line1 : MonoBehaviour
     public static line1 instance;
     public Vector3 mousePos;
     public Vector3 RaymousePos;
+    public Vector3 RayTouchPos;
     public float Distance;//mouse drag distance
     float MaxDis = 999f;//raycast ray max distance
     public Vector2 TouchPos;Dictionary<int, Vector2> touchStartPos;
@@ -95,21 +96,12 @@ public class line1 : MonoBehaviour
                 touchStartPos.Remove(t.fingerId);
                 // if (userInputEvent != null) userInputEvent.Invoke(dirCode);
                 _switch.Invoke(dirCode, lineCount);
-
-                if(lineCount == 1){
-                    PlayAnimation.instance.Stroke1();
-                }if(lineCount == 2){
-                    PlayAnimation.instance.Stroke2();
-                }if(lineCount == 3){
-                    PlayAnimation.instance.Stroke3();
-                }if(lineCount == 4){
-                    PlayAnimation.instance.Stroke1();
+                swiped = true;
+                SwipeEndCount = lineCount;
+                lineCount = 0;
                 
-                    swiped = true;
-                    SwipeEndCount = lineCount;
-                    lineCount = 0;
-                    _switch.Invoke(SwipeEndCount);
-                }
+                _switch.Invoke(SwipeEndCount);
+                
             }
         }
     }
@@ -157,8 +149,8 @@ public class line1 : MonoBehaviour
         // RaymousePos = Input.mousePosition;
         // RaymousePos = Camera.ScreenToWorldPoint(RaymousePos);
         // hits = Physics2D.RaycastAll(RaymousePos, transform.position, MaxDis, LayerMask);
-
-        TouchPos = Camera.ScreenToWorldPoint(TouchPos);
+        RayTouchPos = Input.GetTouch(0).position;
+        RayTouchPos = Camera.ScreenToWorldPoint(RayTouchPos);
         Scene_1.instance.Print(TouchPos.x.ToString() + ", " + TouchPos.y.ToString());
         hits = Physics2D.RaycastAll(TouchPos, transform.position, MaxDis);
 
