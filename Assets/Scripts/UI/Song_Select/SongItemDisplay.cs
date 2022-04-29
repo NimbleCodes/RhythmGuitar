@@ -71,7 +71,7 @@ void Start()
                 songManager.SelectSong(item.songName);
                 clickCnt = 0; // ESC를 눌러 돌아왔을때 제대로 작동하기 위함
                 //if (!player.isEditMode)
-                    SceneManager.LoadSceneAsync("Scene_1");
+                    SceneManager.LoadSceneAsync("VerticalTest");
             }
 
 

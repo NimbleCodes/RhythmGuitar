@@ -1081,32 +1081,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
---- !u!114 &519420030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c0bbcef45f5cc46a0ae0e3599c48be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layermask:
-    serializedVersion: 2
-    m_Bits: 8
-  lineCount: 0
-  Distance: 0
-  MinMovement: 0
-  diagonals:
-  - 45
-  - 135
-  - 225
-  - 315
-  windowInDeg: 20
-  dragDirection: 0
-  SwipeEndCount: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
