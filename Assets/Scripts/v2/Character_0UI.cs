@@ -5,15 +5,15 @@ using UnityEngine;
 using Newtonsoft.Json;
 using kgh.Signals;
 
-public class Character_0 : MonoBehaviour
+public class Character_0UI : MonoBehaviour
 {
-    AnimCtrl animCtrl;
+    AnimCtrlUI animCtrl;
     Dictionary<string, Dictionary<string, string>> transitions;
     string curState;
     public event Action<string> signal;
 
     void Awake(){
-        animCtrl = GetComponent<AnimCtrl>();
+        animCtrl = GetComponent<AnimCtrlUI>();
         transitions = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(Resources.Load<TextAsset>("v2/Character_0").text);
         signal += (string msg)=>{
             if(transitions[curState].ContainsKey(msg)){
@@ -32,9 +32,4 @@ public class Character_0 : MonoBehaviour
     void OnMouseBehavior(int key, int lineCount){
         signal.Invoke("mouse-" + key);
     }
-}
-public class Transition
-{
-    public string dest;
-    public string eventType;
 }
