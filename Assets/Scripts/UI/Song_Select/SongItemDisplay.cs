@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using kgh.Signals;
 
 public class SongItemDisplay : MonoBehaviour
 {
@@ -19,14 +21,14 @@ public class SongItemDisplay : MonoBehaviour
     static int clickCnt = 0;
     Player player;
 
-
-void Start()
+    void Start()
     {
         if (item != null) Prime(item);
 
         songManager = GameObject.Find("SongSelect").GetComponent<SongManager>();
 
         player = FindObjectOfType<Player>();
+
     }
 
     public void Prime(SongItem item)
@@ -40,6 +42,8 @@ void Start()
             textArtist.text = item.songArtist;
         if (sprite != null)
             sprite.sprite = item.sprite;
+
+        onClick += PeekPanel.instance.OnPreview;
     }   
 
     public void Click()
@@ -51,8 +55,9 @@ void Start()
         else
         {
             // 같은 항목을 두번 클릭하면 플레이
-            if (songCheck.Equals(item.songName))
+            if (songCheck.Equals(item.songName)){
                 clickCnt++;
+            }
             else
             {
                 clickCnt = 0;

@@ -42,7 +42,8 @@ public class Scene_1_Manager : MonoBehaviour
     }
     void Update(){
         if(once){
-            audioLoaded.Invoke(noteData);
+            if(audioLoaded != null)
+                audioLoaded.Invoke(noteData);
             once = false;
         }
         if(audioSource.isPlaying){
@@ -50,7 +51,8 @@ public class Scene_1_Manager : MonoBehaviour
         }
         if(played && !audioSource.isPlaying){
             //game over
-            gameOver.Invoke();
+            if(gameOver != null)
+                gameOver.Invoke();
         }
     }
     // IEnumerator StartDelay(){
