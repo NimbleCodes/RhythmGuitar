@@ -65,19 +65,19 @@ public class SongItemDisplay : MonoBehaviour
                 clickCnt++;
             }
 
-            Debug.Log(item.songName);
+            // Debug.Log(item.songName);
             // 노래 미리듣기
             songManager.PlayAudioPreview(item.songName);
 
 
             // Play씬 전환및 전달할 곡데이터
-            if (clickCnt.Equals(2))
-            {
-                songManager.SelectSong(item.songName);
-                clickCnt = 0; // ESC를 눌러 돌아왔을때 제대로 작동하기 위함
-                //if (!player.isEditMode)
-                    SceneManager.LoadSceneAsync("VerticalTest");
-            }
+            // if (clickCnt.Equals(2))
+            // {
+            //     songManager.SelectSong(item.songName);
+            //     clickCnt = 0; // ESC를 눌러 돌아왔을때 제대로 작동하기 위함
+            //     //if (!player.isEditMode)
+            //         SceneManager.LoadSceneAsync("VerticalTest");
+            // }
 
 
         }
