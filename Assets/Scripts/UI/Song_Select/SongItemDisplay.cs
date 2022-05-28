@@ -43,7 +43,7 @@ public class SongItemDisplay : MonoBehaviour
         if (sprite != null)
             sprite.sprite = item.sprite;
 
-        onClick += PeekPanel.instance.OnPreview;
+        //onClick += PeekPanel.instance.OnPreview;
     }   
 
     public void Click()
@@ -65,9 +65,10 @@ public class SongItemDisplay : MonoBehaviour
                 clickCnt++;
             }
 
-            // Debug.Log(item.songName);
+            Debug.Log(item.songName);
             // 노래 미리듣기
             songManager.PlayAudioPreview(item.songName);
+            PeekPanel.instance.OnPreview(item);
 
 
             // Play씬 전환및 전달할 곡데이터

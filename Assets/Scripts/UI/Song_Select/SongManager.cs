@@ -6,14 +6,15 @@ using UnityEngine.SceneManagement;
 public class SongManager : MonoBehaviour
 {
     public AudioSource music;
-    public AudioClip clip{
+    /*public AudioClip clip{
         set{
             //do nothing
         }
         get{
             return music.clip;
         }
-    }
+    }*/
+    public AudioClip clip;
 
     public string songName;
     public bool isGameFin;
@@ -72,13 +73,12 @@ public class SongManager : MonoBehaviour
     // 곡이 선택되었을 때 미리듣기
     public void PlayAudioPreview(string songName)
     {
-        clip = Resources.Load(songName+"/"+songName) as AudioClip;
+        clip = Resources.Load("Audio/" +songName+"/"+songName) as AudioClip;
         music.clip = clip;
-        Debug.Log(songName + "check");
         //프리뷰 타임 원위치
         music.timeSamples = 0;
         //프리뷰 타임 조정
-        //music.timeSamples += music.clip.frequency * previewTime;
+        music.timeSamples += music.clip.frequency * previewTime;
         GameManager.instance.selectedSong = songName;
 
         music.Play();
