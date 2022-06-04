@@ -402,6 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music: {fileID: 1976078113}
+  clip: {fileID: 0}
   songName: 
   isGameFin: 0
   isInputESC: 0
