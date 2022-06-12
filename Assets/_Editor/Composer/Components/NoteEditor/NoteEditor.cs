@@ -1,4 +1,3 @@
-#if UNITY_ENGINE
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -196,4 +195,3 @@ public class NoteEditor : kgh.UI.Component
         noteData.fileName = fileName;
     }
 }
-#endif

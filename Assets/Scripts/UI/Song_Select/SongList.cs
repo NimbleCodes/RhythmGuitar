@@ -48,6 +48,7 @@ public class SongList : MonoBehaviour
         using(StringReader strReader = new StringReader(DirList.text)){
             while((fileName = strReader.ReadLine()) != null){
                 dirCnt++;
+                Debug.Log("Audio/" + fileName + "/" + fileName + "_data");
                 TextAsset dataFile = Resources.Load<TextAsset>("Audio/" + fileName + "/" + fileName + "_data");
                 string data = "";
                 using(StringReader strReader2 = new StringReader(dataFile.text)){
@@ -61,7 +62,7 @@ public class SongList : MonoBehaviour
                         else if (splitedData[0] == "Difficult")
                             songItem.songLevel = splitedData[1];
                         else if (splitedData[0] == "ImageFileName")
-                            songItem.sprite = Resources.Load<Sprite>(fileName + "/" + fileName + "_Img");
+                            songItem.sprite = Resources.Load<Sprite>("Audio/" + fileName + "/" + fileName + "_Img");
                     }
                 }
                 newItems.Add(new NewSongItem(songItem.songName, songItem.songLevel, songItem.songArtist, songItem.sprite));

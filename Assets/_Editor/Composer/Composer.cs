@@ -1,4 +1,3 @@
-#if UNITY_ENGINE
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -49,4 +48,3 @@ public class Composer : EditorWindow
         destroy.Invoke();
     }
 }
-#endif

@@ -21,7 +21,7 @@ public class Scene_1_Manager : MonoBehaviour
         dataIO = new DataIO(noteData);
 
         string path;
-        path = GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
+        path = "Audio/" + GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
         dataIO.Load(path + "_data");
         audioSource.clip = Resources.Load<AudioClip>(path);
         

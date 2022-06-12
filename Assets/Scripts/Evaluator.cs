@@ -113,6 +113,7 @@ public class Evaluator : MonoBehaviour
         int ansLC = (ansDir == 1) ? notesSingleList[0].lane : notesSingleList[0].lane - 4;
         Debug.Log(diff + " : (" + ansDir + ", " + ansLC + ") : (" + direction + ", " + lineCount + ")");
 
+        //diff 가 노트 이내 일 경우에만 입력이 되도록 수정
         notesSingleList.RemoveAt(0);
         numNotesInLane--;
 

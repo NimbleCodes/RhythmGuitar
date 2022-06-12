@@ -1,4 +1,3 @@
-#if UNITY_ENGINE
 using System;
 using System.IO;
 using UnityEngine;
@@ -193,4 +192,3 @@ public class AudioPlayer : kgh.UI.Component
         visibleAreaChanged.Invoke(VisibleArea.start, VisibleArea.size);
     }
 }
-#endif

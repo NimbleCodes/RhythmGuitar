@@ -86,6 +86,6 @@ public class SongManager : MonoBehaviour
     }
 
     public void StopAudioPreview(){
-        music.stop();
+        music.Stop();
     }
 }

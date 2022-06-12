@@ -1,4 +1,3 @@
-#if UNITY_ENGINE
 
 using System;
 using UnityEngine;
@@ -83,5 +82,3 @@ namespace kgh.UI{
         }
     }
 }
-
-#endif

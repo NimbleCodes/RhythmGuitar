@@ -1,4 +1,3 @@
-#if UNITY_ENGINE
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -90,4 +89,3 @@ public class Lane : kgh.UI.Component
         bpm = _bpm;
     }
 }
-#endif
