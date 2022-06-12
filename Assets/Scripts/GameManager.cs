@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public Exchange sigs;
     public static GameManager instance;
-    public string selectedSong{set; get;}    
+    public string selectedSong;  
 
     void Awake(){
         instance = this;

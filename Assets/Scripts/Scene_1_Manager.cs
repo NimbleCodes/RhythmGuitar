@@ -12,32 +12,25 @@ public class Scene_1_Manager : MonoBehaviour
     public NoteData noteData;
     public AudioSource audioSource;
     Switch audioLoaded, playAudio, gameOver;
-    float delay = 3.0f;
+    public float delay = 2.0f;
     bool once = true;
     bool played = false;
 
     void Awake(){
         noteData = new NoteData();
         dataIO = new DataIO(noteData);
-    }
-    void Start(){
+
         string path;
         path = GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
-
         dataIO.Load(path + "_data");
-
-        // audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path + ".mp3"));
         audioSource.clip = Resources.Load<AudioClip>(path);
         
-        try{
-            audioLoaded = GameManager.instance.sigs.Register("audio_loaded", typeof(Action<NoteData>));
-        }
-        catch(Exception e){
-            Debug.Log(e.Message);
-        }
-        
+        audioLoaded = GameManager.instance.sigs.Register("audio_loaded", typeof(Action<NoteData>));
         playAudio = GameManager.instance.sigs.Register("play_audio", typeof(Action));
         gameOver = GameManager.instance.sigs.Register("game_over", typeof(Action));
+    }
+    void Start(){
+        // audioSource.clip = NAudioPlayer.FromMp3Data(File.ReadAllBytes(path + ".mp3"));
         audioSource.PlayDelayed(delay);
     }
     void Update(){
@@ -55,9 +48,8 @@ public class Scene_1_Manager : MonoBehaviour
                 gameOver.Invoke();
         }
     }
-    // IEnumerator StartDelay(){
-    //     Debug.LogError("Delay!");
-    //     yield return new WaitForSeconds(delay);
-    //     audioSource.Play();
-    // }
+    IEnumerator StartDelay(){
+        yield return new WaitForSeconds(delay);
+        audioSource.Play();
+    }
 }
