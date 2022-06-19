@@ -53,6 +53,7 @@ public class DataIO
     public void Load(string path)
     {
         TextAsset txtAsset = Resources.Load<TextAsset>(path);
+        Debug.Log(path);
         // Debug.Log(path);
         // Debug.LogError(txtAsset == null);
         // string data = "";
