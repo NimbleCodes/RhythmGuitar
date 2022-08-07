@@ -43,7 +43,7 @@ public class DataWriter
 
         for(int i = 0; i < N_data.notes.Count; i++){
             for(int j = 0; j < N_data.notes[i].Count; j++){
-                data += N_data.notes[i][j].ToString() + "," + i.ToString() + "\n";
+                data += N_data.notes[i][j].ToString() + "," + i.ToString() + N_data.notes[i][j+1].ToString() + "\n";
             }
         }
 

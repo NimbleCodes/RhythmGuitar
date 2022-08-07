@@ -79,17 +79,20 @@ public class DataParse
             return;
         }
 
-        string[] splitedData = new string[2];
+        string[] splitedData = new string[3];
         float time = 0;
         int lineNumber = 1;
+        int noteType = 0;
         splitedData = data.Split(',');
 
         float.TryParse(splitedData[0], out time);
         int.TryParse(splitedData[1], out lineNumber);
+        int.TryParse(splitedData[2], out noteType);
         
         while(lineNumber >= Data.notes.Count){
             Data.notes.Add(new List<float>());
         }
         Data.notes[lineNumber].Add(time);
+        Data.notes[lineNumber].Add(noteType);
     }
 }
