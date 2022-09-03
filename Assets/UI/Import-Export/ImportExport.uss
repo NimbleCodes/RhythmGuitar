@@ -1,0 +1,4 @@
+.unity-button {
+    min-height: 30px;
+    min-width: 60px;
+}

@@ -1,0 +1,43 @@
+.vertical-indicator {
+    width: 1px;
+    height: 0;
+}
+
+.horizontal-indicator {
+    width: 100%;
+    height: 1px;
+}
+
+.note-indicator {
+    background-image: resource('Sprites/note-indicator');
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    transform-origin: center;
+    translate: -7.5px -7.5px;
+}
+
+.long-note-start {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-image: resource('Sprites/lnote-indicator-1');
+    translate: -7.5px -7.5px;
+}
+
+.long-note-finish {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-image: resource('Sprites/lnote-indicator-2');
+    translate: -7.5px -7.5px;
+}
+
+.long-note-middle {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-image: resource('Sprites/lnote-indicator-3');
+    translate: 0 -7.5px;
+    transform-origin: center;
+}

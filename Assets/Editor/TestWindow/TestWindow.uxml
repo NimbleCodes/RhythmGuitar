@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Editor/TestWindow/TestWindow.uss?fileID=7433441132597879392&amp;guid=7daedba2fd53a5447813360038bc4731&amp;type=3#TestWindow" />
+    <ui:VisualElement name="container-0" style="width: 100%; height: 100%; flex-direction: column;">
+        <ui:VisualElement name="container-1" style="width: 100%; height: 50%; flex-direction: row; border-bottom-color: rgba(255, 255, 255, 255); border-bottom-width: 1px;">
+            <ui:VisualElement name="mcad" style="height: 100%; width: 75%; border-right-color: rgba(255, 255, 255, 255); border-right-width: 1px;" />
+            <ui:VisualElement name="import-export" style="height: 100%; width: 25%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="note-editor" style="width: 100%; height: 50%;" />
+    </ui:VisualElement>
+</ui:UXML>

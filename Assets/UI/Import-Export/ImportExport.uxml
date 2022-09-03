@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Import-Export/ImportExport.uss?fileID=7433441132597879392&amp;guid=396dc73893739754e9b9353e491af702&amp;type=3#ImportExport" />
+    <ui:VisualElement name="importer" style="height: 30%; flex-direction: column; align-items: center; border-bottom-color: rgb(128, 128, 128); border-bottom-width: 1px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255);">
+        <ui:VisualElement name="path-continer" style="height: 50%; width: 100%; align-items: center; justify-content: center;">
+            <ui:TextField picking-mode="Ignore" name="path-display" style="width: 100%; height: 95%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="import-btn-container" style="width: 100%; height: 50%; align-items: flex-end; justify-content: center;">
+            <ui:Button text="Open Explorer" display-tooltip-when-elided="true" name="import-btn" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="exporter" style="height: 70%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-left-width: 0; border-right-width: 0; border-bottom-width: 0; border-top-width: 0;">
+        <ui:VisualElement name="form" style="height: 80%;" />
+        <ui:VisualElement name="export-btn-container" style="height: 20%; align-items: flex-end; justify-content: center; border-bottom-color: rgb(128, 128, 128); border-bottom-width: 1px;">
+            <ui:Button text="Export" display-tooltip-when-elided="true" name="export-btn" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -19,7 +19,7 @@ public class Scene_1_Manager : MonoBehaviour
     void Awake(){
         noteData = new NoteData();
         dataIO = new DataIO(noteData);
-
+        
         string path;
         path = "Audio/" + GameManager.instance.selectedSong + "/" + GameManager.instance.selectedSong;
         dataIO.Load(path + "_data");
