@@ -1,0 +1,9 @@
+.vertical-indicator {
+    width: 1px;
+    height: 0;
+}
+
+.horizontal-indicator {
+    width: 100%;
+    height: 1px;
+}

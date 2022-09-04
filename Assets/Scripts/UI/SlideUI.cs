@@ -13,12 +13,10 @@ public class SlideUI : MonoBehaviour
     StringAnimationUI1 string1;
     StringAnimationUI2 string2;
     StringAnimationUI3 string3;
-    const float maxInputTime = 1f;
-    float inputTimer = 0;
+
+    int prevDirection = -1;
     Vector3 prevTouchPos;
     bool validTouch;
-    bool touchDir;
-    int numStrings = 0;
     Switch inputSwitch;
 
     void Awake(){
@@ -30,14 +28,9 @@ public class SlideUI : MonoBehaviour
         stringsXBound.x = strings[0].GetComponent<BoxCollider2D>().bounds.min.x;
         stringsXBound.y = strings[0].GetComponent<BoxCollider2D>().bounds.max.x;
         
-        // Debug.Log(stringsXBound.x + ", " + stringsXBound.y);
-        
-        // string tot = "";
         for(int i = 0; i < strings.Length; i++){
             stringYPos.Add(strings[i].GetComponent<RectTransform>().position.y);
-            // tot += strings[i].GetComponent<RectTransform>().position.y + ", ";
         }
-        // Debug.Log(tot);
 
         string0 = strings[0].GetComponent<StringAnimationUI>();
         string1 = strings[1].GetComponent<StringAnimationUI1>();
@@ -45,79 +38,58 @@ public class SlideUI : MonoBehaviour
         string3 = strings[3].GetComponent<StringAnimationUI3>();
     }
     void Update(){
-        // Touch touch;
-        // if(Input.touches.Length > 0)
-        //     touch = Input.GetTouch(0);
-        // else
-        //     return;
+        validTouch = false;
         foreach(var touch in Input.touches){
             if(touch.position.x >= stringsXBound.x && touch.position.x <= stringsXBound.y){
+                if(validTouch)
+                    continue;
+                validTouch = true;
                 switch(touch.phase){
                     case TouchPhase.Began:
-                        validTouch = false;
-                        if(touch.position.y >= strings[0].transform.position.y){
-                            validTouch = true;
-                            touchDir = true;
-                        }
-                        if(touch.position.y <= strings[(strings.Length - 1)].transform.position.y){
-                            validTouch = true;
-                            touchDir = false;
-                        }
+                        prevTouchPos = touch.position;
                     break;
                     case TouchPhase.Moved:
-                        if(validTouch){
-                            if(inputTimer > maxInputTime){
-                                //touch.phase = TouchPhase.Ended;
-                            }
-                            else {
-                                if(
-                                    ((touchDir && stringYPos[0] > touch.position.y && stringYPos[0] < prevTouchPos.y) ||
-                                    (!touchDir && stringYPos[0] < touch.position.y && stringYPos[0] > prevTouchPos.y))
-                                )
-                                {
-                                    string0.Shake();
-                                    numStrings++;
-                                }
-                                if(
-                                    ((touchDir && stringYPos[1] > touch.position.y && stringYPos[1] < prevTouchPos.y) ||
-                                    (!touchDir && stringYPos[1] < touch.position.y && stringYPos[1] > prevTouchPos.y))
-                                )
-                                {
-                                    string1.Shake();   
-                                    numStrings++;     
-                                }
-                                if(
-                                    ((touchDir && stringYPos[2] > touch.position.y && stringYPos[2] < prevTouchPos.y) ||
-                                    (!touchDir && stringYPos[2] < touch.position.y && stringYPos[2] > prevTouchPos.y))
-                                )
-                                {
-                                    string2.Shake();    
-                                    numStrings++;    
-                                }
-                                if(
-                                    ((touchDir && stringYPos[3] > touch.position.y && stringYPos[3] < prevTouchPos.y) ||
-                                    (!touchDir && stringYPos[3] < touch.position.y && stringYPos[3] > prevTouchPos.y))
-                                )
-                                {
-                                    string3.Shake();   
-                                    numStrings++;
-                                }
-                            }
-                            inputTimer += Time.deltaTime;
-                            prevTouchPos = touch.position;
+                        float min, max;
+                        min = Mathf.Min(touch.position.y, prevTouchPos.y);
+                        max = Mathf.Max(touch.position.y, prevTouchPos.y);
+                        if(stringYPos[0] >= min && stringYPos[0] <= max){
+                            string0.Shake();
                         }
+                        if(stringYPos[1] >= min && stringYPos[1] <= max){
+                            string1.Shake();
+                        }
+                        if(stringYPos[2] >= min && stringYPos[2] <= max){
+                            string2.Shake();
+                        }
+                        if(stringYPos[3] >= min && stringYPos[3] <= max){
+                            string3.Shake();
+                        }
+                        prevTouchPos = touch.position;
+
+                        int direction;
+                        if(touch.position.y < prevTouchPos.y){
+                            //direction down
+                            direction = 0;
+                        }
+                        else{
+                            //direction up
+                            direction = 1;
+                        }
+                        if(prevDirection == -1){
+                            inputSwitch.Invoke(direction, 1);
+                        }
+                        else{
+                            if(prevDirection != direction){
+                                inputSwitch.Invoke(direction, 1);
+                                Debug.Log("switch");
+                            }
+                        }
+                        prevDirection = direction;
                     break;
                     case TouchPhase.Ended:
-                        inputSwitch.Invoke((touchDir ? 0 : 1), numStrings);
-
-                        validTouch = false;
-                        inputTimer = 0;
-                        numStrings = 0;
+                        prevDirection = -1;
                     break;
                 }
-            }
-            else{
-                validTouch = false;
             }
         }
     }

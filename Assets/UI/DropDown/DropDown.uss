@@ -1,0 +1,9 @@
+.dd-element {
+    border-left-color: rgb(128, 128, 128);
+    border-right-color: rgb(128, 128, 128);
+    border-top-color: rgb(128, 128, 128);
+    border-bottom-color: rgb(128, 128, 128);
+    border-bottom-width: 1px;
+    width: 100%;
+    height: 25px;
+}

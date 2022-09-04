@@ -25,6 +25,9 @@ public class Evaluator : MonoBehaviour
     int wrong = 0;
     int right = 0;
 
+    NoteHitFX fx;
+    GameObject firstNote;
+
     private void Awake(){
         scene1Man = FindObjectOfType<Scene_1_Manager>();
         arrowPool = new List<GameObject>();
@@ -41,7 +44,9 @@ public class Evaluator : MonoBehaviour
         laneNum[5] = Resources.Load<Sprite>("ui_image/1_red");
         laneNum[6] = Resources.Load<Sprite>("ui_image/2_red");
         laneNum[7] = Resources.Load<Sprite>("ui_image/3_red");
-        laneNum[8] = Resources.Load<Sprite>("ui_image/4_red");        
+        laneNum[8] = Resources.Load<Sprite>("ui_image/4_red");     
+
+        fx = FindObjectOfType<NoteHitFX>();   
     }
     private void Start(){
         GameManager.instance.sigs.Subscribe("OnMouseBehavior", this, "OnMouseBehavior");
@@ -71,29 +76,38 @@ public class Evaluator : MonoBehaviour
     private void Update(){
         while(notesSingleList.Count > 0 && notesSingleList[0].timing < timer){
             notesSingleList.RemoveAt(0);
+            Debug.Log(firstNote.GetComponent<RectTransform>().position.x + ", " + firstNote.GetComponent<RectTransform>().position.y);
+            fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().position.x, firstNote.GetComponent<RectTransform>().position.y));
             wrong++;
         }
+        firstNote = null;
         
         int ind = 0;
         numNotesInLane = 0;
         while(notesSingleList.Count > ind && notesSingleList[ind].timing <= timer + visibleAreaSize){
-            GameObject arrowObj;
-            if(arrowPool.Count < ind + 1){
-                arrowObj = Instantiate(arrowPrefab);
-                arrowObj.transform.SetParent(arrowPoolParent.transform);
-                arrowPool.Add(arrowObj);
-            }
-            else{
-                arrowObj = arrowPool[ind];
-            }
-            arrowObj.GetComponent<Image>().sprite = (notesSingleList[ind].lane <= 4) ? up : down;
-            arrowObj.transform.GetChild(0).GetComponent<Image>().sprite = laneNum[notesSingleList[ind].lane];
-            //노트 포지션
-            arrowObj.GetComponent<RectTransform>().position = new Vector3(
-                ((lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2) * (notesSingleList[ind].timing - timer) / visibleAreaSize) + arrowPrefab.GetComponent<RectTransform>().rect.width / 2,
-                lane.GetComponent<RectTransform>().position.y,
-                0 //롱노트 계산시 현 계산식 2번필요
-            );
+            // if(notesSingleList[ind].type == 0){
+                GameObject arrowObj;
+                if(arrowPool.Count < ind + 1){
+                    arrowObj = Instantiate(arrowPrefab);
+                    arrowObj.transform.SetParent(arrowPoolParent.transform);
+                    arrowPool.Add(arrowObj);
+                }
+                else{
+                    arrowObj = arrowPool[ind];
+                }
+                if(firstNote == null)
+                    firstNote = arrowObj;
+                arrowObj.GetComponent<Image>().sprite = (notesSingleList[ind].lane <= 4) ? up : down;
+                arrowObj.transform.GetChild(0).GetComponent<Image>().sprite = laneNum[notesSingleList[ind].lane];
+                arrowObj.GetComponent<RectTransform>().position = new Vector3(
+                    ((lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2) * (notesSingleList[ind].timing - timer) / visibleAreaSize) + arrowPrefab.GetComponent<RectTransform>().rect.width / 2,
+                    lane.GetComponent<RectTransform>().position.y,
+                    0
+                );
+            // }
+            // else if(notesSingleList[ind].type == 1){
+                
+            // }
 
             ind++;
             numNotesInLane++;
@@ -124,6 +138,7 @@ public class Evaluator : MonoBehaviour
         float val = arrowPrefab.GetComponent<RectTransform>().rect.width * 2 / (lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2);
         if(diff < val){
             Debug.Log("Hit!");
+            fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().localPosition.x, firstNote.GetComponent<RectTransform>().localPosition.y));
             right++;
         }
     }
