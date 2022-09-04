@@ -17,6 +17,8 @@ public class NoteEditor : myUI.Component{
     VisualElement noteIndicatorCollection;
     List<(VisualElement, VisualElement, VisualElement)> lNoteIndicators;
     VisualElement clipEndIndicator;
+    VisualElement cursor;
+    bool focused = false;
 
     public class NoteEditorStates : States{
         NoteEditor component;
@@ -90,12 +92,21 @@ public class NoteEditor : myUI.Component{
             }
             get{ return _t1; }
         }
+        float _cursorPosition;
+        public float cursorPosition{
+            set{
+                dirty = true;
+                _cursorPosition = value;
+            }
+            get { return _cursorPosition; }
+        }
         public NoteEditorStates(NoteEditor _component) : base(_component){
             component = _component;
             _start = 0;
             _size = 30;
             _bpm = 60;
             _numLanes = 0;
+            _cursorPosition = 0;
         }
     }
     public NoteEditor(){
@@ -136,16 +147,14 @@ public class NoteEditor : myUI.Component{
                 mouseDownStart = true;
                 ((NoteEditorStates)states).t0 = ((NoteEditorStates)states).start + ((NoteEditorStates)states).size * (e.mousePosition.x / noteDisplay.localBound.width);
             }
-            else if(e.button == (int)MouseButton.RightMouse){
-                dd.root.style.left = e.localMousePosition.x;
-                dd.root.style.top = e.localMousePosition.y;
-                dd.root.BringToFront();
-                dd.root.Focus();
-            }
         });
         noteDisplay.RegisterCallback<MouseMoveEvent>((e)=>{
             if(mouseDownStart){
                 ((NoteEditorStates)states).t1 = ((NoteEditorStates)states).start + ((NoteEditorStates)states).size * (e.mousePosition.x / noteDisplay.localBound.width);
+            }
+            if(focused){
+                NoteEditorStates _states = ((NoteEditorStates)states);
+                _states.cursorPosition = _states.start + _states.size * (e.mousePosition.x / noteDisplay.worldBound.width);
             }
         });
         noteDisplay.RegisterCallback<MouseUpEvent>((e)=>{
@@ -261,11 +270,23 @@ public class NoteEditor : myUI.Component{
                 _states.t0 = 0;
                 _states.t1 = 0;
             }
+            else if(e.button == (int)MouseButton.RightMouse){
+                dd.root.style.left = e.localMousePosition.x;
+                dd.root.style.top = e.localMousePosition.y;
+                dd.root.BringToFront();
+                focused = false;
+            }
         });
         noteDisplay.RegisterCallback<MouseLeaveEvent>((e)=>{
             mouseDownStart = false;
         });
-    
+        noteDisplay.RegisterCallback<FocusInEvent>((e)=>{
+            focused = true;
+        });
+        noteDisplay.RegisterCallback<FocusOutEvent>((e)=>{
+            focused = false;
+        });
+
         (string, Action)[] elements = {
             ("Add Lane", ()=>{
                 if(((NoteEditorStates)states).audioClip != null){
@@ -318,6 +339,13 @@ public class NoteEditor : myUI.Component{
         clipEndIndicator.style.height = Length.Percent(100);
         clipEndIndicator.style.position = Position.Absolute;
         noteDisplay.Add(clipEndIndicator);
+
+        cursor = new VisualElement();
+        cursor.AddToClassList("vertical-indicator");
+        cursor.style.backgroundColor = new Color(1, 0.49f, 0.31f);
+        cursor.style.height = Length.Percent(100);
+        cursor.style.position = Position.Absolute;
+        noteDisplay.Add(cursor);
     }
     protected override void _Update(){
         // Debug.Log("NoteEditor::Update");
@@ -469,6 +497,13 @@ public class NoteEditor : myUI.Component{
         }
         else{
             clipEndIndicator.style.left = -500;
+        }
+    
+        if(_states.cursorPosition >= _states.start && _states.cursorPosition <= _states.start + _states.size){
+            cursor.style.left = Length.Percent(((_states.cursorPosition - _states.start) / _states.size) * 100);
+        }
+        else{
+            cursor.style.left = -500;
         }
     }
     protected override void Synchronize()

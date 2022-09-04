@@ -44,7 +44,9 @@ public class ImportExport : myUI.Component{
                     musicName = musicName.Substring(0, musicName.Length - 5);
                     path = "Audio/" + musicName + "/" + Path.GetFileNameWithoutExtension(originalPath);
                     dataIO.Load(path);
+                    //USE LOADED DATA TO INITIALIZE INTERNAL DATA STRUCTURE
 
+                    ((ImportExportStates)states).audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Resources/Audio/" + musicName + "/" + musicName + ".mp3");
                     rootVisualElement.Q<TextField>("path-display").value = path;
                 break;
             }
