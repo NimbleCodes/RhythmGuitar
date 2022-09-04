@@ -79,20 +79,23 @@ public class DataParse
             return;
         }
 
-        string[] splitedData = new string[3];
-        float time = 0;
+        string[] splitedData = new string[4];
+        float time = 0;                          //노트 시작값
+        float time2 = 0;                         //노트 끝값 
         int lineNumber = 1;
         int noteType = 0;
         splitedData = data.Split(',');
 
         float.TryParse(splitedData[0], out time);
-        int.TryParse(splitedData[1], out lineNumber);
-        int.TryParse(splitedData[2], out noteType);
+        float.TryParse(splitedData[1], out time2);
+        int.TryParse(splitedData[2], out lineNumber);
+        int.TryParse(splitedData[3], out noteType);   
         
         while(lineNumber >= Data.notes.Count){
             Data.notes.Add(new List<float>());
         }
         Data.notes[lineNumber].Add(time);
+        Data.notes[lineNumber].Add(time2);
         Data.notes[lineNumber].Add(noteType);
     }
 }

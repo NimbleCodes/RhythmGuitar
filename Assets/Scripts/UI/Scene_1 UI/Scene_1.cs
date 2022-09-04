@@ -116,7 +116,7 @@ public class Scene_1 : MonoBehaviour
                 noteIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[12]);
                 noteNumIndicator.style.backgroundImage = new StyleBackground(noteIndicatorSprites[notes[i].Item1]);
             }
-            noteIndicator.style.left = noteDisplay.worldBound.width * ((notes[i].Item2 + noteDelay - time) / visibleAreaSize);
+            noteIndicator.style.left = noteDisplay.worldBound.width * ((notes[i].Item2 + noteDelay - time) / visibleAreaSize); //노트 생성위치?
             cnt++;
         }
         while(cnt < noteIndicators.Count){
