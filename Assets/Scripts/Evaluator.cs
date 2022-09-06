@@ -10,7 +10,7 @@ public class Evaluator : MonoBehaviour
 
     Scene_1_Manager scene1Man;
     NoteData noteData;
-    List<(int lane, float timing)> notesSingleList;
+    List<(int lane, float timing,float timing2)> notesSingleList;
 
     List<GameObject> arrowPool;
     public GameObject arrowPoolParent;
@@ -31,7 +31,7 @@ public class Evaluator : MonoBehaviour
     private void Awake(){
         scene1Man = FindObjectOfType<Scene_1_Manager>();
         arrowPool = new List<GameObject>();
-        notesSingleList = new List<(int lane, float timing)>();
+        notesSingleList = new List<(int lane, float timing, float timing2)>();
         timer = -scene1Man.delay;
 
         up      = Resources.Load<Sprite>("ui_image/up");
@@ -57,6 +57,7 @@ public class Evaluator : MonoBehaviour
         int cnt = 0;
         while(!AllLanesEmpty()){
             float minVal = float.MaxValue;
+            float minVal2 = float.MaxValue;
             int minLane = -1;
             for(int i = 0; i < noteData.notes.Count; i++){
                 if(noteData.notes[i].Count > 0){
@@ -66,7 +67,7 @@ public class Evaluator : MonoBehaviour
                     }
                 }
             }
-            notesSingleList.Add((minLane, minVal));
+            notesSingleList.Add((minLane, minVal, minVal2));
             // Debug.Log(notesSingleList[cnt].lane + ", " + notesSingleList[cnt].timing);
             cnt++;
             noteData.notes[minLane].RemoveAt(0);
@@ -151,5 +152,43 @@ public class Evaluator : MonoBehaviour
             }
         }
         return true;
+    }
+
+    void longNotePositioner(){   //롱노트 위치 + 사이즈 조정
+        int ind = 0;
+        numNotesInLane = 0;
+        while(notesSingleList.Count > ind && notesSingleList[ind].timing <= timer + visibleAreaSize){
+            GameObject arrowObj;
+            Vector3 endPoint;
+            Vector3 median;
+            float longNoteWidth = 0f;
+            if(arrowPool.Count < ind + 1){
+                arrowObj = Instantiate(arrowPrefab);
+                arrowObj.transform.SetParent(arrowPoolParent.transform);
+                arrowPool.Add(arrowObj);
+            }
+            else{
+                arrowObj = arrowPool[ind];
+            }
+            arrowObj.GetComponent<Image>().sprite = (notesSingleList[ind].lane <= 4) ? up : down;
+            arrowObj.transform.GetChild(0).GetComponent<Image>().sprite = laneNum[notesSingleList[ind].lane];
+            //노트 포지션
+            arrowObj.GetComponent<RectTransform>().position = new Vector3( //롱노트 시작지점 좌표
+                ((lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2) * (notesSingleList[ind].timing - timer) / visibleAreaSize) + arrowPrefab.GetComponent<RectTransform>().rect.width / 2,
+                lane.GetComponent<RectTransform>().position.y,
+                0 //롱노트 계산시 현 계산식 2번필요
+            );
+            endPoint = new Vector3(// 롱노트 끝지점 좌표
+                ((lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2) * (notesSingleList[ind].timing2 - timer) / visibleAreaSize) + arrowPrefab.GetComponent<RectTransform>().rect.width / 2,
+                lane.GetComponent<RectTransform>().position.y,
+                0
+            );
+            longNoteWidth = Vector3.Distance(arrowObj.transform.position, endPoint); // 기본적으로 y값, z값이 고정이기 때문에 Distance로 넓이 계산가능
+            median = Vector3.Lerp(arrowObj.transform.position, endPoint, 0.5f);
+            arrowObj.transform.position = median;
+            arrowObj.GetComponent<RectTransform>().sizeDelta = new Vector2(longNoteWidth, arrowObj.GetComponent<RectTransform>().rect.height);//노트 크기 설정
+            ind++;
+            numNotesInLane++;
+        }
     }
 }
