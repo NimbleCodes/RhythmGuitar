@@ -5,7 +5,6 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor;
-
 public class MCAD : myUI.Component{
     List<List<VisualElement>> verticalIndicators;
     List<VisualElement> verticalIndicatorCollections;
@@ -68,7 +67,7 @@ public class MCAD : myUI.Component{
             component = _component;
             _start = 0;
             _size = 30;
-            _bpm = 60;
+            _bpm = 174;
         }
     }
     public MCAD(){
@@ -106,19 +105,16 @@ public class MCAD : myUI.Component{
 
         (string, Action)[] elements = {
             ("Play", ()=>{ 
-                Debug.Log("Play");
                 audioSource.Play();
                 states.constUpdate = true;
                 dd.root.style.left = -500;
             }),
             ("Pause", ()=>{ 
-                Debug.Log("Pause");
                 audioSource.Pause();
                 states.constUpdate = false;
                 dd.root.style.left = -500;
             }),
             ("Stop", ()=>{ 
-                Debug.Log("Stop");
                 audioSource.Stop();
                 states.constUpdate = false;
                 dd.root.style.left = -500;
@@ -224,7 +220,7 @@ public class MCAD : myUI.Component{
             }
         }
         
-        float packSize = 60 / _states.bpm;
+        float packSize = 60.0f / _states.bpm;
         float time = Mathf.CeilToInt(_states.start / packSize) * packSize;
         int ind = 0;
         while(time < _states.start + _states.size){

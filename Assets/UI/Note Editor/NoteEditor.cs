@@ -104,7 +104,7 @@ public class NoteEditor : myUI.Component{
             component = _component;
             _start = 0;
             _size = 30;
-            _bpm = 60;
+            _bpm = 174;
             _numLanes = 0;
             _cursorPosition = 0;
         }
@@ -351,7 +351,7 @@ public class NoteEditor : myUI.Component{
         // Debug.Log("NoteEditor::Update");
         
         NoteEditorStates _states = (NoteEditorStates)states;
-        float packSize = 60 / _states.bpm;
+        float packSize = 60.0f / _states.bpm;
         float time = Mathf.CeilToInt(_states.start / packSize) * packSize;
         int ind = 0;
         while(time < _states.start + _states.size){
