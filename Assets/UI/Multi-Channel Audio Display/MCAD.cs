@@ -83,7 +83,7 @@ public class MCAD : myUI.Component{
             if(e.button == (int)MouseButton.LeftMouse){
                 mouseDownStart = true;
                 t0 = ((MCADStates)states).start + ((MCADStates)states).size * (e.mousePosition.x / rootVisualElement.localBound.width);
-            }
+            }   
             else if(e.button == (int)MouseButton.RightMouse){
                 dd.root.style.left = e.localMousePosition.x;
                 dd.root.style.top = e.localMousePosition.y;
