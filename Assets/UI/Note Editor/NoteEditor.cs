@@ -383,6 +383,20 @@ public class NoteEditor : myUI.Component{
             ind++;
         }
     
+        for(int i = horizontalIndicators.Count; i < lanes.Count; i++){
+            ((NoteEditorStates)states).numLanes++;
+
+            Vector3 hsvColor = new Vector3(0.15f * (((NoteEditorStates)states).numLanes - 1), 0.75f, 0.75f);
+            Color color = Color.HSVToRGB(hsvColor.x, hsvColor.y, hsvColor.z);
+
+            VisualElement horizontalIndicator = new VisualElement();
+            horizontalIndicator.AddToClassList("horizontal-indicator");
+            horizontalIndicator.style.backgroundColor = color;
+
+            horizontalIndicators.Add(horizontalIndicator);
+            horizontalIndicatorCollection.Add(horizontalIndicator);
+        }
+
         int cnt = 0;
         horizontalIndicators.ForEach((h)=>{
             h.style.top = Length.Percent(100f * (cnt + 1) / (_states.numLanes + 1));

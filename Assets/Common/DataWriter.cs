@@ -42,8 +42,10 @@ public class DataWriter
         data += "[NoteInfo]\n";
 
         for(int i = 0; i < N_data.notes.Count; i++){
-            for(int j = 0; j < N_data.notes[i].Count; j++){
-                data += N_data.notes[i][j].ToString() + "," + i.ToString() + N_data.notes[i][j+1].ToString() + "\n";
+            for(int j = 0; j < N_data.notes[i].Count; j+=3){
+                // data += N_data.notes[i][j].ToString() + "," + i.ToString() + N_data.notes[i][j+1].ToString() + "\n";
+                data += N_data.notes[i][j].ToString() + "," + N_data.notes[i][j+1].ToString() + "," +
+                        i.ToString() + "," + N_data.notes[i][j+2].ToString() + "\n";
             }
         }
 
