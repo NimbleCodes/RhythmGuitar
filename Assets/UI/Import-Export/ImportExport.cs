@@ -28,6 +28,8 @@ public class ImportExport : myUI.Component{
         rootVisualElement.style.height = Length.Percent(100);
         rootVisualElement.name = "import-export";
         rootVisualElement.Q<Button>("import-btn").clicked += ()=>{
+            lanes.Clear();
+
             string originalPath = EditorUtility.OpenFilePanel("Importer", "Assets/Resources/Audio", "mp3,txt");
             string extention = Path.GetExtension(originalPath);
 
@@ -75,7 +77,6 @@ public class ImportExport : myUI.Component{
             if(path.Substring(path.Length - 5, 5) == "_data"){
                 path = path.Substring(0, path.Length - 5);
             }
-            path += ".mp3";
             noteData.fileName = Path.GetFileNameWithoutExtension(path);
 
             DataIO dataIO = new DataIO(noteData);

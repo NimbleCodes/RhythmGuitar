@@ -26,6 +26,7 @@ public class NoteEditor : myUI.Component{
         public AudioClip audioClip{
             set{
                 _audioClip = value;
+                _numLanes = component.lanes.Count;
                 dirty = true;
             }
             get{ return _audioClip; }
@@ -384,9 +385,7 @@ public class NoteEditor : myUI.Component{
         }
     
         for(int i = horizontalIndicators.Count; i < lanes.Count; i++){
-            ((NoteEditorStates)states).numLanes++;
-
-            Vector3 hsvColor = new Vector3(0.15f * (((NoteEditorStates)states).numLanes - 1), 0.75f, 0.75f);
+            Vector3 hsvColor = new Vector3(0.15f * i, 0.75f, 0.75f);
             Color color = Color.HSVToRGB(hsvColor.x, hsvColor.y, hsvColor.z);
 
             VisualElement horizontalIndicator = new VisualElement();
