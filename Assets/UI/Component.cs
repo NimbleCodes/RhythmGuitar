@@ -29,7 +29,6 @@ namespace myUI
                 }
                 get{ return _constUpdate; }
             }
-
             public States(Component _component){
                 component = _component;
                 component.isDirty = ()=>{ return (dirty | constUpdate); };

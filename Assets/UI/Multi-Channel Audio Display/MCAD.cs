@@ -77,6 +77,9 @@ public class MCAD : myUI.Component{
         rootVisualElement.style.height = Length.Percent(100);
         rootVisualElement.name = "multi-channel-audio-display";
         rootVisualElement.RegisterCallback<MouseDownEvent>((e)=>{
+            if(((MCADStates)states).audioClip == null){
+                return;
+            }
             if(e.button == (int)MouseButton.LeftMouse){
                 mouseDownStart = true;
                 t0 = ((MCADStates)states).start + ((MCADStates)states).size * (e.mousePosition.x / rootVisualElement.localBound.width);
@@ -89,12 +92,18 @@ public class MCAD : myUI.Component{
             }
         });
         rootVisualElement.RegisterCallback<MouseMoveEvent>((e)=>{
+            if(((MCADStates)states).audioClip == null){
+                return;
+            }
             if(mouseDownStart){
                 float t1 = ((MCADStates)states).start + ((MCADStates)states).size * (e.mousePosition.x / rootVisualElement.localBound.width);
                 ((MCADStates)states).start -= t1 - t0;
             }
         });
         rootVisualElement.RegisterCallback<MouseUpEvent>((e)=>{
+            if(((MCADStates)states).audioClip == null){
+                return;
+            }
             if(e.button == (int)MouseButton.LeftMouse){
                 mouseDownStart = false;
             }

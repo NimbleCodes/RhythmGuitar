@@ -27,7 +27,6 @@ public class TestWindow : EditorWindow
     }
 }
 class App : myUI.Component{
-    AudioClip audioClip;
     MCAD mcad;
     ImportExport impexp;
     NoteEditor noteEditor;

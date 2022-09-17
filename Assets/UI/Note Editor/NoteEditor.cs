@@ -149,6 +149,9 @@ public class NoteEditor : myUI.Component{
             }
         });
         noteDisplay.RegisterCallback<MouseMoveEvent>((e)=>{
+            if(((NoteEditorStates)states).audioClip == null){
+                return;
+            }   
             if(mouseDownStart){
                 ((NoteEditorStates)states).t1 = ((NoteEditorStates)states).start + ((NoteEditorStates)states).size * (e.mousePosition.x / noteDisplay.localBound.width);
             }
@@ -178,7 +181,7 @@ public class NoteEditor : myUI.Component{
                 }
 
                 if(noteInpState == 1){
-                    float packSize = 60 / _states.bpm;
+                    float packSize = 60.0f / _states.bpm;
                     float time = Mathf.CeilToInt(_states.t0 / packSize) * packSize;
                     if(_states.t1 - _states.t0 > 0.05){
                         lanes[minCnt].Add(new Note(time - packSize, 1));
@@ -192,7 +195,7 @@ public class NoteEditor : myUI.Component{
                     }
                 }
                 else if(noteInpState == 2){
-                    float packSize = 60 / _states.bpm;
+                    float packSize = 60.0f / _states.bpm;
                     float time = Mathf.CeilToInt(_states.t0 / packSize) * packSize;
                     float temp = time - packSize;
                     while(time < _states.t1){
@@ -202,7 +205,7 @@ public class NoteEditor : myUI.Component{
                         lanes[minCnt].Add(new Note(temp, time - packSize, 2));
                 }
                 else if(noteInpState == 3){
-                    float packSize = 60 / _states.bpm;
+                    float packSize = 60.0f / _states.bpm;
                     float time = Mathf.CeilToInt(_states.t0 / packSize) * packSize;
                     float Ta = time - packSize;
                     for(int i = 0; i < lanes[minCnt].Count;){
@@ -271,6 +274,9 @@ public class NoteEditor : myUI.Component{
                 _states.t1 = 0;
             }
             else if(e.button == (int)MouseButton.RightMouse){
+                if(((NoteEditorStates)states).audioClip == null){
+                    return;
+                }
                 dd.root.style.left = e.localMousePosition.x;
                 dd.root.style.top = e.localMousePosition.y;
                 dd.root.BringToFront();
@@ -386,6 +392,8 @@ public class NoteEditor : myUI.Component{
 
         cnt = 0;
         int cnt2 = 0;
+        float nDWidth = rootVisualElement.Q<VisualElement>("note-display").worldBound.width;
+        float packWidth = nDWidth * packSize / _states.size;
         for(int i = 0; i < lanes.Count; i++){
             for(int j = 0; j < lanes[i].Count; j++){
                 if(lanes[i][j].noteType == 1){
@@ -405,7 +413,9 @@ public class NoteEditor : myUI.Component{
                     }
                     noteIndicator.style.left = Length.Percent((100 * (lanes[i][j].timing - _states.start) / _states.size));
                     noteIndicator.style.top = horizontalIndicators[i].style.top;
-                    noteIndicator.transform.position = new Vector3(-7.5f, -7.5f, 0);
+                    noteIndicator.style.width = packWidth;
+                    noteIndicator.style.height = packWidth;
+                    noteIndicator.transform.position = new Vector3(-packWidth * 0.5f, -packWidth * 0.5f, 0);
                     noteIndicator.style.unityBackgroundImageTintColor = horizontalIndicators[i].style.backgroundColor;
                     cnt++;
                 }
@@ -435,18 +445,22 @@ public class NoteEditor : myUI.Component{
                         //start
                         lNoteIndicator.Item1.style.left = Length.Percent(100 * (lanes[i][j].timing - _states.start) / _states.size);
                         lNoteIndicator.Item1.style.top = horizontalIndicators[i].style.top;
-                        lNoteIndicator.Item1.transform.position = new Vector3(-7.5f, -7.5f, 0);
+                        lNoteIndicator.Item1.style.width = packWidth;
+                        lNoteIndicator.Item1.style.height = packWidth;
+                        lNoteIndicator.Item1.transform.position = new Vector3(-packWidth * 0.5f, -packWidth * 0.5f, 0);
                         lNoteIndicator.Item1.style.unityBackgroundImageTintColor = horizontalIndicators[i].style.backgroundColor;
                         //finish
                         lNoteIndicator.Item2.style.left = Length.Percent(100 * (lanes[i][j].timing2 - _states.start) / _states.size);
                         lNoteIndicator.Item2.style.top = horizontalIndicators[i].style.top;
-                        lNoteIndicator.Item2.transform.position = new Vector3(-7.5f, -7.5f, 0);
-                        lNoteIndicator.Item2.style.unityBackgroundImageTintColor = horizontalIndicators[i].style.backgroundColor;
+                        lNoteIndicator.Item2.style.width = packWidth;
+                        lNoteIndicator.Item2.style.height = packWidth;
+                        lNoteIndicator.Item2.transform.position = new Vector3(-packWidth * 0.5f, -packWidth * 0.5f, 0);                        lNoteIndicator.Item2.style.unityBackgroundImageTintColor = horizontalIndicators[i].style.backgroundColor;
                         //middle
                         lNoteIndicator.Item3.style.left = Length.Percent(lNoteIndicator.Item1.style.left.value.value);
                         lNoteIndicator.Item3.style.top = horizontalIndicators[i].style.top;
-                        lNoteIndicator.Item3.transform.position = new Vector3(0, -7.5f, 0);
-                        lNoteIndicator.Item3.style.width = Length.Percent(lNoteIndicator.Item2.style.left.value.value - lNoteIndicator.Item1.style.left.value.value);
+                        lNoteIndicator.Item3.style.width = packWidth;
+                        lNoteIndicator.Item3.style.height = packWidth;
+                        lNoteIndicator.Item3.transform.position = new Vector3(0, -packWidth * 0.5f, 0);                        lNoteIndicator.Item3.style.width = Length.Percent(lNoteIndicator.Item2.style.left.value.value - lNoteIndicator.Item1.style.left.value.value);
                         lNoteIndicator.Item3.style.unityBackgroundImageTintColor = horizontalIndicators[i].style.backgroundColor;
                         cnt2++;
                     }
