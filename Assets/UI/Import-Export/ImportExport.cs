@@ -3,7 +3,6 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 public class ImportExport : myUI.Component{
     public List<List<Note>> lanes;
     string path;
@@ -17,8 +16,17 @@ public class ImportExport : myUI.Component{
             }
             get{ return _audioClip; }
         }
+        int _bpm;
+        public int bpm{
+            set{
+                _bpm = value;
+                dirty = true;
+            }
+            get{ return _bpm; }
+        }
         public ImportExportStates(ImportExport _component) : base(_component){
             component = _component;
+            _bpm = 120;
         }
     }
     public ImportExport(){
@@ -27,6 +35,24 @@ public class ImportExport : myUI.Component{
         rootVisualElement.style.width = Length.Percent(100);
         rootVisualElement.style.height = Length.Percent(100);
         rootVisualElement.name = "import-export";
+
+        TextField titleField = rootVisualElement.Q<VisualElement>("textfield-title").Q<TextField>("textfield-value");
+        TextField artistField = rootVisualElement.Q<VisualElement>("textfield-artist").Q<TextField>("textfield-value");
+        TextField bpmField = rootVisualElement.Q<VisualElement>("textfield-bpm").Q<TextField>("textfield-value");
+        bpmField.RegisterValueChangedCallback((e)=>{
+            float newVal = -1;
+            if(!float.TryParse(e.newValue, out newVal)){
+                bpmField.value = e.previousValue;
+            }
+        });
+        bpmField.RegisterCallback<FocusOutEvent>((e)=>{
+            float newVal = -1;
+            if(float.TryParse(bpmField.value, out newVal)){
+                ((ImportExportStates)states).bpm = (int)newVal;
+                bpmField.value = ((int)newVal).ToString();
+            }
+        });
+
         rootVisualElement.Q<Button>("import-btn").clicked += ()=>{
             lanes.Clear();
 
@@ -38,6 +64,7 @@ public class ImportExport : myUI.Component{
                     path = "Assets/Resources/Audio/" + Path.GetFileNameWithoutExtension(originalPath) + "/" + Path.GetFileName(originalPath);
                     ((ImportExportStates)states).audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
                     rootVisualElement.Q<TextField>("path-display").value = path;
+                    bpmField.value = "120";
                 break;
                 case ".txt":
                     NoteData noteData = new NoteData();
@@ -59,6 +86,9 @@ public class ImportExport : myUI.Component{
                     }
                     ((ImportExportStates)states).audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Resources/Audio/" + musicName + "/" + musicName + ".mp3");
                     rootVisualElement.Q<TextField>("path-display").value = path;
+                    titleField.value = noteData.title;
+                    artistField.value = noteData.artist;
+                    bpmField.value = noteData.bpm.ToString();
                 break;
             }
         };
@@ -78,6 +108,9 @@ public class ImportExport : myUI.Component{
                 path = path.Substring(0, path.Length - 5);
             }
             noteData.fileName = Path.GetFileNameWithoutExtension(path);
+            noteData.title = titleField.value;
+            noteData.artist = artistField.value;
+            noteData.bpm = ((ImportExportStates)states).bpm;
 
             DataIO dataIO = new DataIO(noteData);
             dataIO.Save();

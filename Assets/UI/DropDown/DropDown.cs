@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 public class DropDown{
     public VisualElement root;
     List<Action> actions;
+    public Vector3 startPos;
 
-    public DropDown((string, Action)[] elements){
+    public DropDown((string, Action<Vector3>)[] elements){
         var dropDownVTA = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/DropDown/DropDown.uxml");
         root = dropDownVTA.CloneTree();
         root.name = "drop-down";
@@ -27,7 +27,7 @@ public class DropDown{
             });
             elementVE.RegisterCallback<MouseUpEvent>((e)=>{
                 if(e.button == (int)MouseButton.LeftMouse)
-                    element.Item2.Invoke();
+                    element.Item2.Invoke(new Vector3(root.style.left.value.value, root.style.top.value.value, 0));
                 e.StopPropagation();
             });
             Label label = new Label();

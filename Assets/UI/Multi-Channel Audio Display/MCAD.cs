@@ -67,7 +67,7 @@ public class MCAD : myUI.Component{
             component = _component;
             _start = 0;
             _size = 30;
-            _bpm = 174;
+            _bpm = 120;
         }
     }
     public MCAD(){
@@ -112,18 +112,18 @@ public class MCAD : myUI.Component{
             mouseDownStart = false;
         });
 
-        (string, Action)[] elements = {
-            ("Play", ()=>{ 
+        (string, Action<Vector3>)[] elements = {
+            ("Play", (e)=>{ 
                 audioSource.Play();
                 states.constUpdate = true;
                 dd.root.style.left = -500;
             }),
-            ("Pause", ()=>{ 
+            ("Pause", (e)=>{ 
                 audioSource.Pause();
                 states.constUpdate = false;
                 dd.root.style.left = -500;
             }),
-            ("Stop", ()=>{ 
+            ("Stop", (e)=>{ 
                 audioSource.Stop();
                 states.constUpdate = false;
                 dd.root.style.left = -500;

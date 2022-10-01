@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 public class TestWindow : EditorWindow
 {
     [MenuItem("Custom Editors/TestWindow")]
@@ -73,6 +72,11 @@ class App : myUI.Component{
             noteEditorStates.start = mcadStates.start;
         if(mcadStates.size != noteEditorStates.size)
             noteEditorStates.size = mcadStates.size;
+
+        if(impexpStates.bpm != mcadStates.bpm)
+            mcadStates.bpm = impexpStates.bpm;
+        if(impexpStates.bpm != noteEditorStates.bpm)
+            noteEditorStates.bpm = impexpStates.bpm;
     }
     protected override void _Dispose()
     {

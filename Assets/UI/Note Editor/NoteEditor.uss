@@ -15,6 +15,8 @@
     height: 15px;
     transform-origin: center;
     translate: -7.5px -7.5px;
+    max-height: 30px;
+    max-width: 30px;
 }
 
 .long-note-start {
@@ -23,6 +25,8 @@
     height: 15px;
     background-image: resource('Sprites/lnote-indicator-1');
     translate: -7.5px -7.5px;
+    max-width: 30px;
+    max-height: 30px;
 }
 
 .long-note-finish {
@@ -31,6 +35,8 @@
     height: 15px;
     background-image: resource('Sprites/lnote-indicator-2');
     translate: -7.5px -7.5px;
+    max-width: 30px;
+    max-height: 30px;
 }
 
 .long-note-middle {
@@ -40,4 +46,6 @@
     background-image: resource('Sprites/lnote-indicator-3');
     translate: 0 -7.5px;
     transform-origin: center;
+    max-width: 30px;
+    max-height: 30px;
 }

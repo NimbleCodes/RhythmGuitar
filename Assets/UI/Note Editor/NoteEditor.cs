@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor;
-
 public class NoteEditor : myUI.Component{
     List<VisualElement> verticalIndicators;
     VisualElement verticalIndicatorCollection;
@@ -105,7 +104,7 @@ public class NoteEditor : myUI.Component{
             component = _component;
             _start = 0;
             _size = 30;
-            _bpm = 174;
+            _bpm = 120;
             _numLanes = 0;
             _cursorPosition = 0;
         }
@@ -281,6 +280,7 @@ public class NoteEditor : myUI.Component{
                 dd.root.style.left = e.localMousePosition.x;
                 dd.root.style.top = e.localMousePosition.y;
                 dd.root.BringToFront();
+                dd.root.Focus();
                 focused = false;
             }
         });
@@ -294,8 +294,8 @@ public class NoteEditor : myUI.Component{
             focused = false;
         });
 
-        (string, Action)[] elements = {
-            ("Add Lane", ()=>{
+        (string, Action<Vector3>)[] elements = {
+            ("Add Lane", (e)=>{
                 if(((NoteEditorStates)states).audioClip != null){
                     lanes.Add(new List<Note>());
                     ((NoteEditorStates)states).numLanes++;
@@ -312,8 +312,19 @@ public class NoteEditor : myUI.Component{
                 }
                 dd.root.style.left = -500;
             }),
-            ("Remove Lane", ()=>{
-                Debug.Log("Remove Lane");
+            ("Remove Lane", (e)=>{
+                float minDiff = float.MaxValue;
+                int minCnt = -1;
+                int cnt = 0;
+                foreach(var h in horizontalIndicators){
+                    if(minDiff > Mathf.Abs(e.y - h.localBound.y)){
+                        minDiff = Mathf.Abs(e.y - h.localBound.y);
+                        minCnt = cnt;
+                    }
+                    cnt++;
+                }
+                lanes.RemoveAt(minCnt);
+                ((NoteEditorStates)states).numLanes--;
                 dd.root.style.left = -500;
             })
         };
