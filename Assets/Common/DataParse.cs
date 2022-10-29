@@ -89,7 +89,7 @@ public class DataParse
         float.TryParse(splitedData[0], out time);
         float.TryParse(splitedData[1], out time2);
         int.TryParse(splitedData[2], out lineNumber);
-        int.TryParse(splitedData[3], out noteType);   
+        int.TryParse(splitedData[3], out noteType);
         
         while(lineNumber >= Data.notes.Count){
             Data.notes.Add(new List<float>());

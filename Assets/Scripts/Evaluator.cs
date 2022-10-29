@@ -10,7 +10,7 @@ public class Evaluator : MonoBehaviour
 
     Scene_1_Manager scene1Man;
     NoteData noteData;
-    List<(int lane, float timing,float timing2)> notesSingleList;
+    List<(int lane, float timing,float timing2, int noteType)> notesSingleList;
 
     List<GameObject> arrowPool;
     public GameObject arrowPoolParent;
@@ -31,7 +31,7 @@ public class Evaluator : MonoBehaviour
     private void Awake(){
         scene1Man = FindObjectOfType<Scene_1_Manager>();
         arrowPool = new List<GameObject>();
-        notesSingleList = new List<(int lane, float timing, float timing2)>();
+        notesSingleList = new List<(int lane, float timing, float timing2, int noteType)>();
         timer = -scene1Man.delay;
 
         up      = Resources.Load<Sprite>("ui_image/up");
@@ -51,72 +51,70 @@ public class Evaluator : MonoBehaviour
     private void Start(){
         GameManager.instance.sigs.Subscribe("OnMouseBehavior", this, "OnMouseBehavior");
         GameManager.instance.sigs.Subscribe("game_over", this, "GameOver");
-        
         noteData = scene1Man.noteData;
-        
-        int cnt = 0;
         while(!AllLanesEmpty()){
             float minVal = float.MaxValue;
             float minVal2 = float.MaxValue;
             int minLane = -1;
+            int minNoteType = -1;
             for(int i = 0; i < noteData.notes.Count; i++){
                 if(noteData.notes[i].Count > 0){
-                    if(noteData.notes[i][0] < minVal){
-                        minVal = noteData.notes[i][0];
+                    float time = noteData.notes[i][0];
+                    float time2 = noteData.notes[i][1];
+                    int noteType = (int)noteData.notes[i][2];
+                    if(time < minVal){
+                        minVal = time;
+                        minVal2 = time2;
+                        minNoteType = noteType;
                         minLane = i;
                     }
                 }
             }
-            notesSingleList.Add((minLane, minVal, minVal2));
-            // Debug.Log(notesSingleList[cnt].lane + ", " + notesSingleList[cnt].timing);
-            cnt++;
+            notesSingleList.Add((minLane, minVal, minVal2, minNoteType));
+            noteData.notes[minLane].RemoveAt(0);
+            noteData.notes[minLane].RemoveAt(0);
             noteData.notes[minLane].RemoveAt(0);
         }
+        string tot = "";
+        for(int i = 0; i < notesSingleList.Count; i++){
+            tot += "\n(" + notesSingleList[i].timing + ", " + notesSingleList[i].timing2 + ", " + notesSingleList[i].lane + ")";
+        }
+        Debug.Log(tot);
     }
     private void Update(){
         while(notesSingleList.Count > 0 && notesSingleList[0].timing < timer){
             notesSingleList.RemoveAt(0);
-            Debug.Log(firstNote.GetComponent<RectTransform>().position.x + ", " + firstNote.GetComponent<RectTransform>().position.y);
             fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().position.x, firstNote.GetComponent<RectTransform>().position.y));
             wrong++;
         }
-        firstNote = null;
-        
         int ind = 0;
-        numNotesInLane = 0;
-        while(notesSingleList.Count > ind && notesSingleList[ind].timing <= timer + visibleAreaSize){
-            // if(notesSingleList[ind].type == 0){
-                GameObject arrowObj;
-                if(arrowPool.Count < ind + 1){
-                    arrowObj = Instantiate(arrowPrefab);
-                    arrowObj.transform.SetParent(arrowPoolParent.transform);
-                    arrowPool.Add(arrowObj);
-                }
-                else{
-                    arrowObj = arrowPool[ind];
-                }
-                if(firstNote == null)
-                    firstNote = arrowObj;
-                arrowObj.GetComponent<Image>().sprite = (notesSingleList[ind].lane <= 4) ? up : down;
-                arrowObj.transform.GetChild(0).GetComponent<Image>().sprite = laneNum[notesSingleList[ind].lane];
-                arrowObj.GetComponent<RectTransform>().position = new Vector3(
-                    ((lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2) * (notesSingleList[ind].timing - timer) / visibleAreaSize) + arrowPrefab.GetComponent<RectTransform>().rect.width / 2,
-                    lane.GetComponent<RectTransform>().position.y,
-                    0
-                );
-            // }
-            // else if(notesSingleList[ind].type == 1){
-                
-            // }
-
+        firstNote = null;
+        while(ind < notesSingleList.Count && notesSingleList[ind].timing < timer + visibleAreaSize){
+            GameObject arrowObj;
+            if(ind + 1 > arrowPool.Count){
+                arrowObj = Instantiate(arrowPrefab);
+                arrowObj.transform.SetParent(arrowPoolParent.transform);
+                arrowPool.Add(arrowObj);
+            }
+            else{
+                arrowObj = arrowPool[ind];
+            }
+            if(firstNote == null)
+                firstNote = arrowObj;
+            arrowObj.GetComponent<Image>().sprite = (notesSingleList[ind].lane <= 4) ? up : down;
+            arrowObj.transform.GetChild(0).GetComponent<Image>().sprite = laneNum[notesSingleList[ind].lane + 1];
+            float laneWidth = lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2;
+            arrowObj.GetComponent<RectTransform>().position = new Vector3(
+                arrowPrefab.GetComponent<RectTransform>().rect.width / 2 + laneWidth * ((notesSingleList[ind].timing - timer) / visibleAreaSize),
+                lane.GetComponent<RectTransform>().position.y,
+                0
+            );
             ind++;
-            numNotesInLane++;
         }
         while(ind < arrowPool.Count){
             arrowPool[ind].GetComponent<RectTransform>().localPosition = new Vector3();
             ind++;
         }
-        
         timer += Time.deltaTime;
     }
     private void OnMouseBehavior(int direction, int lineCount){
@@ -137,7 +135,6 @@ public class Evaluator : MonoBehaviour
             wrong++;
         float val = arrowPrefab.GetComponent<RectTransform>().rect.width * 2 / (lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2);
         if(diff < val){
-            Debug.Log("Hit!");
             fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().localPosition.x, firstNote.GetComponent<RectTransform>().localPosition.y));
             right++;
         }

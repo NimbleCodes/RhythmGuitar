@@ -21,14 +21,14 @@ public class PreviewPanel : MonoBehaviour
 
     void Awake(){
         rt = GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height * .75f);
-        // rt.sizeDelta = new Vector2(Screen.currentResolution.height, Screen.currentResolution.width * .75f);
+        // rt.sizeDelta = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height * .75f);
+        rt.sizeDelta = new Vector2(Screen.currentResolution.height, Screen.currentResolution.width * .75f);
         AlbumArtContainer = rt.Find("AlbumArtContainer").gameObject;
         AlbumArt = rt.Find("AlbumArt").gameObject;
         AlbumArtContainerRt = AlbumArtContainer.GetComponent<RectTransform>();
         AlbumArtRt = AlbumArt.GetComponent<RectTransform>();
-        AlbumArtContainerRt.sizeDelta = new Vector2(Screen.currentResolution.width * .6f, Screen.currentResolution.width * .6f);
-        // AlbumArtContainerRt.sizeDelta = new Vector2(Screen.currentResolution.height * .6f, Screen.currentResolution.height * .6f);
+        // AlbumArtContainerRt.sizeDelta = new Vector2(Screen.currentResolution.width * .6f, Screen.currentResolution.width * .6f);
+        AlbumArtContainerRt.sizeDelta = new Vector2(Screen.currentResolution.height * .6f, Screen.currentResolution.height * .6f);
         AlbumArtRt.sizeDelta = new Vector2(AlbumArtContainerRt.rect.width - 20, AlbumArtContainerRt.rect.width - 20);
         float yPos = rt.rect.height * .5f - AlbumArtContainerRt.rect.height *.5f - 50;
         AlbumArtContainerRt.localPosition = new Vector3(0, yPos, 0);
