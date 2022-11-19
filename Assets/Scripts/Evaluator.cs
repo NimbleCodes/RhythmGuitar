@@ -13,11 +13,16 @@ public class Evaluator : MonoBehaviour
     List<(int lane, float timing,float timing2, int noteType)> notesSingleList;
 
     List<GameObject> arrowPool;
+    List<GameObject> longArrows;
     public GameObject arrowPoolParent;
     public GameObject arrowPrefab;
+    public GameObject longArrowPrefab;
     Sprite up, down;
+    List<Sprite> longUp;
+    List<Sprite> longDown;
     Sprite[] laneNum;
     public GameObject lane;
+    public GameObject InputArrow;
 
     float timer;
     int numNotesInLane = 0;
@@ -28,14 +33,29 @@ public class Evaluator : MonoBehaviour
     NoteHitFX fx;
     GameObject firstNote;
 
+    enum NoteType{
+        Touch = 1,
+        Press = 2
+    }
+
     private void Awake(){
         scene1Man = FindObjectOfType<Scene_1_Manager>();
         arrowPool = new List<GameObject>();
+        longArrows = new List<GameObject>();
         notesSingleList = new List<(int lane, float timing, float timing2, int noteType)>();
         timer = -scene1Man.delay;
 
+        longUp = new List<Sprite>();
+        longDown = new List<Sprite>();
+
         up      = Resources.Load<Sprite>("ui_image/up");
         down    = Resources.Load<Sprite>("ui_image/down");
+        longUp.Add(Resources.Load<Sprite>("longNote/longup"));
+        longUp.Add(Resources.Load<Sprite>("longNote/longup2"));
+        longUp.Add(Resources.Load<Sprite>("longNote/longup3"));
+        longDown.Add(Resources.Load<Sprite>("longNote/longDown"));
+        longDown.Add(Resources.Load<Sprite>("longNote/longDown2"));
+        longDown.Add(Resources.Load<Sprite>("longNote/longDown3"));
         laneNum = new Sprite[9];
         laneNum[1] = Resources.Load<Sprite>("ui_image/1_green");
         laneNum[2] = Resources.Load<Sprite>("ui_image/2_green");
@@ -75,45 +95,111 @@ public class Evaluator : MonoBehaviour
             noteData.notes[minLane].RemoveAt(0);
             noteData.notes[minLane].RemoveAt(0);
         }
-        string tot = "";
-        for(int i = 0; i < notesSingleList.Count; i++){
-            tot += "\n(" + notesSingleList[i].timing + ", " + notesSingleList[i].timing2 + ", " + notesSingleList[i].lane + ")";
-        }
-        Debug.Log(tot);
     }
     private void Update(){
         while(notesSingleList.Count > 0 && notesSingleList[0].timing < timer){
-            notesSingleList.RemoveAt(0);
-            fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().position.x, firstNote.GetComponent<RectTransform>().position.y));
-            wrong++;
-        }
-        int ind = 0;
-        firstNote = null;
-        while(ind < notesSingleList.Count && notesSingleList[ind].timing < timer + visibleAreaSize){
-            GameObject arrowObj;
-            if(ind + 1 > arrowPool.Count){
-                arrowObj = Instantiate(arrowPrefab);
-                arrowObj.transform.SetParent(arrowPoolParent.transform);
-                arrowPool.Add(arrowObj);
+            if(notesSingleList[0].noteType == (int)NoteType.Touch){
+                notesSingleList.RemoveAt(0);
+                fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().position.x, firstNote.GetComponent<RectTransform>().position.y));
+                firstNote = null;
             }
-            else{
-                arrowObj = arrowPool[ind];
+            else if(notesSingleList[0].noteType == (int)NoteType.Press){
+                if(notesSingleList[0].timing2 < timer){
+                    notesSingleList.RemoveAt(0);
+                    Image temp = firstNote.GetComponent<Image>();
+                    Image[] tempChild = firstNote.GetComponentsInChildren<Image>();
+                    temp.color = Color.white;
+                    foreach(Image img in tempChild){
+                        img.color = Color.white;
+                    }
+                    firstNote = null;
+                }
+                else{
+                    Image temp = firstNote.GetComponent<Image>();
+                    Image[] tempChild = firstNote.GetComponentsInChildren<Image>();
+                    temp.color = new Color(0.5f,0.5f,0.5f,0.5f);
+                    foreach(Image img in tempChild){
+                        img.color = new Color(0.5f,0.5f,0.5f,0.5f);
+                    }
+                }
+                break;
+            }
+        }
+        int numTouchNotes = 0;
+        int numPressNotes = 0;
+        float laneWidth = lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2;
+        for(int i = 0; i < notesSingleList.Count; i++){
+            if(notesSingleList[i].noteType == (int)NoteType.Touch && notesSingleList[i].timing > timer + visibleAreaSize)
+                break;
+            if(notesSingleList[i].noteType == (int)NoteType.Press && notesSingleList[i].timing > timer + visibleAreaSize)
+                break;
+            GameObject arrowObj = null;
+            if(notesSingleList[i].noteType == (int)NoteType.Touch){
+                if(numTouchNotes < arrowPool.Count){
+                    arrowObj = arrowPool[numTouchNotes];
+                }
+                else{
+                    arrowObj = Instantiate(arrowPrefab);
+                    arrowObj.transform.SetParent(arrowPoolParent.transform);
+                    arrowPool.Add(arrowObj);
+                }
+                arrowObj.GetComponent<Image>().sprite = (notesSingleList[i].lane <= 4) ? up : down;
+                arrowObj.transform.GetChild(0).GetComponent<Image>().sprite = laneNum[notesSingleList[i].lane + 1];
+                arrowObj.GetComponent<RectTransform>().position = new Vector3(
+                    arrowPrefab.GetComponent<RectTransform>().rect.width / 2 + laneWidth * ((notesSingleList[i].timing - timer) / visibleAreaSize),
+                    lane.GetComponent<RectTransform>().position.y,
+                    0
+                );
+                numTouchNotes++;
+            }
+            else if(notesSingleList[i].noteType == (int)NoteType.Press){
+                if(numPressNotes < longArrows.Count){
+                    arrowObj = longArrows[numPressNotes];
+                }
+                else{
+                    arrowObj = Instantiate(longArrowPrefab);
+                    arrowObj.transform.SetParent(arrowPoolParent.transform);
+                    longArrows.Add(arrowObj);
+                }
+                GameObject longArrow1 = arrowObj.transform.GetChild(0).gameObject;
+                GameObject longArrow2 = arrowObj.transform.GetChild(1).gameObject;
+                GameObject lanenum = arrowObj.transform.GetChild(2).gameObject;
+
+                arrowObj.GetComponent<Image>().sprite = (notesSingleList[i].lane <= 4) ? longUp[0] : longDown[0];
+                longArrow1.GetComponent<Image>().sprite = (notesSingleList[i].lane <= 4) ? longUp[1] : longDown[1];
+                longArrow2.GetComponent<Image>().sprite = (notesSingleList[i].lane <= 4) ? longUp[2] : longDown[2];
+                lanenum.GetComponent<Image>().sprite = laneNum[notesSingleList[i].lane + 1];
+
+                longArrow2.GetComponent<RectTransform>().localPosition = new Vector3((notesSingleList[i].timing2 - notesSingleList[i].timing) * laneWidth / visibleAreaSize, 0, 0);
+                longArrow1.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    ((notesSingleList[i].timing2 - notesSingleList[i].timing) * laneWidth / visibleAreaSize) - 84.375f,
+                    112.5f
+                );
+                longArrow1.GetComponent<RectTransform>().localPosition = new Vector3(
+                    (notesSingleList[i].timing2 - notesSingleList[i].timing) * laneWidth /  (2 * visibleAreaSize),
+                    0,
+                    0
+                );
+                arrowObj.GetComponent<RectTransform>().position = new Vector3(
+                    arrowPrefab.GetComponent<RectTransform>().rect.width / 2 + laneWidth * ((notesSingleList[i].timing - timer) / visibleAreaSize),
+                    lane.GetComponent<RectTransform>().position.y,
+                    0
+                );
+                numPressNotes++;
             }
             if(firstNote == null)
                 firstNote = arrowObj;
-            arrowObj.GetComponent<Image>().sprite = (notesSingleList[ind].lane <= 4) ? up : down;
-            arrowObj.transform.GetChild(0).GetComponent<Image>().sprite = laneNum[notesSingleList[ind].lane + 1];
-            float laneWidth = lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2;
-            arrowObj.GetComponent<RectTransform>().position = new Vector3(
-                arrowPrefab.GetComponent<RectTransform>().rect.width / 2 + laneWidth * ((notesSingleList[ind].timing - timer) / visibleAreaSize),
-                lane.GetComponent<RectTransform>().position.y,
-                0
-            );
-            ind++;
         }
-        while(ind < arrowPool.Count){
-            arrowPool[ind].GetComponent<RectTransform>().localPosition = new Vector3();
-            ind++;
+        for(int i = numTouchNotes; i < arrowPool.Count; i++){
+            arrowPool[i].GetComponent<RectTransform>().localPosition = new Vector3();
+        }
+        for(int i = numPressNotes; i < longArrows.Count; i++){
+            longArrows[i].GetComponent<RectTransform>().localPosition = new Vector3();
+            GameObject longArrow1 = longArrows[i].transform.GetChild(0).gameObject;
+            GameObject longArrow2 = longArrows[i].transform.GetChild(1).gameObject;
+            longArrow2.GetComponent<RectTransform>().localPosition = new Vector3();
+            longArrow1.GetComponent<RectTransform>().sizeDelta = new Vector2(84.375f, 112.5f);
+            longArrow1.GetComponent<RectTransform>().localPosition = new Vector3();
         }
         timer += Time.deltaTime;
     }
@@ -125,7 +211,7 @@ public class Evaluator : MonoBehaviour
         float diff = notesSingleList[0].timing - timer;
         int ansDir = (notesSingleList[0].lane <= 4) ? 1 : 2;
         int ansLC = (ansDir == 1) ? notesSingleList[0].lane : notesSingleList[0].lane - 4;
-        Debug.Log(diff + " : (" + ansDir + ", " + ansLC + ") : (" + direction + ", " + lineCount + ")");
+        // Debug.Log(diff + " : (" + ansDir + ", " + ansLC + ") : (" + direction + ", " + lineCount + ")");
 
         //diff 가 노트 이내 일 경우에만 입력이 되도록 수정
         notesSingleList.RemoveAt(0);
