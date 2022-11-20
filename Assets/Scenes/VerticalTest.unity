@@ -584,7 +584,10 @@ MonoBehaviour:
   arrowPoolParent: {fileID: 446357316}
   arrowPrefab: {fileID: 8094061257402156147, guid: d23c53b7477c3704da665f8b6807e55e,
     type: 3}
+  longArrowPrefab: {fileID: 1672893498843387887, guid: 34fb3b40b9d496f47a701b2192f233fe,
+    type: 3}
   lane: {fileID: 1924302642}
+  InputArrow: {fileID: 1445026153}
 --- !u!1 &529904647
 GameObject:
   m_ObjectHideFlags: 0
