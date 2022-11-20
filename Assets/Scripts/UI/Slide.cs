@@ -21,10 +21,13 @@ public class Slide : MonoBehaviour
     int numStrings = 0;
     Switch inputSwitch;
 
+    Vector3 prevTouchWorldPos;
+
     void Awake(){
         inputSwitch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int,int>));
     }
     void Start(){
+        prevTouchWorldPos = new Vector3(-1,-1,-1);
         stringYPos = new List<float>();
         stringsXBound = new Vector2();
         stringsXBound.x = strings[0].GetComponent<BoxCollider2D>().bounds.min.x;
@@ -47,73 +50,22 @@ public class Slide : MonoBehaviour
             return;
 
         Vector3 touchWorldCoord = Camera.main.ScreenToWorldPoint(touch.position);
-        if(touchWorldCoord.x >= stringsXBound.x && touchWorldCoord.x <= stringsXBound.y){
-            switch(touch.phase){
-                case TouchPhase.Began:
-                    validTouch = false;
-                    if(touchWorldCoord.y >= strings[0].transform.position.y){
-                        validTouch = true;
-                        touchDir = true;
-                    }
-                    if(touchWorldCoord.y <= strings[(strings.Length - 1)].transform.position.y){
-                        validTouch = true;
-                        touchDir = false;
-                    }
-                break;
-                case TouchPhase.Moved:
-                    if(validTouch){
-                        if(inputTimer > maxInputTime){
-                            touch.phase = TouchPhase.Ended;
-                        }
-                        else {
-                            if(
-                                ((touchDir && stringYPos[0] > touchWorldCoord.y && stringYPos[0] < prevTouchPos.y) ||
-                                (!touchDir && stringYPos[0] < touchWorldCoord.y && stringYPos[0] > prevTouchPos.y))
-                            )
-                            {
-                                string0.Shake();
-                                numStrings++;
-                            }
-                            if(
-                                ((touchDir && stringYPos[1] > touchWorldCoord.y && stringYPos[1] < prevTouchPos.y) ||
-                                (!touchDir && stringYPos[1] < touchWorldCoord.y && stringYPos[1] > prevTouchPos.y))
-                            )
-                            {
-                                string1.Shake();   
-                                numStrings++;     
-                            }
-                            if(
-                                ((touchDir && stringYPos[2] > touchWorldCoord.y && stringYPos[2] < prevTouchPos.y) ||
-                                (!touchDir && stringYPos[2] < touchWorldCoord.y && stringYPos[2] > prevTouchPos.y))
-                            )
-                            {
-                                string2.Shake();    
-                                numStrings++;    
-                            }
-                            if(
-                                ((touchDir && stringYPos[3] > touchWorldCoord.y && stringYPos[3] < prevTouchPos.y) ||
-                                (!touchDir && stringYPos[3] < touchWorldCoord.y && stringYPos[3] > prevTouchPos.y))
-                            )
-                            {
-                                string3.Shake();   
-                                numStrings++;     
-                            }
-                        }
-                        inputTimer += Time.deltaTime;
-                        prevTouchPos = touchWorldCoord;
-                    }
-                break;
-                case TouchPhase.Ended:
-                    inputSwitch.Invoke((touchDir ? 0 : 1), numStrings);
-
-                    validTouch = false;
-                    inputTimer = 0;
-                    numStrings = 0;
-                break;
-            }
-        }
-        else{
-            validTouch = false;
+        switch(touch.phase){
+            case TouchPhase.Began:
+                Debug.Log("Touch Began");
+            break;
+            case TouchPhase.Moved:
+                Debug.Log("Touch Moved");
+            break;
+            case TouchPhase.Stationary:
+                Debug.Log("Touch Stationary");
+            break;
+            case TouchPhase.Ended:
+                Debug.Log("Touch Ended");
+            break;
+            case TouchPhase.Canceled:
+                Debug.Log("Touch Canceled");
+            break;
         }
     }
 }

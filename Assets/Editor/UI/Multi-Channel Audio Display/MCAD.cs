@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor;
+
 public class MCAD : myUI.Component{
     List<List<VisualElement>> verticalIndicators;
     List<VisualElement> verticalIndicatorCollections;
@@ -71,7 +72,7 @@ public class MCAD : myUI.Component{
         }
     }
     public MCAD(){
-        var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Multi-Channel Audio Display/MCAD.uxml");
+        var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/UI/Multi-Channel Audio Display/MCAD.uxml");
         rootVisualElement = visualTreeAsset.CloneTree();
         rootVisualElement.style.width = Length.Percent(100);
         rootVisualElement.style.height = Length.Percent(100);

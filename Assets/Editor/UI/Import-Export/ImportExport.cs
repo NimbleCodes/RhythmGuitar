@@ -30,7 +30,7 @@ public class ImportExport : myUI.Component{
         }
     }
     public ImportExport(){
-        var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Import-Export/ImportExport.uxml");
+        var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/UI/Import-Export/ImportExport.uxml");
         rootVisualElement = visualTreeAsset.CloneTree();
         rootVisualElement.style.width = Length.Percent(100);
         rootVisualElement.style.height = Length.Percent(100);

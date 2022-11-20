@@ -110,7 +110,7 @@ public class NoteEditor : myUI.Component{
         }
     }
     public NoteEditor(){
-        var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Note Editor/NoteEditor.uxml");
+        var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/UI/Note Editor/NoteEditor.uxml");
         rootVisualElement = visualTreeAsset.CloneTree();
         rootVisualElement.style.width = Length.Percent(100);
         rootVisualElement.style.height = Length.Percent(100);

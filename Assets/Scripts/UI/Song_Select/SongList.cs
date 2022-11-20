@@ -33,9 +33,9 @@ public class SongList : MonoBehaviour
         }
 
 
-        SongDisplay song = (SongDisplay)Instantiate(songDisplayPrefab);
-        song.GetComponent<Canvas>().worldCamera = Camera.main;
-        song.Prime(items);
+        //SongDisplay song = (SongDisplay)Instantiate(songDisplayPrefab);
+        // song.GetComponent<Canvas>().worldCamera = Camera.main;
+        // song.Prime(items);
     }
 
     public void AddItem()

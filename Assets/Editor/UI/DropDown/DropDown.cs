@@ -9,7 +9,7 @@ public class DropDown{
     public Vector3 startPos;
 
     public DropDown((string, Action<Vector3>)[] elements){
-        var dropDownVTA = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/DropDown/DropDown.uxml");
+        var dropDownVTA = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/UI/DropDown/DropDown.uxml");
         root = dropDownVTA.CloneTree();
         root.name = "drop-down";
         root.style.position = Position.Absolute;

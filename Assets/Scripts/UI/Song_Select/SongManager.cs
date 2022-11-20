@@ -73,7 +73,8 @@ public class SongManager : MonoBehaviour
     // 곡이 선택되었을 때 미리듣기
     public void PlayAudioPreview(string songName)
     {
-        clip = Resources.Load("Audio/" +songName+"/"+songName) as AudioClip;
+        Debug.Log("Audio/" + songName + "/" + songName);
+        clip = Resources.Load("Audio/" + songName + "/" + songName) as AudioClip;
         music.clip = clip;
         //프리뷰 타임 원위치
         music.timeSamples = 0;
