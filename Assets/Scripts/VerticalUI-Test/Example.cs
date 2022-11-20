@@ -13,7 +13,7 @@ namespace Example_Vertical
 		[SerializeField] private SongItemDisplay m_original	= null;
 
 		//private SongItem[] m_list;
-		List<SongItem> m_list;
+		public List<SongItem> m_list;
 
 		//EDITOR에서 초기화 필요
 		public SongList songList;
@@ -37,17 +37,17 @@ namespace Example_Vertical
 		{
 			m_view.UpdateAllShownItemSnapData();
 
-			// int count = m_view.ShownItemCount;
+			int count = m_view.ShownItemCount;
 
-			// for ( int i = 0; i < count; ++i )
-			// {
-			// 	var itemObj	= m_view.GetShownItemByIndex( i );
-			// 	var itemUI	= itemObj.GetComponent<ListItemUI>();
-			// 	var amount	= 1 - Mathf.Abs( itemObj.DistanceWithViewPortSnapCenter ) / 720f;
-			// 	var scale	= Mathf.Clamp( amount, 0.4f, 1 );
+			for ( int i = 0; i < count; ++i )
+			{
+				var itemObj	= m_view.GetShownItemByIndex( i );
+				var itemUI	= itemObj.GetComponent<SongItemDisplay>();
+				// var amount	= 1 - Mathf.Abs( itemObj.DistanceWithViewPortSnapCenter ) / 720f;
+				// var scale	= Mathf.Clamp( amount, 0.4f, 1 );
 
-			// 	itemUI.SetScale( scale );
-			// }
+				// itemUI.SetScale( scale );
+			}
 		}
 
 		private LoopListViewItem2 OnUpdate( LoopListView2 view, int index )
@@ -56,7 +56,7 @@ namespace Example_Vertical
 
 			var data	= m_list[ index ];
 			var itemObj	= view.NewListViewItem( m_original.name );
-			var itemUI	= new SongItemDisplay();
+			var itemUI	= itemObj.GetComponent<SongItemDisplay>();
 			// itemUI.songManager = 
 
 			itemUI.Prime( data );

@@ -66,7 +66,6 @@ public class SongItemDisplay : MonoBehaviour
 
             Debug.Log(item.songName);
             // 노래 미리듣기
-            Debug.Log(songManager == null);
             songManager.PlayAudioPreview(item.songName);
             
             //PreviewPanel.instance.OnPreview(item);
