@@ -12,7 +12,7 @@ public class SongList : MonoBehaviour
     public List<NewSongItem> newItems = new List<NewSongItem>();
     public GameObject template;
 
-    int dirCnt;
+    public int dirCnt;
 
     void Start()
     {
@@ -38,7 +38,7 @@ public class SongList : MonoBehaviour
         song.Prime(items);
     }
 
-    void AddItem()
+    public void AddItem()
     {
         string fileName = "";
         // string basePath = Application.dataPath + "/Resources/Audio/";
@@ -68,31 +68,5 @@ public class SongList : MonoBehaviour
                 newItems.Add(new NewSongItem(songItem.songName, songItem.songLevel, songItem.songArtist, songItem.sprite));
             }
         }
-
-        // foreach()
-        // {
-        //     Debug.Log(basePath + di.Name + "/" + di.Name);
-        //     dirCnt++;
-        //     using (StreamReader streamReader = new StreamReader(basePath + di.Name + "/" + di.Name + "_data.txt"))
-        //     {
-        //         while((data = streamReader.ReadLine()) != null)
-        //         {
-        //             // parse
-        //             string[] splitedData = new string[2];
-        //             splitedData = data.Split('=');
-
-        //             if (splitedData[0] == "Title")
-        //                 songItem.songName = splitedData[1];
-        //             else if (splitedData[0] == "Artist")
-        //                 songItem.songArtist = splitedData[1];
-        //             else if (splitedData[0] == "Difficult")
-        //                 songItem.songLevel = splitedData[1];
-        //             else if (splitedData[0] == "ImageFileName")
-        //                 songItem.sprite = Resources.Load<Sprite>(di.Name + "/" + di.Name + "_Img");
-        //         }
-        //     }
-
-        //     newItems.Add(new NewSongItem(songItem.songName, songItem.songLevel, songItem.songArtist, songItem.sprite));
-        // }
     }
 }

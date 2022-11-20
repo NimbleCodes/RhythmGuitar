@@ -1,0 +1,41 @@
+----- Transform & Layer 를 이용한 방법 ------ (안됨X)
+어느정도는 가능하나 Layer의 한계가 있어 불가
+
+
+----- Using Transparent Sorting ----- (불가)
+원했던 바를 실행 가능할것이라 생각함 (sorting group 사용)
+Panel 생성시 전의 Panel 과 Y 차이를 40% 겹치게 설정
+먼저 아래쪽으로 가는형식을 생각해봐야함
+
+Vertical Layout Group(aka.VLG)를 사용할시 원하는 그림이 나오지 않을것.
+또한 VLG를 사용시 child object의 요소를 변경하면 각 객채의 GetComponet를 
+실행하기에 심한 렉을 발생시킬수도 있기에 현 UI에 적합하지 않아 배제해야한다.
+
+
+[문제점]
+Transparent Sorting은 무조건 적으로 순서를 정하기때문에
+원하는 결과물을 만들기에 적합하지 않았다. 결국에는 모든걸 수동으로 만들어
+내야 하는것이 아닌가 한다.
+
+---- 수정 방향 ------
+Vertical Layout Group를 완전 배제
+SongitemDisplay에서 prime 생성시 가운대를 기준으로(혹은 선택item을 기준)
+아래쪽으로 갈수록 PosZ -1
+
+아래쪽으로 내리면 기존 선택된 item은 Z값이 -1
+아래에 있던 item은 +1
+Z값 혹은 레이어를 변경해주는것이 맞는가 싶다. 
+스크롤은 사용하되 LayoutGroup을 사용하지 않는것이 맞으나.
+이것을 prefab화 되어있는 Object에 Z값 만으로 가능할지는 해봐야 한다.
+혹은 Layer변경시에 대한 문제점도 파악해봐야 한다.
+
+Scroll를 사용하는것은 맞으나 LayoutGroup은 사용할수가 없기에
+Object 정렬을 Transform 만으로 해야하는것인지 아니면 Grid를  살짝 겹쳐
+생성하여 이것을 Layer 별로 나눈뒤 Group화 할수 있는것인지에 관해
+자료조사가 필요.
+
+
+
+----- Sample package 발견 ----
+super scrollview라는 프로젝트를 찾았으며 현 프로젝트에 필요한 부분을 찾았으나
+코트 분석필요.

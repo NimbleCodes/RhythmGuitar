@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 346}
-  m_SizeDelta: {x: 648, y: 648}
+  m_AnchoredPosition: {x: 0.000015259, y: 201}
+  m_SizeDelta: {x: 382.0292, y: 292.9925}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3550610515431183106
 CanvasRenderer:
@@ -109,8 +109,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 346}
-  m_SizeDelta: {x: 628, y: 628}
+  m_AnchoredPosition: {x: -0.0000026226, y: 201}
+  m_SizeDelta: {x: 382.03, y: 292.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7597948136753618425
 CanvasRenderer:
@@ -190,8 +190,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2000, y: 0}
-  m_SizeDelta: {x: 1080, y: 1440}
+  m_AnchoredPosition: {x: -2279.769, y: 330.2829}
+  m_SizeDelta: {x: 520.4619, y: 779.4341}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &825909540914119422
 CanvasRenderer:
@@ -310,10 +310,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 80
+    m_FontSize: 70
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 8
+    m_MinSize: 7
     m_MaxSize: 80
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -358,8 +358,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -90, y: -386}
-  m_SizeDelta: {x: 900, y: 100}
+  m_AnchoredPosition: {x: -223.83203, y: -301.748}
+  m_SizeDelta: {x: 346.9504, y: 83.213}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6294641128825562069
 CanvasRenderer:
@@ -1112,7 +1112,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 4

@@ -16,6 +16,7 @@ public class SongItemDisplay : MonoBehaviour
 
     public SongItem item;
     public SongManager songManager;
+    
     //이벤트가 변수값을 기억해 다른 선택지 눌렀다가 다시 같은것을 눌렀을때 씬 전환이 되지 않기 위해 Static을 사용.
     static string songCheck = "";
     static int clickCnt = 0;
@@ -68,7 +69,8 @@ public class SongItemDisplay : MonoBehaviour
             Debug.Log(item.songName);
             // 노래 미리듣기
             songManager.PlayAudioPreview(item.songName);
-            PreviewPanel.instance.OnPreview(item);
+            
+            //PreviewPanel.instance.OnPreview(item);
 
             // Play씬 전환및 전달할 곡데이터
             // if (clickCnt.Equals(2))
