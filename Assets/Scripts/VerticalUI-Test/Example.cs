@@ -43,10 +43,10 @@ namespace Example_Vertical
 			{
 				var itemObj	= m_view.GetShownItemByIndex( i );
 				var itemUI	= itemObj.GetComponent<SongItemDisplay>();
-				// var amount	= 1 - Mathf.Abs( itemObj.DistanceWithViewPortSnapCenter ) / 720f;
-				// var scale	= Mathf.Clamp( amount, 0.4f, 1 );
+				var amount	= 1 - Mathf.Abs( itemObj.DistanceWithViewPortSnapCenter ) / 720f;
+				var scale	= Mathf.Clamp( amount, 0.4f, 1 );
 
-				// itemUI.SetScale( scale );
+				itemUI.SetScale( scale );
 			}
 		}
 
@@ -57,12 +57,8 @@ namespace Example_Vertical
 			var data	= m_list[ index ];
 			var itemObj	= view.NewListViewItem( m_original.name );
 			var itemUI	= itemObj.GetComponent<SongItemDisplay>();
-			// itemUI.songManager = 
 
 			itemUI.Prime( data );
-			// SongDisplay song = (SongDisplay)Instantiate(songDisplayPrefab);
-        	// song.GetComponent<Canvas>().worldCamera = Camera.main;
-        	// song.Prime(items);
 
 			return itemObj;
 		}

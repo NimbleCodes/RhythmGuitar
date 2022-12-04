@@ -8,6 +8,8 @@ using kgh.Signals;
 
 public class SongItemDisplay : MonoBehaviour
 {
+    [SerializeField] Button m_button = null;
+    [SerializeField] Text   m_name   = null;
     public Text textName,textLevel,textArtist;
     public Image sprite;
 
@@ -24,9 +26,9 @@ public class SongItemDisplay : MonoBehaviour
 
     void Start()
     {
-        if (item != null) Prime(item);
+        //if (item != null) Prime(item);
 
-        songManager = GameObject.Find("SongSelect").GetComponent<SongManager>();
+        songManager = GameObject.Find("SongManager").GetComponent<SongManager>();
 
         player = FindObjectOfType<Player>();
 
@@ -46,38 +48,44 @@ public class SongItemDisplay : MonoBehaviour
 
         //onClick += PeekPanel.instance.OnPreview;
     }   
+    public void SetScale( float scale )
+		{
+			m_button.GetComponent<CanvasGroup>().alpha = scale;
+			m_button.transform.localScale = new Vector3( scale, scale, 1 );
+		}
     public void Click()
     {
+        string m_Name = textName.text;
 
         if (onClick != null)
             onClick.Invoke(item);
         else
         {
             // 같은 항목을 두번 클릭하면 플레이
-            if (songCheck.Equals(item.songName)){
+            if (songCheck.Equals(m_Name)){
                 clickCnt++;
             }
             else
             {
                 clickCnt = 0;
-                songCheck = item.songName;
+                songCheck = m_Name;
                 clickCnt++;
             }
 
-            Debug.Log(item.songName);
+            Debug.Log(m_Name);
             // 노래 미리듣기
-            songManager.PlayAudioPreview(item.songName);
+            songManager.PlayAudioPreview(m_Name);
             
             //PreviewPanel.instance.OnPreview(item);
 
-            // Play씬 전환및 전달할 곡데이터
-            // if (clickCnt.Equals(2))
-            // {
-            //     songManager.SelectSong(item.songName);
-            //     clickCnt = 0; // ESC를 눌러 돌아왔을때 제대로 작동하기 위함
-            //     //if (!player.isEditMode)
-            //         SceneManager.LoadSceneAsync("VerticalTest");
-            // }
+            //Play씬 전환및 전달할 곡데이터
+            if (clickCnt.Equals(2))
+            {
+                songManager.SelectSong(m_Name);
+                clickCnt = 0; // ESC를 눌러 돌아왔을때 제대로 작동하기 위함
+                //if (!player.isEditMode)
+                    SceneManager.LoadSceneAsync("VerticalTest");
+            }
 
 
         }

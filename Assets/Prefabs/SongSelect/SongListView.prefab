@@ -247,6 +247,7 @@ GameObject:
   - component: {fileID: 3303437347038938026}
   - component: {fileID: 3303437347038938025}
   - component: {fileID: 308802769}
+  - component: {fileID: 5825123703479146976}
   m_Layer: 5
   m_Name: SongListView
   m_TagString: Untagged
@@ -409,6 +410,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!225 &5825123703479146976
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3303437347038938028}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4877676476216348015
 GameObject:
   m_ObjectHideFlags: 0

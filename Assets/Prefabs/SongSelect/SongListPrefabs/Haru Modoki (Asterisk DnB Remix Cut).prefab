@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1419235130451208913}
   - component: {fileID: 1419235130451208914}
+  - component: {fileID: 7004402613341179113}
   m_Layer: 0
   m_Name: Haru Modoki (Asterisk DnB Remix Cut)
   m_TagString: Untagged
@@ -47,3 +48,15 @@ MonoBehaviour:
   songLevel: 4
   songArtist: Haru
   sprite: {fileID: 21300000, guid: b14dfb1112eba4f46b8b7d6230894f00, type: 3}
+--- !u!225 &7004402613341179113
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419235130451208915}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
