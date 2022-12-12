@@ -28,7 +28,7 @@ public class SongItemDisplay : MonoBehaviour
     {
         //if (item != null) Prime(item);
 
-        songManager = GameObject.Find("SongManager").GetComponent<SongManager>();
+        songManager = GameObject.Find("SongSelect").GetComponent<SongManager>();
 
         player = FindObjectOfType<Player>();
 
@@ -76,7 +76,7 @@ public class SongItemDisplay : MonoBehaviour
             // 노래 미리듣기
             songManager.PlayAudioPreview(m_Name);
             
-            //PreviewPanel.instance.OnPreview(item);
+            PreviewPanel.instance.OnPreview(item);
 
             //Play씬 전환및 전달할 곡데이터
             if (clickCnt.Equals(2))

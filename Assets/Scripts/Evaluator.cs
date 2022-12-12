@@ -33,6 +33,8 @@ public class Evaluator : MonoBehaviour
     NoteHitFX fx;
     GameObject firstNote;
 
+    int longNoteCheck = 0;
+
     enum NoteType{
         Touch = 1,
         Press = 2
@@ -204,25 +206,37 @@ public class Evaluator : MonoBehaviour
         timer += Time.deltaTime;
     }
     private void OnMouseBehavior(int direction, int lineCount){
-        //1->up stroke 2->down stroke
+        Debug.Log(direction + ", " + lineCount);
         if(numNotesInLane <= 0)
-            return;
-        
-        float diff = notesSingleList[0].timing - timer;
-        int ansDir = (notesSingleList[0].lane <= 4) ? 1 : 2;
-        int ansLC = (ansDir == 1) ? notesSingleList[0].lane : notesSingleList[0].lane - 4;
-        // Debug.Log(diff + " : (" + ansDir + ", " + ansLC + ") : (" + direction + ", " + lineCount + ")");
+                return;
+        //1->up stroke 2->down stroke
+        if(notesSingleList[0].noteType == (int)NoteType.Touch){
+            float diff = notesSingleList[0].timing - timer;
+            int ansDir = (notesSingleList[0].lane <= 4) ? 1 : 2;
+            int ansLC = (ansDir == 1) ? notesSingleList[0].lane : notesSingleList[0].lane - 4;
+            // Debug.Log(diff + " : (" + ansDir + ", " + ansLC + ") : (" + direction + ", " + lineCount + ")");
 
-        //diff 가 노트 이내 일 경우에만 입력이 되도록 수정
-        notesSingleList.RemoveAt(0);
-        numNotesInLane--;
+            //diff 가 노트 이내 일 경우에만 입력이 되도록 수정
+            notesSingleList.RemoveAt(0);
+            numNotesInLane--;
 
-        if(ansDir != direction || ansLC != lineCount)
-            wrong++;
-        float val = arrowPrefab.GetComponent<RectTransform>().rect.width * 2 / (lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2);
-        if(diff < val){
-            fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().localPosition.x, firstNote.GetComponent<RectTransform>().localPosition.y));
-            right++;
+            if(ansDir != direction || ansLC != lineCount)
+                wrong++;
+            float val = arrowPrefab.GetComponent<RectTransform>().rect.width * 2 / (lane.GetComponent<RectTransform>().rect.width - arrowPrefab.GetComponent<RectTransform>().rect.width / 2);
+            if(diff < val){
+                fx.NoteHitFXStart(new Vector2(firstNote.GetComponent<RectTransform>().localPosition.x, firstNote.GetComponent<RectTransform>().localPosition.y));
+                right++;
+            }
+        }
+        else{
+            if(longNoteCheck == 0){
+                float diff = notesSingleList[0].timing - timer;
+                int ansDir = (notesSingleList[0].lane <= 4) ? 1 : 2;
+                int ansLC = (ansDir == 1) ? notesSingleList[0].lane : notesSingleList[0].lane - 4;
+                if(ansDir != direction || ansLC != lineCount)
+                    wrong++;
+            }
+
         }
     }
     void GameOver(){

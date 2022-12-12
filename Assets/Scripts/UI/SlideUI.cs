@@ -19,6 +19,8 @@ public class SlideUI : MonoBehaviour
     bool validTouch;
     Switch inputSwitch;
 
+    Vector3 startPos;
+
     void Awake(){
         inputSwitch = GameManager.instance.sigs.Register("OnMouseBehavior", typeof(Action<int,int>));
     }
@@ -36,60 +38,65 @@ public class SlideUI : MonoBehaviour
         string1 = strings[1].GetComponent<StringAnimationUI1>();
         string2 = strings[2].GetComponent<StringAnimationUI2>();
         string3 = strings[3].GetComponent<StringAnimationUI3>();
+
+        startPos = new Vector3(-1, -1, 0);
     }
     void Update(){
         validTouch = false;
+        int lineCount = 0;
         foreach(var touch in Input.touches){
-            if(touch.position.x >= stringsXBound.x && touch.position.x <= stringsXBound.y){
-                if(validTouch)
-                    continue;
-                validTouch = true;
-                switch(touch.phase){
-                    case TouchPhase.Began:
-                        prevTouchPos = touch.position;
-                    break;
-                    case TouchPhase.Moved:
-                        float min, max;
-                        min = Mathf.Min(touch.position.y, prevTouchPos.y);
-                        max = Mathf.Max(touch.position.y, prevTouchPos.y);
-                        if(stringYPos[0] >= min && stringYPos[0] <= max){
-                            string0.Shake();
-                        }
-                        if(stringYPos[1] >= min && stringYPos[1] <= max){
-                            string1.Shake();
-                        }
-                        if(stringYPos[2] >= min && stringYPos[2] <= max){
-                            string2.Shake();
-                        }
-                        if(stringYPos[3] >= min && stringYPos[3] <= max){
-                            string3.Shake();
-                        }
-                        prevTouchPos = touch.position;
-
-                        int direction;
-                        if(touch.position.y < prevTouchPos.y){
-                            //direction down
-                            direction = 0;
-                        }
-                        else{
-                            //direction up
-                            direction = 1;
-                        }
-                        if(prevDirection == -1){
-                            inputSwitch.Invoke(direction, 1);
-                        }
-                        else{
-                            if(prevDirection != direction){
-                                inputSwitch.Invoke(direction, 1);
-                                Debug.Log("switch");
-                            }
-                        }
-                        prevDirection = direction;
-                    break;
-                    case TouchPhase.Ended:
-                        prevDirection = -1;
-                    break;
+            if(touch.phase == TouchPhase.Began){
+                startPos.x = touch.position.x;
+                startPos.y = touch.position.y;
+                prevTouchPos = touch.position;
+            }
+            else if(touch.phase == TouchPhase.Canceled){
+                if(prevDirection != -1)
+                    inputSwitch.Invoke(prevDirection, lineCount);
+            }
+            else if(touch.phase == TouchPhase.Ended){
+                if(prevDirection != -1)
+                    inputSwitch.Invoke(prevDirection, lineCount);
+            }
+            else if(touch.phase == TouchPhase.Moved){
+                float min, max;
+                min = Mathf.Min(touch.position.y, prevTouchPos.y);
+                max = Mathf.Max(touch.position.y, prevTouchPos.y);
+                if(stringYPos[0] >= min && stringYPos[0] <= max){
+                    string0.Shake();
+                    lineCount++;
                 }
+                if(stringYPos[1] >= min && stringYPos[1] <= max){
+                    string1.Shake();
+                    lineCount++;
+                }
+                if(stringYPos[2] >= min && stringYPos[2] <= max){
+                    string2.Shake();
+                    lineCount++;
+                }
+                if(stringYPos[3] >= min && stringYPos[3] <= max){
+                    string3.Shake();
+                    lineCount++;
+                }
+                prevTouchPos = touch.position;
+                int direction;
+                if(touch.position.y < prevTouchPos.y){
+                    //direction down
+                    direction = 0;
+                }
+                else{
+                    //direction up
+                    direction = 1;
+                }
+                if(prevDirection != -1 && prevDirection != direction){
+                    inputSwitch.Invoke(direction, lineCount);
+                    lineCount = 0;
+                    prevDirection = -1;
+                }
+                prevDirection = direction;
+            }
+            else if(touch.phase == TouchPhase.Stationary){
+
             }
         }
     }

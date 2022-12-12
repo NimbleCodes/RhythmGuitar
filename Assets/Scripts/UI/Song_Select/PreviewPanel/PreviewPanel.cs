@@ -44,7 +44,7 @@ public class PreviewPanel : MonoBehaviour
 
         PlayBtn = rt.Find("PlayBtn").gameObject;
         PlayBtnRt = PlayBtn.GetComponent<RectTransform>();
-        PlayBtnRt.localPosition = new Vector3(-(rt.rect.width - PlayBtnRt.rect.width), -rt.rect.height * 0.25f, 0);
+        PlayBtnRt.localPosition = new Vector3(0.5f * -rt.rect.width + 0.5f * PlayBtnRt.rect.width, -rt.rect.height * 0.25f, 0);
         PlayBtn.GetComponent<Button>().onClick.AddListener(()=>{
             GameManager.instance.selectedSong = SongNameTxt.text;
             FindObjectOfType<SongManager>().SelectSong(SongNameTxt.text);
