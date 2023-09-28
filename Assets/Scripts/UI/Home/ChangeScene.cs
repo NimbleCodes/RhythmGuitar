@@ -9,7 +9,14 @@ public class ChangeScene : MonoBehaviour
     string curState;
 
     public void LoadScene(){
+        StartCoroutine(PlayAnimLoadScene());
+    }
+
+    IEnumerator PlayAnimLoadScene(){
         PlayAnimation.instance.Stroke1();
-        SceneManager.LoadScene(SceneToLoad);//버튼 클릭시 Scene 호출
+
+        yield return new WaitForSeconds(0.7f);
+
+        SceneManager.LoadScene(SceneToLoad);
     }
 }

@@ -9,6 +9,13 @@ public class SongItem : MonoBehaviour
     public string songLevel;
     public string songArtist;
     public Sprite sprite;
+    public SongItem(string name, string level, string artist, Sprite sprite)
+    {
+        songName = name;
+        songLevel = level;
+        songArtist = artist;
+        this.sprite = sprite;
+    }
 }
 
 [System.Serializable]

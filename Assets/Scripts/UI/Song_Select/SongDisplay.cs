@@ -8,13 +8,13 @@ public class SongDisplay : MonoBehaviour
     public SongItemDisplay itemDisplayPrefab;
 
 
-    public void Prime(List<SongItem> items)
+    public void SetData(List<SongItem> items)
     {
         foreach(SongItem item in items)
         {
             SongItemDisplay display = (SongItemDisplay)Instantiate(itemDisplayPrefab);
             display.transform.SetParent(targetTransform, false);
-            display.Prime(item);
+            display.SetDisplayData(item);
         }
 
         

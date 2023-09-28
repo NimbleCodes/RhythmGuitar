@@ -58,7 +58,7 @@ namespace Example_Vertical
 			var itemObj	= view.NewListViewItem( m_original.name );
 			var itemUI	= itemObj.GetComponent<SongItemDisplay>();
 
-			itemUI.Prime( data );
+			itemUI.SetDisplayData( data );
 
 			return itemObj;
 		}

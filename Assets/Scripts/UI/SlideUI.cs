@@ -83,8 +83,7 @@ public class SlideUI : MonoBehaviour
                 if(touch.position.y < prevTouchPos.y){
                     //direction down
                     direction = 0;
-                }
-                else{
+                }else{
                     //direction up
                     direction = 1;
                 }

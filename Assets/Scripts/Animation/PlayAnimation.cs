@@ -39,23 +39,19 @@ public class PlayAnimation : MonoBehaviour
 
 
     #region func for states
-    void Idle()
-    {
+    void Idle(){
         PlayLoopAnimation(0,"idle",1);
     }
 
-    public void Stroke1()
-    {
+    public void Stroke1(){
         PlayOneAnimation(0,"stroke1",1);
     }
 
-    public void Stroke2()
-    {
+    public void Stroke2(){
         PlayOneAnimation(0,"stroke2",1);
     }
 
-    public void Stroke3()
-    {
+    public void Stroke3(){
         PlayOneAnimation(0,"stroke3",1);
     }
     #endregion

@@ -32,15 +32,13 @@ public class DataParse
             ParseNoteInfo(data);
     }
 
-    void CheckCurrentMetadata(string data)
-    {
+    void CheckCurrentMetadata(string data){
         if (data == "[DataInfo]") state = State.DataInfo;
         else if (data == "[ContentInfo]") state = State.ContentInfo;
         else if (data == "[NoteInfo]") state = State.NoteInfo;
     }
 
-    public void ParseDataInfo(string data)
-    {
+    public void ParseDataInfo(string data){
         string[] splitedData = new string[2];
         splitedData = data.Split('=');
 
@@ -49,15 +47,14 @@ public class DataParse
         else if (splitedData[0] == "AudioViewTime")
             Data.previewTime = int.Parse(splitedData[1]);
         else if (splitedData[0] == "ImageFileName")
-            Data.imgFileName = splitedData[1];
+            Data.imgFileName = splitedData[1];/////
         else if (splitedData[0] == "BPM")
             Data.bpm = float.Parse(splitedData[1]);
         else if (splitedData[0] == "Offset")
             Data.offset = float.Parse(splitedData[1]);
     }
 
-    public void ParseContentInfo(string data)
-    {
+    public void ParseContentInfo(string data){
         string[] splitedData = new string[2];
         splitedData = data.Split('=');
 

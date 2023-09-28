@@ -10,32 +10,16 @@ public class SongList : MonoBehaviour
 
     public SongItem songItem;
     public List<NewSongItem> newItems = new List<NewSongItem>();
-    public GameObject template;
 
     public int dirCnt;
 
     void Start()
     {
         AddItem();
-        template.AddComponent<SongItem>();
-
-        for(int i=0; i < dirCnt; i++)
-        {
-            GameObject obj = Instantiate(template);
-            SongItem sItem = obj.GetComponent<SongItem>();
-
-            sItem.songName = newItems[i].songName;
-            sItem.songArtist = newItems[i].songArtist;
-            sItem.songLevel = newItems[i].songLevel;
-            sItem.sprite = newItems[i].sprite;
-
-            items.Add(obj.GetComponent<SongItem>());
-        }
-
 
         SongDisplay song = (SongDisplay)Instantiate(songDisplayPrefab);
         song.GetComponent<Canvas>().worldCamera = Camera.main;
-        song.Prime(items);
+        song.SetData(items);
     }
 
     public void AddItem()
@@ -43,8 +27,9 @@ public class SongList : MonoBehaviour
         string fileName = "";
         // string basePath = Application.dataPath + "/Resources/Audio/";
         // DirectoryInfo directoryInfo = new DirectoryInfo(basePath);
-
-        TextAsset DirList = Resources.Load<TextAsset>("TestFiles/DirList"); //디렉토리 리스트파일 작성, 리스트 파일을 읽어 디렉토리내 리소스를 정상로딩
+        
+        //디렉토리 리스트파일 작성, 리스트 파일을 읽어 디렉토리내 리소스를 정상로딩
+        TextAsset DirList = Resources.Load<TextAsset>("TestFiles/DirList"); 
         using(StringReader strReader = new StringReader(DirList.text)){
             while((fileName = strReader.ReadLine()) != null){
                 dirCnt++;
@@ -65,7 +50,7 @@ public class SongList : MonoBehaviour
                             songItem.sprite = Resources.Load<Sprite>("Audio/" + fileName + "/" + fileName + "_Img");
                     }
                 }
-                newItems.Add(new NewSongItem(songItem.songName, songItem.songLevel, songItem.songArtist, songItem.sprite));
+                items.Add(new SongItem(songItem.songName, songItem.songLevel, songItem.songArtist, songItem.sprite));
             }
         }
     }

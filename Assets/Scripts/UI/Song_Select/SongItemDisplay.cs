@@ -34,7 +34,7 @@ public class SongItemDisplay : MonoBehaviour
 
     }
 
-    public void Prime(SongItem item)
+    public void SetDisplayData(SongItem item)
     {
         this.item = item;
         if (textName != null)
@@ -73,6 +73,7 @@ public class SongItemDisplay : MonoBehaviour
             }
 
             Debug.Log(m_Name);
+            
             // 노래 미리듣기
             songManager.PlayAudioPreview(m_Name);
             

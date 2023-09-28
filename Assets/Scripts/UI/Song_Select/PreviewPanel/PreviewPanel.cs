@@ -8,14 +8,14 @@ public class PreviewPanel : MonoBehaviour
 {
     public static PreviewPanel instance;
     bool active = false;
-
+    Vector2 startPos;
     RectTransform rt;
     GameObject AlbumArtContainer, AlbumArt;
     RectTransform AlbumArtContainerRt, AlbumArtRt;
     Image AlbumArtImg;
 
-    GameObject PlayBtn;
-    RectTransform PlayBtnRt;
+    GameObject PlayBtn,BackBtn;
+    RectTransform PlayBtnRt,BackBtnRt;
 
     Text SongNameTxt, SongArtistTxt;
 
@@ -51,7 +51,14 @@ public class PreviewPanel : MonoBehaviour
             SceneManager.LoadSceneAsync("VerticalTest");
         });
 
+        BackBtn = rt.Find("BackBtn").gameObject;
+        BackBtnRt = BackBtn.GetComponent<RectTransform>();
+        BackBtnRt.localPosition = new Vector3(0.5f * -rt.rect.width + 0.5f * PlayBtnRt.rect.width, -rt.rect.height * 0.35f, 0);
+        BackBtn.GetComponent<Button>().onClick.AddListener(()=>{
+            rt.transform.position = startPos;
+        });
         instance = this;
+        startPos = transform.position;
     }
     void Update(){      
         if(active){
